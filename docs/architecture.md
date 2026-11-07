@@ -14,13 +14,13 @@ Recommended documentation layout:
 AGENTS.md
 design.md
 docs/
-  PRD.md
+  MVP.md
   user-flows.md
   architecture.md
   development-plan.md   # create after milestones are agreed
 ```
 
-`PRD.md` defines release scope; `user-flows.md` defines journeys; `design.md` defines visual and interaction rules; `AGENTS.md` defines the development workflow. Update references when moving documents. If an older document conflicts with a later agreed product decision, identify and reconcile the conflict rather than silently implementing the older behavior.
+`MVP.md` defines release scope; `user-flows.md` defines journeys; `design.md` defines visual and interaction rules; `AGENTS.md` defines the development workflow. Update references when moving documents. If an older document conflicts with a later agreed product decision, identify and reconcile the conflict rather than silently implementing the older behavior.
 
 ## 2. Confirmed direction
 
@@ -208,8 +208,8 @@ Use Vitest for pure rules/integration checks, React Testing Library for meaningf
 ## 13. Next planning work
 
 1. Resolve the explicitly flagged product edge cases; finalize the logical model into schema constraints and authorization policies.
-2. Reconcile older documents: Clerk replaces the proposed Supabase Auth choice; the visitor catalog replaces the former demo flow; the expanded catalog and agreed removal behavior supersede older placeholders.
+2. Review the local document reconciliation: Clerk, the real visitor catalog, expanded clothing types and removal/history behavior now supersede older proposals. Validate the diff before closing PLAN-01.
 3. Create `docs/development-plan.md` with end-to-end milestones, dependencies, feasibility work and release gates.
-4. Turn milestones into issues with behavior, scope, acceptance checks and dependencies. Select the repository/board location before creating an external issue board.
+4. Turn milestones into issues with behavior, scope, acceptance checks and dependencies. The repository is vinay-krishna9/closet-theory and the existing board is https://github.com/users/vinay-krishna9/projects/1; 21 issues have been created.
 
 No paid services, repository commits or deployments are authorized by this document. Follow the user's approval workflow in `AGENTS.md` before implementation.

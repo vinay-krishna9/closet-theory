@@ -21,7 +21,7 @@ Core promise: select or upload clothes you own, then receive understandable, rul
 ### Account holders
 
 - Sign up/sign in using Google or email/password.
-- Automatically import visitor-selected catalog clothes into their account wardrobe after signup. Explain this beforehand; do not ask them to select the same clothes again. Prevent duplicate imports and retain local selections until server persistence succeeds.
+- Automatically import visitor-selected catalog clothes into their account wardrobe after signup or sign-in to an existing account. Explain this beforehand; do not ask them to select the same clothes again. Prevent duplicate imports and retain local selections until server persistence succeeds.
 - Upload and manage personal clothing photos, alongside quick-add items.
 - Favorite/dislike outfits, record wears and view all-time statistics.
 - Access their private wardrobe across authenticated devices.
@@ -46,7 +46,7 @@ Quick-add items have editable category/type, color, formality and season default
 - Offer Retry, Use original and Choose another photo. Failure must not force a new photo or silently save the original.
 - User chooses group/type and confirms formality and seasons; detected dominant color is editable. Preserve form work on recoverable errors.
 - Desktop uses a side drawer; mobile uses a full-screen editor. Keep group/type choices consistent with the catalog.
-- Users can edit and delete their items. No individual-item favorite feature.
+- Users can edit and remove their items. Removal preserves wear history, excludes the garment and dependent outfits from new suggestions, and deletes personal images. History displays an existing matching catalog photo or placeholder; nothing is added to the shared catalog. No individual-item favorites.
 
 ## Outfit suggestions
 
@@ -62,7 +62,7 @@ Quick-add items have editable category/type, color, formality and season default
 
 - I wore this records today immediately, with confirmation and Undo. Guard rapid clicks and retries against accidental duplicate events.
 - Log an outfit and its constituent items consistently. Preserve stable outfit identity from sorted item IDs.
-- Show all-time outfit wears, item wear counts, most worn, least worn and never worn. Explain outfit-event counts versus summed item counts.
+- Show all-time outfit wears, item wear counts, most worn, least worn and never worn. Lifetime totals include valid wears of removed items; current most/least/never-worn lists include active items only. Explain outfit-event counts versus summed item counts.
 - Date-range filters, retrospective wear entry and detailed history editing are not launch requirements.
 
 ## Experience, privacy and quality
@@ -87,12 +87,16 @@ Do not invent usage targets or add analytics services implicitly. If product mea
 
 ## Decisions to resolve in architecture and delivery planning
 
-- Confirm Supabase and hosting setup; determine email verification, password recovery and OAuth configuration.
+- Confirm actual service configuration for the agreed Clerk authentication, Supabase database/private storage and Vercel hosting. Determine email verification, password recovery and OAuth settings; provider choices are settled.
 - Define catalog color sets, assets and editable default tag values.
 - Decide browser-storage schema/versioning and recovery when storage is unavailable.
-- Define retry-safe visitor import, including the existing-account sign-in case.
+- Implement retry-safe automatic import after signup or existing-account sign-in; decide how identical selections interact with already-owned garments. Sign-out clears account state and starts a fresh visitor wardrobe.
 - Define recommendation weights, minimum compatibility, optional-jacket selection and tie-breaking.
-- Specify deletion effects on historical outfits/wears, Undo persistence and user-facing date/timezone rules.
-- Confirm background-removal implementation/provider, image limits and processing performance.
+- Specify retry-safe media cleanup and account deletion retention; item-removal history behavior is settled above. Decide Undo persistence and user-facing date/timezone rules.
+- Validate the agreed browser background-removal approach on mobile; choose a compatible library/model and validate image limits/performance. A hosted processing alternative needs a new decision.
 
 These are planning items, not permission to change settled product scope.
+
+## Confirmed technical direction
+
+Clerk authentication; Supabase Postgres/private storage; Vercel hosting; browser background removal with original fallback. Visitor selections use React context/reducer plus browser persistence; account data is stored server-side. See architecture.md for boundaries and implementation proposals.

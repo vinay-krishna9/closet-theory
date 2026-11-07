@@ -1,6 +1,6 @@
 # Personal Stylist — MVP User Flows
 
-Status: consolidated planning draft for review, 7 November 2026. Read with `PRD.md` and `design.md`. Technical mechanisms and unresolved cases remain for architecture planning.
+Status: consolidated planning draft for review, 7 November 2026. Read with `MVP.md` and `design.md`. Technical mechanisms and unresolved cases remain for architecture planning.
 
 ## 1. Visitor gets a first outfit
 
@@ -23,7 +23,7 @@ Visitor wardrobe or landing → Create account → Google or email/password → 
 - Do not treat import as successful until the server confirms it. Preserve local source selections on failure; offer retry without duplicate items.
 - Cancellation/authentication errors keep visitor selections intact and allow continued visitor use.
 - If signup succeeds but import fails, state that the account exists and the wardrobe import needs retry. Do not force another signup.
-- After successful import, avoid re-importing the same selections on later refreshes or sign-ins. Existing-account merging and post-logout browser behavior need an explicit architecture/product decision.
+- After successful import, avoid re-importing the same selections on later refreshes or sign-ins. Existing-account sign-in also imports selections automatically. Retry idempotency is required; matching selections against already-owned garments still needs a merge rule. Sign-out clears account data and starts fresh visitor state.
 
 ## 3. New account starts a wardrobe
 
@@ -58,7 +58,7 @@ Wardrobe → search/filter → open item → edit tags or replace photo → revi
 
 - Quick-add items start with editable defaults; replacing their sample image preserves item identity/history.
 - Retain existing media until replacement saving succeeds.
-- Delete is separate from Save, with explicit confirmation and consequences. Historical-record behavior must be settled before implementing deletion.
+- Delete is separate from Save, with explicit confirmation and consequences. Keep historical wears, remove personal images, display matching catalog imagery or a placeholder, and exclude removed items/dependent outfits from new suggestions. Never promote a removed item into the shared catalog.
 - Distinguish empty wardrobe, no filtered matches and failed loading. Provide Add clothing, Clear filters or Retry respectively.
 - No item-favorite controls or filter.
 
@@ -80,7 +80,7 @@ Outfit → I wore this → record today → confirmation with Undo → Statistic
 - One intentional event updates the outfit and constituent item records consistently. Retries must not multiply records.
 - Undo reverses the same event and its item effects. If it fails, explain the remaining saved state and offer recovery.
 - Favorite/disliked/neutral preference does not block intentional wear logging.
-- Statistics shows all-time totals and most/least/never-worn lists. Explain an empty history and link to suggestions.
+- Statistics shows all-time totals including valid historical wears of removed items; current most/least/never-worn lists include active items only. Explain an empty history and link to suggestions.
 - Distinguish zeros from failed data loading. Do not invent a demo history for a real account.
 
 ## 8. Navigation and account boundaries
@@ -90,11 +90,11 @@ Outfit → I wore this → record today → confirmation with Undo → Statistic
 - Signed-in mobile: Wardrobe, Outfits, Statistics and Profile bottom links, with safe-area clearance.
 - Personal photo uploads, private data and writes require authorization at the server/storage boundaries, not just hidden controls.
 - Expired sessions preserve recoverable local form work where safe and explain that authentication is needed. Do not discard unsaved work silently.
-- Sign-out, password recovery, verification, deletion and existing-account import edge cases need detailed acceptance criteria in the architecture/backlog phase.
+- Sign-out clears private client data and starts a fresh visitor wardrobe. Clerk handles Google/email-password authentication. Password recovery/verification, account-deletion retention and existing-item merge edge cases still need detailed acceptance criteria.
 
 ## Next planning deliverables
 
 1. Review these flows and resolve the flagged user-facing edge cases.
 2. Define architecture/data model, service choices and image-processing strategy.
 3. Break delivery into end-to-end milestones and issues with explicit acceptance checks.
-4. Create an issue board after the repository and board location are selected. No external board has been created yet.
+4. Track delivery on the existing [Closet Theory MVP board](https://github.com/users/vinay-krishna9/projects/1), with [21 repository issues](https://github.com/vinay-krishna9/closet-theory/issues). Initial status columns are Todo → In Progress → Done; no task is automatically authorized for implementation.

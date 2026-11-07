@@ -2,7 +2,7 @@
 
 Status: proposed delivery plan for review · 7 November 2026
 
-Save at `docs/development-plan.md`. Read alongside `PRD.md`, `user-flows.md`, `architecture.md`, root `design.md` and root `AGENTS.md`. This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
+Save at `docs/development-plan.md`. Read alongside `MVP.md`, `user-flows.md`, `architecture.md`, root `design.md` and root `AGENTS.md`. This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
 
 ## 1. Delivery approach
 
@@ -10,7 +10,7 @@ Deliver small working journeys, not separate frontend and backend batches. Prove
 
 Proposed board: **Backlog → Ready → In progress → Review → Done**. Keep one main implementation issue in progress at a time. Put blocked work back in Backlog with a `blocked` label and an explicit dependency. Review means checks and acceptance criteria are available for inspection; Done requires their completion. Deployment remains separately authorized.
 
-No external issues or board have been created. The IDs below are planning references, not GitHub issue numbers.
+The [MVP project board](https://github.com/users/vinay-krishna9/projects/1) contains [21 issues](https://github.com/vinay-krishna9/closet-theory/issues), numbered #1–#21 in the task order below. IDs such as PLAN-01 remain stable planning references. The current saved board uses Todo → In Progress → Done; the five-column workflow above is a proposal, not an existing configuration.
 
 ## 2. Milestone sequence
 
@@ -219,4 +219,4 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-Review this milestone order. Then reconcile the documents and settle blocking M0 questions. Select the GitHub repository and board owner/location before creating external issues or a project board. No scaffold or feature implementation should begin merely because this file exists.
+Review this milestone order. Document reconciliation has been performed locally; review its diff and run link/consistency checks before marking PLAN-01 complete. Settle genuinely blocking M0 questions. Use the existing vinay-krishna9/closet-theory repository and linked MVP board; do not recreate the 21 existing issues. No scaffold or feature implementation should begin merely because this file exists.

@@ -4,6 +4,7 @@
 
 Build a real, published personal stylist app: users add wardrobe photos or sample staples, receive deterministic outfit suggestions, express preferences and track wears.
 
+- Read `docs/MVP.md` for scope, `docs/user-flows.md` for journeys, `docs/architecture.md` for technical boundaries, and `docs/development-plan.md` for delivery.
 - Read `design.md` before UI work. It defines visual tokens, components, responsive behavior, accessibility and interactions. Do not duplicate its specifications here.
 - Read the existing README, package scripts and relevant code before making changes. Follow established project conventions unless a change is approved.
 - The MVP includes wardrobe management, automatic background removal with original-photo fallback, staples, rule-based outfit suggestions, outfit preferences and wear statistics. Shopping/affiliate suggestions are deferred.
@@ -24,7 +25,7 @@ Build a real, published personal stylist app: users add wardrobe photos or sampl
 - Next.js, TypeScript and Tailwind CSS.
 - shadcn/ui for shared controls, styled to `design.md`; Lucide outline icons.
 - npm as the package manager. Keep `package-lock.json` consistent and do not introduce another package manager's lockfile.
-- Proposed backend: Supabase for authentication, Postgres and private image storage; proposed hosting: Vercel. Confirm these during setup before provisioning services or introducing alternatives. A proposed service does not authorize deployment or live changes.
+- Confirmed stack: Clerk for Google/email-password authentication, Supabase Postgres and private image storage, and Vercel hosting on an eligible plan. Attempt background removal in the browser and validate it early on mobile. Provisioning, spending and live changes still require authorization. Do not introduce Supabase Auth as a second login system.
 - Approved proposed testing stack: Vitest, React Testing Library and Playwright. Verify compatibility with the actual framework/runtime during setup. Present material substitutions for a decision.
 - Check installed versions and their supported APIs. Do not mix examples from incompatible framework versions or shadcn/ui primitive families.
 
@@ -47,9 +48,9 @@ src/
   lib/
     outfits/              pure deterministic scoring and outfit identity
     images/               image validation and processing adapters
-    supabase/             client/server adapters if Supabase is confirmed
+    supabase/             client/server adapters for Supabase
   styles/                 semantic tokens and global styles
-supabase/migrations/      versioned database changes if Supabase is confirmed
+supabase/migrations/      versioned database changes for Supabase
 tests/e2e/                browser journeys
 ```
 
@@ -116,3 +117,13 @@ A feature is complete when:
 - The final report briefly states what changed, what was tested and any remaining limitations. If checks or review were blocked, say so and do not present the feature as fully verified.
 
 Keep this file concise and accurate as the repository evolves. Update concrete paths and commands after setup; request a decision before changing approved workflow or product rules.
+
+## Settled product scope
+
+- Visitors select owned clothes from the real quick-add catalog, use season/formality filters and get up to six suggestions with Show more. No separate demo or prefilled wardrobe. React context/reducer plus browser storage remembers selections; Redux is deferred.
+- Visitors cannot upload personal photos, save preferences or log wears. Google/email-password signup or existing-account sign-in automatically imports selections once; retain local source until persistence succeeds. Sign-out clears account caches and starts a fresh visitor wardrobe.
+- Catalog groups/types: Tops → solid T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and realistic licensed sample photos; editable defaults.
+- Upload one garment at a time, confirm Group → Type, color, formality and seasons, review automatic background removal, then save or explicitly use the original. Offer Add another after success.
+- Complete outfits need top, bottom and shoes; jacket optional. Season/formality filters include Any. No extra occasion requirement.
+- Statistics are all-time. Removing a garment preserves historical wears, excludes it and dependent outfits from future suggestions, deletes its private photos and uses existing catalog imagery or a placeholder in history. Never add personal garments/photos to the shared catalog. Lifetime totals retain valid history; current most/least/never-worn lists include active items only. Account deletion is a separate privacy operation.
+- Keep existing-account garment merge semantics, scoring weights, optional-jacket selection policy, timezone and Undo duration explicitly open until approved.

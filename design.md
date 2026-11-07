@@ -271,7 +271,7 @@ Use native select/checkbox/radio semantics or a fully keyboard-accessible equiva
 
 ### Wardrobe cards
 
-Source: **3:4 image ratio**, neutral image area, **12px radius**, name and category below the image. Follow-up removes item favorites. Show edit and wear actions on **selection, hover or keyboard focus**. Use a quiet surface with minimal framing and no permanent heavy shadow. Cards remain image-first; secondary details belong in the item editor/details view.
+Source: **3:4 image ratio**, neutral image area, **12px radius**, name and category below the image. Follow-up removes item favorites. Show edit actions on **selection, hover or keyboard focus**. Individual-item wear logging is not yet approved for launch; outfit-level wear logging is the agreed flow. Use a quiet surface with minimal framing and no permanent heavy shadow. Cards remain image-first; secondary details belong in the item editor/details view.
 
 Use `object-fit: contain` with consistent internal breathing room for cutouts and staples. Avoid cropping sleeves, hems or footwear. On touch, offer a persistent visible action-menu trigger or explicit selection control; essential actions cannot require hover. Desktop quick actions appear with `:focus-within` as well as hover. A card detail link and its action buttons are siblings. Skeletons preserve the media ratio and label space. Broken images show a garment placeholder plus “Photo unavailable”, with edit/retry access. Do not add item-heart controls or item-favorite data.
 
@@ -279,11 +279,11 @@ Use `object-fit: contain` with consistent internal breathing room for cutouts an
 
 Source: clothing composition on a **neutral canvas**, consistent item positions, styling reason and **“I wore this”** actions. Follow-up consolidates rating and favorite into one three-state preference. **Ranking scores remain internal** by default. The later component proposal takes precedence over the earlier illustrative suggestion to show a score.
 
-Completion default: a 4:3 canvas, radius 12px, with a stable two-column, three-row internal grid. Place top upper left, bottom lower left spanning remaining rows, outerwear upper right, shoes lower right and accessories in remaining right-hand space. A dress/one-piece occupies the top/bottom area. Garments use `contain` and remain separated, with no decorative overlap or depth tricks. Missing optional slots leave balanced space; absent required slots produce an explanation rather than a fabricated outfit. Absolute positioning, if used inside this bounded canvas, must remain proportional and never position page layout.
+Completion default: a 4:3 canvas, radius 12px, with a stable two-column, three-row internal grid. Place top upper left, bottom lower left spanning remaining rows, outerwear upper right, shoes lower right and accessories in remaining right-hand space. Dresses/one-pieces are outside the launch catalog; support that layout only after a future scope decision. Garments use `contain` and remain separated, with no decorative overlap or depth tricks. Missing optional slots leave balanced space; absent required slots produce an explanation rather than a fabricated outfit. Absolute positioning, if used inside this bounded canvas, must remain proportional and never position page layout.
 
 Below the composition, show outfit name, a one-line rule-based styling reason and readable item names via a list or details control. Use two labelled toggle buttons: Heart **“Favorite”** and CircleSlash **“Not for me”**. Both unpressed means **no opinion**, the default. Selecting one clears the other; selecting the active button again clears feedback to no opinion. This clearing behavior is the final implementation default. Feedback is optional and never interrupts browsing. Use `aria-pressed`, keyboard activation and a visible selected state, such as a filled heart plus stronger outline; do not rely on color or tooltips alone. Use Lucide SVG icons rather than platform-dependent emoji glyphs.
 
-Persist one value, `preference: 'favorite' | 'neutral' | 'disliked'`, against stable outfit identity, not list index. No record is equivalent to neutral; there is no additional `is_favorite` field or numeric star rating. An existing table named `outfit_ratings` may store this preference enum; the name does not imply stars. Filter candidates for current wardrobe availability, season and occasion before ordering favorites, neutral and optionally disliked groups. “Show disliked” is off by default and places disliked results last. Favorite status does not override missing garments or incompatible active filters. Preserve deterministic score ordering within each group. A saved-favorites view, if provided, derives from this same value.
+Persist one value, `preference: 'favorite' | 'neutral' | 'disliked'`, against stable outfit identity, not list index. No record is equivalent to neutral; there is no additional `is_favorite` field or numeric star rating. An existing table named `outfit_ratings` may store this preference enum; the name does not imply stars. Filter candidates for current wardrobe availability, season and formality before ordering favorites, neutral and optionally disliked groups. “Show disliked” is off by default and places disliked results last. Favorite status does not override missing garments or incompatible active filters. Preserve deterministic score ordering within each group. A saved-favorites view, if provided, derives from this same value.
 
 ### Garment-derived canvas tint
 
@@ -311,7 +311,7 @@ Empty states give a short explanation and one next action. Distinguish an empty 
 
 ### Statistics
 
-Source: **large numeric values, restrained bar charts, generous whitespace**, most worn, least worn and never worn items with clear labels. Completion default numeric display: Archivo 32px mobile / 48px desktop with tabular numerals. Use monochrome bars, text values, labelled axes and meaningful units. Provide a table or list equivalent. Never encode series distinctions with color alone. Avoid invented precision, animated counters and fabricated demo counts in a user's real wardrobe. State the date range and distinguish zero data from a failed request.
+Account-only page with an All time label, outfit-event total, item-wear totals, restrained charts and current most/least/never-worn lists. Lifetime totals retain non-undone historical wears of removed items; current lists include only active wardrobe items. History labels removed garments and uses matching existing catalog imagery or a placeholder after personal photos are deleted. Removal also excludes dependent outfits from new suggestions; nothing is added to the shared catalog. Explain empty history with a link to suggestions. No date-range picker, fabricated counts or visitor statistics.
 
 ## 8. Upload, background removal and image lifecycle
 
@@ -350,7 +350,7 @@ Completion default processing timeout: 30 seconds before showing recovery; the u
 
 ### Editorial marketing landing
 
-Warm paper public header and editorial hero → charcoal three-step feature section → warm stone product demonstration and supporting features → charcoal final CTA and footer with privacy/accessibility/contact links. Suggested hero: **“Your wardrobe. Reimagined.”** Supporting copy: **“Less searching. Better outfits. More of what you already own.”** Use a clear primary action such as “Build your wardrobe” and a secondary demo link. These phrases reflect the source's illustrative direction; they are not required product claims.
+Warm paper public header and editorial hero → charcoal three-step feature section → warm stone product demonstration and supporting features → charcoal final CTA and footer with privacy/accessibility/contact links. Suggested hero: **“Your wardrobe. Reimagined.”** Supporting copy: **“Less searching. Better outfits. More of what you already own.”** Use a clear primary action such as “Build your wardrobe” and a visitor action “Try with quick-add clothes”. There is no separate demo mode or prefilled wardrobe. These phrases reflect the source's illustrative direction; they are not required product claims.
 
 Use 88px desktop / 44px mobile Archivo hero type and generous whitespace. Pair copy with original garment photography or a representative neutral composition. A two-column desktop hero stacks in a logical reading order on mobile. Include actual product UI so the service is understandable. Use restrained 500–700ms reveals only below the fold; hero content must be visible and usable without animation or JavaScript. Do not copy Orvante media, agency copy, counters, glass plates or absolute page coordinates. No fake testimonials, users or performance claims.
 
@@ -366,7 +366,7 @@ The accompanying `warm-stone-charcoal-preview.png` is an approximate visual refe
 
 ### Onboarding
 
-Explain the wardrobe-to-outfit flow briefly, then **“Pick the basics you already own”** using selectable staple cards. Include Skip and a clear continue action with selection count. Never add unselected staples automatically. Continue into wardrobe upload with the drawer pattern. Preserve selections through navigation and failures; keyboard focus follows the new step heading. Do not require a complete wardrobe before the user can explore the interface.
+After authentication, offer Quick-add clothes or Upload a photo, with Skip. Automatically import any visitor selections once after signup or existing-account sign-in; explain carryover beforehand without an extra import-choice dialog. Empty accounts get no automatically selected clothes. The quick-add catalog uses named color swatches and realistic sample photos: Tops → solid T-shirt/shirt/sweater; Bottoms → jeans/chinos/shorts; Shoes → sneakers; Outerwear → simple jacket. Defaults are editable. Visitors can use this catalog without signup; personal uploads require an account. Preserve selections and tag edits on failures.
 
 ### Wardrobe
 
@@ -374,15 +374,15 @@ Page title, concise supporting count, Add item, search/filters, then the comfort
 
 ### Add/edit item
 
-Drawer/full-screen header → image upload/processing preview → item name → category → editable detected color → formality → multi-season selection → optional additional tags → footer actions. Explain required fields before submission. Editing reuses current media until a replacement is successfully saved. Deletion is separate from Save and requires an explicit confirmation. Processing and save errors remain associated with the relevant step.
+Drawer/full-screen header → image upload/processing preview → item name → clothing group → specific type → editable detected color → formality → multi-season selection → optional additional tags → footer actions. Explain required fields before submission. Editing reuses current media until a replacement is successfully saved. Deletion is separate from Save and requires an explicit confirmation. Processing and save errors remain associated with the relevant step.
 
 ### Outfit suggestions
 
-Page title and short explanation → occasion/formality and season controls → “Suggest outfits” → composition cards with reasons and feedback actions. Expose loading without an artificial minimum delay. Insufficient items explain the missing required category and link to Add item/staples. No compatible results offer relaxed filters rather than suggesting unavailable clothes. Keep scores internal; reasons describe actual rules. Suggestions preserve stable identity through rating, favoriting and wear logging. Buying suggestions are deferred beyond the MVP.
+Page title → season and formality controls (Casual, Smart-casual, Formal, with Any) → Suggest outfits → up to six compatible compositions → Show more for additional distinct matches. Complete outfits require top, bottom and shoes; jacket is optional. No extra occasion step. Explain missing groups with a quick-add/upload link; offer filter relaxation explicitly when no compatible result exists. Never fabricate six matches or silently change filters. Visitors get suggestions but no saved feedback or wear logging. Account holders get optional Heart/CircleSlash feedback and I wore this. Reasons reflect actual rules; scores stay internal.
 
 ### Statistics
 
-Date-range context → total wears and related summary metrics → restrained distribution chart → most worn, least worn and never worn lists. Define metrics plainly; outfit wear events and item wear totals are different counts. A first-use state explains how “I wore this” populates the page. Use actual dates and local user-facing date formatting, with consistent timezone rules in the application.
+All time label → total outfit wears and item-wear totals → restrained distribution chart → current most worn, least worn and never worn lists. No date-range selector in the MVP. Lifetime totals retain removed-item history, while current lists exclude removed garments. Historical images use matching catalog imagery or a placeholder after private photos are deleted. Outfit wear events and summed item wears are different metrics. A first-use state explains how “I wore this” populates the page. User-facing date/timezone details remain an explicit implementation decision.
 
 ### Profile and account
 
@@ -535,3 +535,11 @@ styles/tokens.css    semantic tokens and shared type roles
 - [ ] Dark-section headings, secondary text, controls, borders, focus states and inverse CTA buttons use explicit contextual tokens.
 - [ ] Muted garment-derived media tint uses the revised 82% HSL lightness and neutral fallback rather than the earlier near-white treatment.
 - [ ] Verify normal text contrast, control boundaries and focus visibility against the actual updated surfaces before release.
+
+## 16. Confirmed visitor and account boundaries
+
+Visitors start with an empty quick-add wardrobe, persist catalog selections in the same browser, and receive real filtered suggestions without authentication. No separate demo, prefilled sample history, personal uploads, favorites or wear logging. React context/reducer plus browser storage is the starting approach. Clearly explain account benefits without blocking suggestions.
+
+Clerk provides Google/email-password signup and sign-in. Import visitor selections automatically once after either flow; only clear the source after successful account persistence. Sign-out clears private caches and starts a fresh visitor wardrobe. Supabase stores owner-scoped account data/private photos; Vercel hosts the app. Browser background removal is the approved approach, subject to early mobile feasibility checks.
+
+Read docs/MVP.md for release scope and docs/architecture.md for technical decisions. One garment is uploaded at a time, with Add another after successful saving. Quick-add tags have editable defaults; uploaded garments require group/type, formality and season confirmation, with editable detected color. Account deletion must remove personal account history according to the approved privacy policy; it is distinct from preserving history after removing one garment.
