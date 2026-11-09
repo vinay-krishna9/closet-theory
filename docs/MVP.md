@@ -87,12 +87,12 @@ Do not invent usage targets or add analytics services implicitly. If product mea
 
 ## Decisions to resolve in architecture and delivery planning
 
-- Confirm actual service configuration for the agreed Clerk authentication, Supabase database/private storage and Vercel hosting. Determine email verification, password recovery and OAuth settings; provider choices are settled.
+- Confirm actual service configuration for the agreed Clerk authentication, Supabase database/private storage and Vercel hosting. Require email verification before personal saves/import; include password recovery and recent-auth confirmed account deletion. Exact OAuth/provider settings remain setup work.
 - Define catalog color sets, assets and editable default tag values.
 - Decide browser-storage schema/versioning and recovery when storage is unavailable.
-- Implement retry-safe automatic import after signup or existing-account sign-in; decide how identical selections interact with already-owned garments. Sign-out clears account state and starts a fresh visitor wardrobe.
-- Define recommendation weights, minimum compatibility, optional-jacket selection and tie-breaking.
-- Specify retry-safe media cleanup and account deletion retention; item-removal history behavior is settled above. Decide Undo persistence and user-facing date/timezone rules.
+- Implement retry-safe automatic import after signup or existing-account sign-in; skip exact active catalog-configuration matches (including applicable customizations), keeping the existing garment. Sign-out clears account state and starts a fresh visitor wardrobe.
+- Validate tunable scoring thresholds, deterministic ties and candidate limits against the agreed style-first, diversity, pattern and seasonal-jacket rules in product-decisions.md.
+- Specify retry-safe media cleanup and account deletion retention; item-removal history behavior is settled above. Implement the saved account timezone and 10-second accessible Undo; exact retry/persistence mechanics remain technical work.
 - Validate the agreed browser background-removal approach on mobile; choose a compatible library/model and validate image limits/performance. A hosted processing alternative needs a new decision.
 
 These are planning items, not permission to change settled product scope.
@@ -100,3 +100,9 @@ These are planning items, not permission to change settled product scope.
 ## Confirmed technical direction
 
 Clerk authentication; Supabase Postgres/private storage; Vercel hosting; browser background removal with original fallback. Visitor selections use React context/reducer plus browser persistence; account data is stored server-side. See architecture.md for boundaries and implementation proposals.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+
+Quick-add supports optional per-type customization; solid is a default, not a catalog restriction. All accounts use the saved timezone; verification gates personal writes. Outfit-only logging and account deletion/recovery are launch requirements.

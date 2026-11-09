@@ -23,7 +23,7 @@ Visitor wardrobe or landing → Create account → Google or email/password → 
 - Do not treat import as successful until the server confirms it. Preserve local source selections on failure; offer retry without duplicate items.
 - Cancellation/authentication errors keep visitor selections intact and allow continued visitor use.
 - If signup succeeds but import fails, state that the account exists and the wardrobe import needs retry. Do not force another signup.
-- After successful import, avoid re-importing the same selections on later refreshes or sign-ins. Existing-account sign-in also imports selections automatically. Retry idempotency is required; matching selections against already-owned garments still needs a merge rule. Sign-out clears account data and starts fresh visitor state.
+- After successful import, avoid re-importing the same selections on later refreshes or sign-ins. Existing-account sign-in also imports selections automatically. Retry idempotency is required; skip an exact active catalog-configuration match, including applicable customizations; keep broader matches distinct. Sign-out clears account data and starts fresh visitor state.
 
 ## 3. New account starts a wardrobe
 
@@ -85,12 +85,12 @@ Outfit → I wore this → record today → confirmation with Undo → Statistic
 
 ## 8. Navigation and account boundaries
 
-- Public landing uses public navigation. Visitor wardrobe/outfits must remain usable without authentication; do not present an active personal Statistics page for visitors. Final visitor-shell placement is a wireframe decision.
+- Public landing uses public navigation. Visitor wardrobe/outfits must remain usable without authentication; do not present an active personal Statistics page for visitors. Visitors see Wardrobe, Outfits and Sign in/Create account only, adapted to small screens without Statistics or Profile destinations.
 - Signed-in desktop/tablet: top navigation for Wardrobe, Outfits, Statistics and account/Profile.
 - Signed-in mobile: Wardrobe, Outfits, Statistics and Profile bottom links, with safe-area clearance.
 - Personal photo uploads, private data and writes require authorization at the server/storage boundaries, not just hidden controls.
 - Expired sessions preserve recoverable local form work where safe and explain that authentication is needed. Do not discard unsaved work silently.
-- Sign-out clears private client data and starts a fresh visitor wardrobe. Clerk handles Google/email-password authentication. Password recovery/verification, account-deletion retention and existing-item merge edge cases still need detailed acceptance criteria.
+- Sign-out clears private client data and starts a fresh visitor wardrobe. Clerk handles Google/email-password authentication. Require verified email/password identity before personal saving/import, preserve visitor selections meanwhile, and include Forgot password. Account deletion requires recent authentication and confirmation. Backup retention and cleanup mechanics remain technical release tasks.
 
 ## Next planning deliverables
 
@@ -98,3 +98,9 @@ Outfit → I wore this → record today → confirmation with Undo → Statistic
 2. Define architecture/data model, service choices and image-processing strategy.
 3. Break delivery into end-to-end milestones and issues with explicit acceptance checks.
 4. Track delivery on the existing [Closet Theory MVP board](https://github.com/users/vinay-krishna9/projects/1), with [21 repository issues](https://github.com/vinay-krishna9/closet-theory/issues). Initial status columns are Todo → In Progress → Done; no task is automatically authorized for implementation.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+
+Quick-add → choose type/color → Add basic item or Customize → resolve existing-item warning → save. Upload → review image → confirm tags/customizations → resolve similarity → choose uploaded or matching catalog photo → save one garment. Signup/sign-in → verify identity if required → automatically import nonmatching selections once. Keep local data until success.

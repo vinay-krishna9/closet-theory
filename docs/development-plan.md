@@ -38,11 +38,10 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### PLAN-02 — Close product edge cases
 
-- Decide duplicate catalog selections versus multiple owned garments; existing-account import merge behavior; permitted tag choices and Any semantics.
-- Decide optional-jacket generation, initial matching rules/weights, tie-breaking, diversity and candidate limits.
-- Decide timezone behavior, Undo availability, whether individual-item wear logging belongs in launch UI, and effects of catalog asset changes on history.
-- Confirm account deletion/backup retention, auth verification/recovery and visitor-shell navigation.
-- **Acceptance:** user-facing decisions are approved with short options/recommendations, then reflected in requirements and issue acceptance checks. Avoid an open-ended planning phase: resolve each choice before its dependent issue, not necessarily all before scaffolding.
+- Product discussion completed; decisions are recorded in product-decisions.md and synchronized across local documents.
+- Review the diff and commit/push only when requested; no automatic GitHub issue closure.
+- **Acceptance:** customization, catalog matching/similarity, jacket/season/formality rules, style-first diversity/pattern handling, timezone, accessible 10-second Undo, outfit-only logging, verification/recovery/deletion and visitor navigation agree across documents.
+- Exact scoring/configuration values, catalog asset versioning, candidate bounds and backup/cleanup timing remain implementation tasks, not settled numeric guarantees.
 
 ### SPIKE-01 — Validate mobile background removal
 
@@ -220,3 +219,7 @@ Actual checks/results and any remaining limitation.
 ## 12. Immediate next action
 
 Review this milestone order. Document reconciliation has been performed locally; review its diff and run link/consistency checks before marking PLAN-01 complete. Settle genuinely blocking M0 questions. Use the existing vinay-krishna9/closet-theory repository and linked MVP board; do not recreate the 21 existing issues. No scaffold or feature implementation should begin merely because this file exists.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.

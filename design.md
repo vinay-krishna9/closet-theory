@@ -271,7 +271,7 @@ Use native select/checkbox/radio semantics or a fully keyboard-accessible equiva
 
 ### Wardrobe cards
 
-Source: **3:4 image ratio**, neutral image area, **12px radius**, name and category below the image. Follow-up removes item favorites. Show edit actions on **selection, hover or keyboard focus**. Individual-item wear logging is not yet approved for launch; outfit-level wear logging is the agreed flow. Use a quiet surface with minimal framing and no permanent heavy shadow. Cards remain image-first; secondary details belong in the item editor/details view.
+Source: **3:4 image ratio**, neutral image area, **12px radius**, name and category below the image. Follow-up removes item favorites. Show edit actions on **selection, hover or keyboard focus**. Do not expose individual-item wear logging in the MVP; log outfits and update their item counts automatically. Use a quiet surface with minimal framing and no permanent heavy shadow. Cards remain image-first; secondary details belong in the item editor/details view.
 
 Use `object-fit: contain` with consistent internal breathing room for cutouts and staples. Avoid cropping sleeves, hems or footwear. On touch, offer a persistent visible action-menu trigger or explicit selection control; essential actions cannot require hover. Desktop quick actions appear with `:focus-within` as well as hover. A card detail link and its action buttons are siblings. Skeletons preserve the media ratio and label space. Broken images show a garment placeholder plus “Photo unavailable”, with edit/retry access. Do not add item-heart controls or item-favorite data.
 
@@ -366,7 +366,7 @@ The accompanying `warm-stone-charcoal-preview.png` is an approximate visual refe
 
 ### Onboarding
 
-After authentication, offer Quick-add clothes or Upload a photo, with Skip. Automatically import any visitor selections once after signup or existing-account sign-in; explain carryover beforehand without an extra import-choice dialog. Empty accounts get no automatically selected clothes. The quick-add catalog uses named color swatches and realistic sample photos: Tops → solid T-shirt/shirt/sweater; Bottoms → jeans/chinos/shorts; Shoes → sneakers; Outerwear → simple jacket. Defaults are editable. Visitors can use this catalog without signup; personal uploads require an account. Preserve selections and tag edits on failures.
+After authentication, offer Quick-add clothes or Upload a photo, with Skip. Automatically import any visitor selections once after signup or existing-account sign-in; explain carryover beforehand without an extra import-choice dialog. Empty accounts get no automatically selected clothes. The quick-add catalog uses named color swatches and realistic sample photos: Tops → T-shirt/shirt/sweater; Bottoms → jeans/chinos/shorts; Shoes → sneakers; Outerwear → simple jacket. Defaults are editable. Visitors can use this catalog without signup; personal uploads require an account. Preserve selections and tag edits on failures.
 
 ### Wardrobe
 
@@ -382,7 +382,7 @@ Page title → season and formality controls (Casual, Smart-casual, Formal, with
 
 ### Statistics
 
-All time label → total outfit wears and item-wear totals → restrained distribution chart → current most worn, least worn and never worn lists. No date-range selector in the MVP. Lifetime totals retain removed-item history, while current lists exclude removed garments. Historical images use matching catalog imagery or a placeholder after private photos are deleted. Outfit wear events and summed item wears are different metrics. A first-use state explains how “I wore this” populates the page. User-facing date/timezone details remain an explicit implementation decision.
+All time label → total outfit wears and item-wear totals → restrained distribution chart → current most worn, least worn and never worn lists. No date-range selector in the MVP. Lifetime totals retain removed-item history, while current lists exclude removed garments. Historical images use matching catalog imagery or a placeholder after private photos are deleted. Outfit wear events and summed item wears are different metrics. A first-use state explains how “I wore this” populates the page. Today uses the saved account timezone, initialized from the device and editable in Profile; preserve event-local historical dates.
 
 ### Profile and account
 
@@ -543,3 +543,17 @@ Visitors start with an empty quick-add wardrobe, persist catalog selections in t
 Clerk provides Google/email-password signup and sign-in. Import visitor selections automatically once after either flow; only clear the source after successful account persistence. Sign-out clears private caches and starts a fresh visitor wardrobe. Supabase stores owner-scoped account data/private photos; Vercel hosts the app. Browser background removal is the approved approach, subject to early mobile feasibility checks.
 
 Read docs/MVP.md for release scope and docs/architecture.md for technical decisions. One garment is uploaded at a time, with Add another after successful saving. Quick-add tags have editable defaults; uploaded garments require group/type, formality and season confirmation, with editable detected color. Account deletion must remove personal account history according to the approved privacy policy; it is distinct from preserving history after removing one garment.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](docs/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+
+### Quick-add customization and similar-item UI
+
+Choose type/color and Add immediately with basic defaults, or expand Customize for relevant neckline/collar, sleeve length and pattern choices. Display representative sample imagery honestly with selected details. Warn on similar active wardrobe items with Keep existing, Replace photo/details or confirmed Add as a different garment. Exact matches include customizations; repeated catalog clicks never create copies. For a confirmed upload/catalog match, offer My uploaded photo or Catalog photo without creating two items. Use confirmed metadata, not claimed image recognition.
+
+### Updated recommendation and account interactions
+
+Allow multiple Spring/Summer/Autumn/Winter tags or All seasons. Prefer exact formality, allow adjacent levels with a reason and never mix Casual directly with Formal. Add compatible jackets only for explicit Autumn/Winter; missing jackets do not block results. Any/Spring/Summer results are jacket-free. Keep style ahead of freshness and diversify close-scoring tops/bottoms within preference groups. Prefer one patterned item but allow multiple with lower ranking.
+
+Undo appears for 10 seconds after confirmed outfit logging, pausing dismissal while focused/hovered/interacted with. Profile exposes saved timezone, password recovery where applicable and recent-auth confirmed account deletion. Gate personal saves/import on verified identity while preserving visitor selections.

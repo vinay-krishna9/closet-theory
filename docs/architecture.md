@@ -95,7 +95,7 @@ This is a logical model, not migration-ready SQL. Exact column types, indexes an
 | --- | --- |
 | `catalog_types` | Group, type, labels and editable default tags; e.g. Bottoms → Jeans |
 | `catalog_variants` | Type reference, named color, color value, sample asset reference and licensing/source metadata |
-| `wardrobe_items` | ID, owner subject, optional catalog variant, display name, group/type, color, formality, seasons, image source and active/removed state |
+| `wardrobe_items` | ID, owner subject, optional catalog variant, display name, group/type, color, normalized applicable customizations (neckline/collar, sleeves, pattern), formality, seasons, image source and active/removed state |
 | `item_media` | Owner/item reference, private original/cutout/thumbnail paths, processing and cleanup state; never permanent public URLs |
 | `outfits` | ID, owner subject, stable combination hash and timestamps |
 | `outfit_items` | Outfit/item references and slot; ownership must agree across the relationship |
@@ -104,7 +104,7 @@ This is a logical model, not migration-ready SQL. Exact column types, indexes an
 | `wear_event_items` | Wear event/item references and minimal historical labels/type/color/catalog fallback information |
 | `visitor_imports` | Owner, import key, payload fingerprint, completion state and imported-item mapping |
 
-No duplicate authentication database is needed. Add an app profile/settings table only if a concrete app-specific setting requires it.
+No duplicate authentication database is needed. Add owner-scoped account settings for the agreed saved IANA timezone, initialized from the device and editable in Profile.
 
 ### Relationships and invariants
 
@@ -118,7 +118,7 @@ No duplicate authentication database is needed. Add an app profile/settings tabl
 
 ## 6. Clothing taxonomy and recommendations
 
-Launch types: Tops → solid T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Each complete outfit needs one top, one bottom and shoes. A jacket is optional. Catalog defaults and uploaded-item confirmations use the same vocabulary.
+Launch types: Tops → T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Each complete outfit needs one top, one bottom and shoes. A jacket is optional. Catalog defaults and uploaded-item confirmations use the same vocabulary.
 
 Use a pure TypeScript module that accepts normalized items, filters, preferences and wear history and returns ordered outfit candidates with rule-derived reasons. Inject the current date/time rather than reading it invisibly inside scoring functions.
 
@@ -131,7 +131,7 @@ Use a pure TypeScript module that accepts normalized items, filters, preferences
 
 Use the same engine for visitor and account flows; visitors have empty persistent preference/history inputs. Rankings and IDs remain internal. Garment-derived decorative canvas colors must not change matching scores.
 
-Unresolved before implementation: scoring weights, compatibility thresholds, treatment of Any/multi-season tags, patterns, optional-jacket policy, diversity and maximum candidate count/performance strategy. Benchmark the proposed approach before adopting unbounded enumeration for large wardrobes. Recommendation pagination should be consistent against a defined wardrobe/filter snapshot.
+Product rules for seasons, Any, patterns, jackets and diversity are settled in product-decisions.md. Remaining technical defaults: exact scoring weights, compatibility thresholds, closeness/diversity tuning and maximum candidate count/performance strategy. Benchmark the proposed approach before adopting unbounded enumeration for large wardrobes. Recommendation pagination should be consistent against a defined wardrobe/filter snapshot.
 
 ## 7. Retry-safe visitor import
 
@@ -145,7 +145,7 @@ Proposed implementation:
 4. Return the completed mapping; clear imported browser selections only after confirmed persistence.
 5. If import fails after successful signup, keep the account and local payload, and offer retry. Do not repeat account creation.
 
-Import idempotency is not the same as deduplicating all visually identical clothes: a user may own two similar shirts. Whether matching visitor selections should merge with existing account items needs an explicit rule before implementation. Do not silently remove intentionally distinct items.
+Import idempotency is separate from semantic matching. Skip an exact active catalog-configuration match (including applicable customizations), keeping the existing item. Broader type/color similarity only triggers a warning for user-driven additions; do not silently merge distinct configurations or overwrite personal photos. See product-decisions.md.
 
 ## 8. Photo lifecycle
 
@@ -173,9 +173,9 @@ Agreed item-removal behavior:
 
 Proposed removal sequence: authorize → mark removed and suppress personal-photo delivery → queue/retry object cleanup → retain only minimal historical records. Explain actual deletion/backup timing in privacy information. Short-lived URLs may remain usable until expiry; define appropriate lifetime and invalidation behavior rather than promising instantaneous revocation.
 
-Replacing a personal photo with catalog imagery while keeping a garment active is a distinct action, not deletion. It is not automatically added to the MVP UI by this distinction.
+Replacing a personal photo with catalog imagery while keeping a garment active is distinct from deletion. The approved upload match flow offers catalog versus uploaded imagery after confirming tags and resolving existing-item similarity. Preserve one item identity and its history.
 
-Account deletion is different from item removal: historical personal records must not be retained merely because item wear history is preserved. Coordinate deletion of Clerk identity, app data and private media with retry-safe cleanup. Final retention/backup policy and verification of the deletion request must be specified before launch.
+Account deletion is different from item removal: historical personal records must not be retained merely because item wear history is preserved. Coordinate deletion of Clerk identity, app data and private media with retry-safe cleanup. Recent authentication and explicit confirmation are required for deletion. Final backup retention and cleanup operations must be specified and validated before launch.
 
 ## 10. Wear logging, Undo and dates
 
@@ -185,7 +185,7 @@ Account deletion is different from item removal: historical personal records mus
 - Proposed Undo operation marks/reverses the same event atomically; all statistics exclude undone events. Retrying Undo must not subtract counts again.
 - Pending failures show the actual saved state with a recovery action. Do not display a false successful log or Undo.
 
-Proposed date rule, to confirm before implementing date-sensitive behavior: store timestamps in UTC plus the user's IANA timezone/local worn date; interpret today and freshness using one documented rule. Undo availability duration and whether individual-item wear logging is in the launch UI also need confirmation.
+Agreed date rule: use saved account IANA timezone, initially from the device and editable in Profile. Store UTC timestamps plus event timezone/local date; preserve historical dates when settings change. Undo appears for 10 seconds after confirmed saving, pausing dismissal during interaction/focus. MVP logging is outfit-only. See product-decisions.md for accessibility and retry handling.
 
 ## 11. Security and environments
 
@@ -213,3 +213,9 @@ Use Vitest for pure rules/integration checks, React Testing Library for meaningf
 4. Turn milestones into issues with behavior, scope, acceptance checks and dependencies. The repository is vinay-krishna9/closet-theory and the existing board is https://github.com/users/vinay-krishna9/projects/1; 21 issues have been created.
 
 No paid services, repository commits or deployments are authorized by this document. Follow the user's approval workflow in `AGENTS.md` before implementation.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+
+Normalize customizations and defaults for exact matching. Store selections/customizations on personal or visitor items, not combinatorial shared catalog copies. Account writes require verified Clerk identity. Version catalog asset references so later template changes do not silently rewrite historical meaning; concrete versioning mechanics remain an implementation task.

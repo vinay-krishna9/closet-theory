@@ -122,8 +122,12 @@ Keep this file concise and accurate as the repository evolves. Update concrete p
 
 - Visitors select owned clothes from the real quick-add catalog, use season/formality filters and get up to six suggestions with Show more. No separate demo or prefilled wardrobe. React context/reducer plus browser storage remembers selections; Redux is deferred.
 - Visitors cannot upload personal photos, save preferences or log wears. Google/email-password signup or existing-account sign-in automatically imports selections once; retain local source until persistence succeeds. Sign-out clears account caches and starts a fresh visitor wardrobe.
-- Catalog groups/types: Tops → solid T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and realistic licensed sample photos; editable defaults.
+- Catalog groups/types: Tops → T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and realistic licensed sample photos; editable defaults.
 - Upload one garment at a time, confirm Group → Type, color, formality and seasons, review automatic background removal, then save or explicitly use the original. Offer Add another after success.
 - Complete outfits need top, bottom and shoes; jacket optional. Season/formality filters include Any. No extra occasion requirement.
 - Statistics are all-time. Removing a garment preserves historical wears, excludes it and dependent outfits from future suggestions, deletes its private photos and uses existing catalog imagery or a placeholder in history. Never add personal garments/photos to the shared catalog. Lifetime totals retain valid history; current most/least/never-worn lists include active items only. Account deletion is a separate privacy operation.
-- Keep existing-account garment merge semantics, scoring weights, optional-jacket selection policy, timezone and Undo duration explicitly open until approved.
+- Follow docs/product-decisions.md for resolved merge, jacket, timezone and Undo rules. Exact scoring weights/performance limits remain technical defaults to validate; do not reopen settled product choices.
+
+## Resolved PLAN-02 decisions
+
+Follow [agreed product decisions](docs/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
