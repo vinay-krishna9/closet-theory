@@ -45,6 +45,8 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### SPIKE-01 — Validate mobile background removal
 
+- Prototype code remains on branch [`spike/01-browser-background-removal`](https://github.com/vinay-krishna9/closet-theory/tree/spike/01-browser-background-removal), separate from `main`. Recorded snapshot: [`70eec67`](https://github.com/vinay-krishna9/closet-theory/commit/70eec67e429787632a893405c0992c8a06f487a5).
+- See the snapshot's [setup and test instructions](https://github.com/vinay-krishna9/closet-theory/blob/70eec67e429787632a893405c0992c8a06f487a5/spikes/background-removal/README.md) and [findings/completion record](https://github.com/vinay-krishna9/closet-theory/blob/70eec67e429787632a893405c0992c8a06f487a5/docs/spikes/SPIKE-01.md). User signed off the prototype on 10 November 2026; four automated tests passed in the recorded run and manual results include clutter-related cutout failures. Physical-phone testing and other unverified checks remain follow-up work; mobile feasibility is not established. Prototype code has not been merged into `main`.
 - Select and request approval for a candidate library/model; review license, download size, browser capabilities, worker support and memory behavior.
 - Test representative garments on actual target mobile/desktop browsers where available; record tested devices and limitations.
 - Validate preview, damaged cutout, timeout, cancel/reselect and explicit original-photo fallback.

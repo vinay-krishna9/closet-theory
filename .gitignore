@@ -1,0 +1,7 @@
+# Local artifacts retained when switching away from the prototype branch.
+/spikes/background-removal/local-test-images/
+/spikes/background-removal/node_modules/
+/spikes/background-removal/models/*.onnx
+/spikes/background-removal/test-results/
+/spikes/background-removal/playwright-report/
+/spikes/background-removal/artifacts/
