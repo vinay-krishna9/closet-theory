@@ -6,7 +6,7 @@ Save at `docs/development-plan.md`. Read alongside `MVP.md`, `user-flows.md`, `a
 
 ## 1. Delivery approach
 
-Deliver small working journeys, not separate frontend and backend batches. Prove the riskiest integrations early, then build the visitor experience before accounts and personal uploads. Keep tests and accessibility in each milestone rather than deferring them to final polish.
+Deliver small working journeys, not separate frontend and backend batches. Approved sequencing update, 10 November 2026: build the foundation and visitor experience before SPIKE-02. Validate Clerk/Supabase isolation before account or private-photo features. Keep tests and accessibility in each milestone rather than deferring them to final polish.
 
 Proposed board: **Backlog → Ready → In progress → Review → Done**. Keep one main implementation issue in progress at a time. Put blocked work back in Backlog with a `blocked` label and an explicit dependency. Review means checks and acceptance criteria are available for inspection; Done requires their completion. Deployment remains separately authorized.
 
@@ -17,9 +17,9 @@ The [MVP project board](https://github.com/users/vinay-krishna9/projects/1) cont
 | Milestone | User-visible outcome | Depends on |
 | --- | --- | --- |
 | M0 — Decisions and feasibility | Risks have evidence and requirements agree | None |
-| M1 — Foundation | Accessible app shell and repeatable checks | M0 gates |
+| M1 — Foundation | Accessible app shell and repeatable checks | PLAN-01 and applicable PLAN-02 decisions; SPIKE-02 does not block |
 | M2 — Visitor wardrobe and suggestions | A visitor selects owned basics and gets outfits | M1 |
-| M3 — Accounts and private wardrobe | Selections carry into a private synced account | M2; auth feasibility |
+| M3 — Accounts and private wardrobe | Selections carry into a private synced account | M2; SPIKE-02 owner-isolation verification |
 | M4 — Personal photo flow | A user uploads, reviews and saves one garment | M3; image feasibility |
 | M5 — Preferences and wear tracking | Feedback, wear logging, Undo and statistics work | M3; recommendation engine |
 | M6 — Release candidate | Complete public journey verified and documented | M4, M5 |
@@ -54,6 +54,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### SPIKE-02 — Validate Clerk and private Supabase access
 
+- Scheduled after the M2 visitor journey (OUTFITS-01, #10), before ACCOUNT-01 (#11). Its M0 classification describes feasibility work, not a prerequisite for M1/M2. No live authentication or private data is required for visitor pages.
 - Prepare an approved sandbox setup plan; use only isolated test accounts/assets. No service provisioning without explicit authorization.
 - Prove verified Clerk identity can access only its own Postgres rows and private media through the proposed server boundary.
 - Verify anonymous denial, user A versus user B, expired session and private-image cache behavior.
@@ -63,6 +64,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### BUILD-01 — Scaffold and quality tooling
 
+- Next implementation task (#5); do not block scaffolding or visitor checks on SPIKE-02 or service provisioning.
 - Set up approved Next.js/TypeScript/Tailwind/npm structure, Vitest, React Testing Library and Playwright with compatible versions.
 - Record actual install/dev/check/test/build commands, required environment variable names and isolated test setup.
 - Configure CI to run relevant checks on branches/PRs; do not configure auto-production deployment without approval.
@@ -70,6 +72,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### BUILD-02 — Tokens and shared app shell
 
+- First design mobile/desktop Wardrobe, Quick-add and Outfits screens using `design.md`, then review and obtain user approval before implementing those designs. Design remaining screens before their respective features.
 - Implement warm stone/charcoal tokens, fonts, Lucide icons, shadcn/ui controls, dialog/editor foundations and route layouts.
 - Desktop/tablet account shell uses top navigation; mobile account shell uses bottom links. Public/visitor shell follows the approved flow decision.
 - **Acceptance:** responsive shell, keyboard focus and reduced motion reviewed; no pure-white UI defaults or theme toggle; controls match `design.md`. Keep authentication-dependent destinations honest while backend features are incomplete.

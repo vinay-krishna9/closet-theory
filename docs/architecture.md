@@ -199,7 +199,7 @@ Agreed date rule: use saved account IANA timezone, initially from the device and
 
 ## 12. Validation and delivery gates
 
-Before building the full product, run focused feasibility work for browser image processing on mobile and Clerk-to-Supabase authorization, including private image access. A failed feasibility check requires a reviewed alternative, not a silent stack change.
+Approved sequencing, 10 November 2026: foundation and visitor pages can be built without Clerk/Supabase provisioning. Run SPIKE-02 after the visitor journey and verify Clerk-to-Supabase authorization, including private image access, before account/private-data features. Browser image-processing feasibility, including outstanding physical-mobile verification, remains a gate for personal photo processing. A failed feasibility check requires a reviewed alternative, not a silent stack change.
 
 Required coverage includes deterministic scoring and grouping; import retries; cross-account isolation; upload fallback/cancellation; storage cleanup; wear logging and Undo; removed-item historical display; sign-out cache clearing; mobile/desktop and keyboard behavior.
 
