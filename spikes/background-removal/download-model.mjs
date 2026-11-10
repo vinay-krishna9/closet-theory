@@ -1,0 +1,10 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+const url = 'https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx';
+const response = await fetch(url);
+if (!response.ok) throw new Error(`Model download: HTTP ${response.status}`);
+const bytes = Buffer.from(await response.arrayBuffer());
+if (createHash('md5').update(bytes).digest('hex') !== '8e83ca70e441ab06c318d82300c84806') throw new Error('Upstream checksum mismatch');
+await mkdir(new URL('./models/', import.meta.url), { recursive: true });
+await writeFile(new URL('./models/u2netp.onnx', import.meta.url), bytes);
+console.log(JSON.stringify({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') }));

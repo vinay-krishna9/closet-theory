@@ -1,0 +1,12 @@
+{
+  "name": "closet-theory-background-removal-spike",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "download-model": "node download-model.mjs",
+    "test": "playwright test"
+  },
+  "dependencies": { "onnxruntime-web": "1.31.1" },
+  "devDependencies": { "@playwright/test": "1.65.0" }
+}
