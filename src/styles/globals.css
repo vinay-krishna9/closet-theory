@@ -2,10 +2,11 @@
 
 /* Minimal foundation palette from design.md. Full tokens/fonts follow in BUILD-02. */
 :root {
-  --background: #e9e3d9;
-  --surface: #e4ded4;
-  --foreground: #191919;
-  --border: #bcb3a6;
+  color-scheme: dark;
+  --background: #101214;
+  --surface: #191c20;
+  --foreground: #e4e7eb;
+  --border: #41464f;
 }
 
 @theme inline {

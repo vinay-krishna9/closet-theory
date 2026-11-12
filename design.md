@@ -1,8 +1,8 @@
 # Personal Stylist — Design System
 
-Status: finalized implementation specification · Warm stone + charcoal sections · Comfortable density
+Status: implementation specification · Cool charcoal revision approved 12 November 2026 · Comfortable density
 
-Finalized: 6 November 2026. Includes the original 15 approved decisions and the follow-up decisions below.
+Original specification finalized: 6 November 2026. The explicit darker, sleeker direction approved on 12 November 2026 supersedes the warm palette and light-workspace wording below; section 17 is authoritative for color roles. Other layout, interaction and product rules remain in effect.
 
 ## 1. Authority and provenance
 
@@ -19,11 +19,11 @@ Priority: explicit future user decisions → approved decisions in this file →
 | #   | Area               | Approved decision                                                    |
 | --- | ------------------ | -------------------------------------------------------------------- |
 | 01  | Direction          | Editorial Minimalism                                                 |
-| 02  | Palette            | Warm stone, refined from the original warm off-white                 |
+| 02  | Palette            | Cool charcoal and graphite; see revision 17                          |
 | 03  | Accent             | Monochrome only                                                      |
 | 04  | Typography         | Archivo + Inter Tight                                                |
 | 05  | Motion             | Balanced                                                             |
-| 06  | Theme              | Light workspace with dark sections on the same page; no theme toggle |
+| 06  | Theme              | Dark workspace; no theme toggle or OS-driven switching               |
 | 07  | Desktop navigation | Top navigation                                                       |
 | 08  | Wardrobe cards     | Image-first minimal cards                                            |
 | 09  | Corners            | Soft corners, 8–12px                                                 |
@@ -557,3 +557,26 @@ Choose type/color and Add immediately with basic defaults, or expand Customize f
 Allow multiple Spring/Summer/Autumn/Winter tags or All seasons. Prefer exact formality, allow adjacent levels with a reason and never mix Casual directly with Formal. Add compatible jackets only for explicit Autumn/Winter; missing jackets do not block results. Any/Spring/Summer results are jacket-free. Keep style ahead of freshness and diversify close-scoring tops/bottoms within preference groups. Prefer one patterned item but allow multiple with lower ranking.
 
 Undo appears for 10 seconds after confirmed outfit logging, pausing dismissal while focused/hovered/interacted with. Profile exposes saved timezone, password recovery where applicable and recent-auth confirmed account deletion. Gate personal saves/import on verified identity while preserving visitor selections.
+
+## 17. Cool charcoal revision — approved 12 November 2026
+
+User direction: “Use more darker tones. This feels warm. I want more darker sleek design.” This replaces the earlier warm-stone palette, light workspace and alternating warm-light landing guidance. Earlier palette tables, token values, examples and color-specific acceptance checks are historical where they conflict with this section; do not reintroduce them. No theme toggle or operating-system theme switching is added.
+
+Use a cool charcoal workspace, near-black navigation, graphite surfaces and subdued neutral borders. Preserve Archivo/Inter Tight, responsive flow, spacing, accessible targets, monochrome controls, real garment colors and the existing flat composition while mannequin feasibility is investigated separately. No glow, glass panels, decorative gradients or altered garment colors.
+
+| Role | Value |
+| --- | --- |
+| Page/background | `#101214` |
+| Surface, inputs, panels | `#191C20` |
+| Subtle/selected supporting surface | `#22262B` |
+| Neutral garment canvas | `#343A42` |
+| Navigation/background band | `#0A0C0F` |
+| Main text/focus | `#E4E7EB` |
+| Muted text | `#A4AAB3` |
+| Decorative border | `#41464F` |
+| Control-identifying border | `#78818D` |
+| Hover surface | `#303640` |
+| Primary action fill / text | `#D8DDE5` / `#111419` |
+| Primary action hover | `#BDC5D0` |
+
+Use `color-scheme: dark` for native controls. Main text and primary-action fill are separate roles; never use the text token as a header background. Secondary actions stay dark with visible borders. Use the fixed neutral canvas during review; defer any adaptive garment tint until it is revalidated for dark surfaces, rather than applying the former 82% lightness algorithm. Dark garments may need a lighter neutral media surface after visual review. Check text, focus, borders and image separation against the actual surfaces; do not grayscale or brighten garment assets.

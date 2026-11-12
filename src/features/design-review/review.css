@@ -1,19 +1,23 @@
 /* Scoped review styles, not the approved production component system. */
 .design-review {
-  --review-paper: #e9e3d9;
-  --review-surface: #e4ded4;
-  --review-subtle: #ddd6ca;
-  --review-canvas: #d5ccbf;
-  --review-ink: #191919;
-  --review-muted: #5e5a54;
-  --review-line: #bcb3a6;
-  --review-control-line: #787167;
-  --review-on-dark: #e9e3d9;
-  --review-on-dark-muted: #c3bbae;
-  --review-hover: #d9d1c5;
+  --review-paper: #101214;
+  --review-surface: #191c20;
+  --review-subtle: #22262b;
+  --review-canvas: #343a42;
+  --review-ink: #e4e7eb;
+  --review-muted: #a4aab3;
+  --review-line: #41464f;
+  --review-control-line: #78818d;
+  --review-on-dark: #e4e7eb;
+  --review-on-dark-muted: #a4aab3;
+  --review-hover: #303640;
+  --review-header: #0a0c0f;
+  --review-action: #d8dde5;
+  --review-action-text: #111419;
+  --review-action-hover: #bdc5d0;
   --review-gutter: 16px;
   --review-radius: 12px;
-  color-scheme: light;
+  color-scheme: dark;
   min-height: 100dvh;
   background: var(--review-paper);
   color: var(--review-ink);
@@ -113,7 +117,7 @@
 }
 .review-header {
   color: var(--review-on-dark);
-  background: var(--review-ink);
+  background: var(--review-header);
 }
 .review-header-inner {
   display: flex;
@@ -211,9 +215,9 @@
   min-height: 48px;
   padding: 12px 24px;
   border-radius: 8px;
-  border: 1px solid var(--review-ink);
-  background: var(--review-ink);
-  color: var(--review-on-dark) !important;
+  border: 1px solid var(--review-action);
+  background: var(--review-action);
+  color: var(--review-action-text) !important;
   font-size: 14px;
   font-weight: 600;
   flex-shrink: 0;
@@ -978,7 +982,7 @@
     opacity: 1;
   }
   .review-button:hover {
-    background: #333;
+    background: var(--review-action-hover);
   }
   .review-button.secondary:hover {
     background: var(--review-hover);

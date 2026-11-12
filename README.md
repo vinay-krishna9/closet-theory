@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. This branch contains the **BUILD-01 foundation**, not the completed product. The temporary entry page explains that wardrobe, account and upload features are unavailable. Page designs and the shared app shell will be reviewed in BUILD-02.
+A personal stylist app for outfits from clothes you already own. This branch contains the **BUILD-01 foundation and BUILD-02 design-review mockups**, not the completed product. The temporary entry page explains that wardrobe, account and upload features are unavailable. Review the mockups before implementing the final shared app shell.
 
 ## Local setup
 
@@ -12,6 +12,8 @@ npm.cmd run dev
 ```
 
 Open http://127.0.0.1:3000. Stop the server with Ctrl+C. On shells without PowerShell's script restriction, `npm` and `npx` work without `.cmd`; no execution-policy change is needed.
+
+For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
 No environment variables, Clerk application, Supabase project, database, storage bucket or paid service is required for this foundation. Do not add real service credentials to source control. Future adapter work must document exact environment variable names with placeholders and separate development/test services before use. No provisioning, database migrations or deployment is configured here.
 
@@ -57,7 +59,7 @@ tests/e2e/                Playwright journeys
 docs/                     Requirements, decisions, architecture and delivery plan
 ```
 
-No empty feature, persistence or UI-component folders are created. Shared controls (shadcn/ui), Lucide, Archivo/Inter Tight fonts and full semantic tokens belong to BUILD-02 after design review. The scaffold uses an explicit temporary font fallback and project palette; this is not final product design. The page is marked noindex while incomplete.
+No empty feature, persistence or UI-component folders are created. `src/features/design-review/` contains only the mockup implementation, with scoped styles, local Archivo/Inter Tight fonts, Lucide icons and illustrative assets in `public/design-review/`. Shared production controls (shadcn/ui) and the final semantic token system follow design approval. The root scaffold retains its temporary font fallback and project palette. Pages are marked noindex while incomplete.
 
 ## Tooling and CI
 
