@@ -63,7 +63,7 @@ Supabase
   └─ Private media storage with owner-based access policies
 ```
 
-Clerk is the authentication authority; do not introduce a second Supabase Auth login. Supabase supports Clerk tokens for data/storage authorization. Configure and test the integration before feature development. Store the Clerk subject as a text owner identifier, not an assumed Supabase Auth UUID.
+Clerk is the authentication authority; do not introduce a second Supabase Auth login. Supabase supports Clerk tokens for data/storage authorization. Configure and test the integration before account/private-data feature development; foundation and visitor features do not require this integration. Store the Clerk subject as a text owner identifier, not an assumed Supabase Auth UUID.
 
 Proposed default: personal data operations go through server actions/routes using the verified user's Clerk token, preserving database row-level security. Validate authorization inside each operation, not only in navigation or route middleware. Direct browser-to-storage transfer is allowed only with narrowly scoped authorization; no unrestricted storage credentials reach the browser.
 

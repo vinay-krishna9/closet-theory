@@ -5,3 +5,17 @@
 /spikes/background-removal/test-results/
 /spikes/background-removal/playwright-report/
 /spikes/background-removal/artifacts/
+
+# Application dependencies, build output, local settings and test artifacts.
+/node_modules/
+/.next/
+/out/
+/coverage/
+/playwright-report/
+/test-results/
+*.tsbuildinfo
+/next-env.d.ts
+.env*
+!.env.example
+*.log
+.DS_Store
