@@ -1,0 +1,45 @@
+@import 'tailwindcss' source('../');
+
+/* Minimal foundation palette from design.md. Full tokens/fonts follow in BUILD-02. */
+:root {
+  --background: #e9e3d9;
+  --surface: #e4ded4;
+  --foreground: #191919;
+  --border: #bcb3a6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+:focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  transform: translateY(-200%);
+  padding: 0.75rem 1rem;
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

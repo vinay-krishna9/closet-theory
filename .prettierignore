@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+package-lock.json
+next-env.d.ts
+spikes/
+# Existing product specifications are not reformatted as part of scaffold work.
+design.md
+docs/MVP.md
+docs/user-flows.md
+docs/product-decisions.md
+docs/architecture.md
+docs/development-plan.md

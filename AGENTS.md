@@ -23,6 +23,7 @@ Build a real, published personal stylist app: users add wardrobe photos or sampl
 ## Approved tools
 
 - Next.js, TypeScript and Tailwind CSS.
+- ESLint with Next.js/TypeScript rules for linting, and Prettier for formatting. TSLint is deprecated and is not used (approved 12 November 2026). Run `npm run lint` and `npm run format:check`; use `npm run format` for intentional formatting changes.
 - shadcn/ui for shared controls, styled to `design.md`; Lucide outline icons.
 - npm as the package manager. Keep `package-lock.json` consistent and do not introduce another package manager's lockfile.
 - Confirmed stack: Clerk for Google/email-password authentication, Supabase Postgres and private image storage, and Vercel hosting on an eligible plan. Attempt background removal in the browser and validate it early on mobile. Provisioning, spending and live changes still require authorization. Do not introduce Supabase Auth as a second login system.
@@ -98,13 +99,13 @@ Use standard software tests. AI-assisted development does not replace them or ju
 
 ## Commands and setup
 
-No scaffold or verified package scripts existed when this file was prepared. Do not invent commands or describe unverified scripts as working.
+The BUILD-01 scaffold uses `src/app/` for App Router routes and `src/styles/globals.css` for base styling. Add feature directories only when needed. Co-locate component/unit tests; browser journeys live in `tests/e2e/`, with shared test setup in `tests/setup.ts`.
 
-After approved scaffolding:
+See `README.md` and `package.json` for installation, development, formatting, linting, type checking, tests and production commands. Use Node 22.18+ within the 22.x line and npm 10+. On restricted PowerShell installations, use `npm.cmd`/`npx.cmd` rather than changing execution policy.
 
-1. Inspect `package.json` and record the actual install, development, test, type-check, lint and build commands here or in the README.
-2. Document environment setup and isolated database/test configuration.
-3. Verify the documented commands and keep them current when scripts change.
+`npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.
+
+The foundation needs no service credentials and connects to no database. Use only isolated data when service adapters are introduced; never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
 
 ## Definition of done
 
