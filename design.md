@@ -586,3 +586,11 @@ Use `color-scheme: dark` for native controls. Main text and primary-action fill 
 Space Grotesk replaces Archivo for display headings and the wordmark. Manrope replaces Inter Tight for navigation, controls, garment details and body text. The font names elsewhere in this document reflect this new decision; the earlier font pairing is superseded, while source sizes and responsive rules remain unchanged.
 
 Self-host Latin variable WOFF2 assets with `next/font/local`, `display: swap`, and Arial/sans-serif fallbacks. Space Grotesk supports weights 300–700; use 600 for display headings and 700 for the wordmark, without synthesizing heavier weights. Manrope supports 200–800; retain 400 body/metadata, 500 labels/navigation and 600 buttons. Preserve readable body sizes and allow headings to wrap naturally on mobile. Do not load third-party font stylesheets or impose a single-line heading.
+
+## 19. Pictorial selection — approved 13 November 2026
+
+Use selectable pictorial tiles for garment options and outfit season/formality filters, with an icon or garment drawing above a centered visible name. Season drawings use a flower for Spring, sun for Summer, leaf for Autumn and snowflake for Winter. Neckline drawings must visibly distinguish crew neck, V-neck and collared garments; sleeve and pattern options use relevant line drawings. These are interface illustrations, not replacements for sample garment photography.
+
+Use native radio semantics for one choice (including Any in outfit filters) and checkboxes for multiple garment seasons. Preserve keyboard arrow/Space behavior, visible focus, a checkmark plus border/surface selection cues, readable names and at least 44px targets. Wrap tiles rather than hiding labels or squeezing controls on narrow screens. The separate design-review state selector can remain a dropdown; it is not product UI.
+
+Color choices label the garment's color; they do not recolor its photo. Show names with swatches, an explicit selected color and the helper “Choose the closest color to your garment.” In mockups, explain plainly that the selection does not recolor the sample image. No image recoloring or new catalog behavior is approved by this change.

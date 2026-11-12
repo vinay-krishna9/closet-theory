@@ -574,12 +574,135 @@
   color: var(--review-muted);
 }
 .review-filter-fields {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  width: 100%;
   align-items: end;
   flex-wrap: wrap;
   gap: 16px;
 }
-.review-filter-fields label {
+
+.review-picture-options {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 0;
+  min-width: 0;
+}
+.review-picture-options legend {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.review-picture-options legend > span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--review-muted);
+  margin-top: 4px;
+}
+.review-picture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 8px;
+}
+.review-picture-choice {
+  position: relative;
+  min-width: 0;
+  cursor: pointer;
+}
+.review-picture-choice > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  z-index: 1;
+}
+.review-picture-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  height: 100%;
+  min-height: 96px;
+  padding: 12px 8px;
+  border: 1px solid var(--review-control-line);
+  border-radius: 8px;
+  background: var(--review-paper);
+  color: var(--review-muted);
+}
+.review-picture-icon {
+  display: grid;
+  place-items: center;
+}
+.review-picture-icon > svg {
+  width: 32px;
+  height: 32px;
+}
+.review-picture-icon > svg[viewBox='0 0 64 64'] {
+  width: 48px;
+  height: 48px;
+}
+.review-picture-name {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.review-picture-check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 14px !important;
+  height: 14px !important;
+  visibility: hidden;
+}
+.review-picture-choice > input:checked + .review-picture-tile {
+  background: var(--review-subtle);
+  color: var(--review-ink);
+  border-color: var(--review-ink);
+}
+.review-picture-choice
+  > input:checked
+  + .review-picture-tile
+  > .review-picture-check {
+  visibility: visible;
+}
+.review-picture-choice > input:focus-visible {
+  outline: 0;
+}
+.review-picture-choice > input:focus-visible + .review-picture-tile {
+  outline: 2px solid var(--review-ink);
+  outline-offset: 3px;
+}
+.review-filter-fields .review-picture-options {
+  margin: 0;
+}
+.review-filter-fields .review-picture-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.review-filter-fields
+  .review-picture-options:nth-child(2)
+  .review-picture-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1023px) {
+  .review-filter-fields {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+@media (max-width: 767px) {
+  .review-filter-fields .review-picture-grid,
+  .review-filter-fields
+    .review-picture-options:nth-child(2)
+    .review-picture-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.review-filter-fields > label {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -818,6 +941,7 @@
   margin-top: 8px;
 }
 .review-detail {
+  scroll-padding-block: 24px 112px;
   position: fixed;
   inset: 0 0 0 auto;
   margin: 0;
@@ -832,6 +956,9 @@
   color: var(--review-ink);
   box-shadow: 0 12px 40px rgb(0 0 0 / 14%);
   overflow-y: auto;
+}
+.review-detail .review-picture-choice > input {
+  scroll-margin-block: 24px 112px;
 }
 .review-detail::backdrop {
   background: rgb(0 0 0 / 40%);
@@ -893,25 +1020,33 @@
 }
 .review-swatch-list button {
   position: relative;
-  width: 48px;
-  height: 48px;
-  padding: 4px;
+  width: 72px;
+  min-height: 88px;
+  padding: 8px;
   border: 1px solid transparent;
-  border-radius: 50%;
+  border-radius: 8px;
   display: grid;
   place-items: center;
+  align-content: start;
+  gap: 8px;
 }
 .review-swatch-list button.is-selected {
   border-color: var(--review-ink);
 }
-.review-swatch-list button span {
+.review-swatch-color {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   border: 1px solid var(--review-control-line);
 }
+.review-swatch-name {
+  font-size: 12px;
+  text-align: center;
+}
 .review-swatch-list svg {
   position: absolute;
+  top: 18px;
+  left: calc(50% - 8px);
   width: 16px;
   height: 16px;
   background: var(--review-paper);

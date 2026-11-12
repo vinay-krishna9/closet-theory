@@ -32,6 +32,15 @@ import {
   type ReviewScreen,
   type Sample,
 } from './sample-data';
+import {
+  PictorialOptions,
+  anyChoice,
+  seasonChoices,
+  formalityChoices,
+  necklineChoices,
+  sleeveChoices,
+  patternChoices,
+} from './pictorial-options';
 
 type PreviewState = 'populated' | 'empty' | 'loading' | 'error';
 type Detail = Sample | 'signin' | null;
@@ -320,30 +329,18 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
               <span>A starting point for your day</span>
             </div>
             <div className="review-filter-fields">
-              <label>
-                Season
-                <select
-                  value={season}
-                  onChange={(event) => setSeason(event.target.value)}
-                >
-                  {['Any', 'Spring', 'Summer', 'Autumn', 'Winter'].map(
-                    (value) => (
-                      <option key={value}>{value}</option>
-                    ),
-                  )}
-                </select>
-              </label>
-              <label>
-                Formality
-                <select
-                  value={formality}
-                  onChange={(event) => setFormality(event.target.value)}
-                >
-                  {['Any', 'Casual', 'Smart-casual', 'Formal'].map((value) => (
-                    <option key={value}>{value}</option>
-                  ))}
-                </select>
-              </label>
+              <PictorialOptions
+                legend="Season"
+                choices={[anyChoice, ...seasonChoices]}
+                value={season}
+                onChange={setSeason}
+              />
+              <PictorialOptions
+                legend="Formality"
+                choices={[anyChoice, ...formalityChoices]}
+                value={formality}
+                onChange={setFormality}
+              />
               <Button
                 onClick={() => {
                   setNotice(
@@ -749,7 +746,7 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
                   Illustrative sample · Representative image
                 </p>
                 <p className="review-field-label">
-                  Color <span>{selectedColor}</span>
+                  Garment color <span>Selected: {selectedColor}</span>
                 </p>
                 <div
                   className="review-swatch-list"
@@ -765,7 +762,11 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
                         aria-pressed={selectedColor === color}
                         onClick={() => setSelectedColor(color)}
                       >
-                        <span style={{ background: samples[index].hex }} />
+                        <span
+                          className="review-swatch-color"
+                          style={{ background: samples[index].hex }}
+                        />
+                        <span className="review-swatch-name">{color}</span>
                         {selectedColor === color && (
                           <Check aria-hidden="true" />
                         )}
@@ -774,31 +775,22 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
                   )}
                 </div>
                 <p className="review-help">
-                  Representative image stays the same. Color choices are
-                  illustrative only.
+                  Choose the closest color to your garment. This labels its
+                  color; it doesn’t recolor the sample photo.
                 </p>
-                <label className="review-field-label">
-                  Formality
-                  <select defaultValue={detail.formality}>
-                    <option>Casual</option>
-                    <option>Smart-casual</option>
-                    <option>Formal</option>
-                  </select>
-                </label>
-                <fieldset className="review-season-options">
-                  <legend>Seasons</legend>
-                  {['Spring', 'Summer', 'Autumn', 'Winter'].map((value) => (
-                    <label key={value}>
-                      <input
-                        type="checkbox"
-                        defaultChecked={
-                          value === 'Spring' || value === 'Summer'
-                        }
-                      />
-                      {value}
-                    </label>
-                  ))}
-                </fieldset>
+                <PictorialOptions
+                  key={`${detail.id}-formality`}
+                  legend="Formality"
+                  choices={formalityChoices}
+                  defaultValue={detail.formality}
+                />
+                <PictorialOptions
+                  key={`${detail.id}-seasons`}
+                  legend="Seasons"
+                  choices={seasonChoices}
+                  multiple
+                  defaultValue={['Spring', 'Summer']}
+                />
                 <details className="review-customization">
                   <summary>
                     Customize the details <ChevronDown aria-hidden="true" />
@@ -811,33 +803,32 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
                   detail.type === 'Shirt' ||
                   detail.type === 'Sweater' ? (
                     <>
-                      <label className="review-field-label">
-                        Neckline / collar
-                        <select>
-                          <option>Crew neck</option>
-                          <option>V-neck</option>
-                          <option>Collared</option>
-                        </select>
-                      </label>
-                      <label className="review-field-label">
-                        Sleeves
-                        <select>
-                          <option>Short sleeves</option>
-                          <option>Long sleeves</option>
-                          <option>Sleeveless</option>
-                        </select>
-                      </label>
+                      <PictorialOptions
+                        key={`${detail.id}-neckline`}
+                        legend="Neckline / collar"
+                        choices={necklineChoices}
+                        defaultValue={
+                          detail.type === 'Shirt' ? 'Collared' : 'Crew neck'
+                        }
+                      />
+                      <PictorialOptions
+                        key={`${detail.id}-sleeves`}
+                        legend="Sleeves"
+                        choices={sleeveChoices}
+                        defaultValue={
+                          detail.type === 'T-shirt'
+                            ? 'Short sleeves'
+                            : 'Long sleeves'
+                        }
+                      />
                     </>
                   ) : null}
-                  <label className="review-field-label">
-                    Pattern
-                    <select>
-                      <option>Solid</option>
-                      <option>Striped</option>
-                      <option>Checked</option>
-                      <option>Printed</option>
-                    </select>
-                  </label>
+                  <PictorialOptions
+                    key={`${detail.id}-pattern`}
+                    legend="Pattern"
+                    choices={patternChoices}
+                    defaultValue="Solid"
+                  />
                 </details>
                 <p className="review-inline-note">
                   Design preview only. Details are not saved, and do not change

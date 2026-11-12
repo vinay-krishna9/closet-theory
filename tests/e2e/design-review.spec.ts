@@ -98,6 +98,50 @@ test('quick-add preview toggles are temporary and dialog restores keyboard focus
   await expect(
     dialog.getByRole('button', { name: 'Ivory', exact: true }),
   ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    dialog.getByText('Selected: Ivory', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    dialog.getByText(/Choose the closest color to your garment/),
+  ).toBeVisible();
+  await dialog.getByRole('checkbox', { name: 'Winter', exact: true }).check();
+  await expect(
+    dialog.getByRole('checkbox', { name: 'Summer', exact: true }),
+  ).toBeChecked();
+  await expect(
+    dialog.getByRole('checkbox', { name: 'Winter', exact: true }),
+  ).toBeChecked();
+  await dialog.getByText('Customize the details', { exact: true }).click();
+  const neckline = dialog.getByRole('group', {
+    name: 'Neckline / collar',
+    exact: true,
+  });
+  const vNeck = neckline.getByRole('radio', { name: 'V-neck', exact: true });
+  await vNeck.focus();
+  await page.keyboard.press('Space');
+  await expect(vNeck).toBeChecked();
+  await expect(
+    neckline.getByRole('radio', { name: 'Crew neck', exact: true }),
+  ).not.toBeChecked();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    neckline.getByRole('radio', { name: 'Collared', exact: true }),
+  ).toBeChecked();
+  const focusedOption = await neckline
+    .getByRole('radio', { name: 'Collared', exact: true })
+    .boundingBox();
+  const drawerFooter = await dialog
+    .locator('.review-detail-footer')
+    .boundingBox();
+  expect(focusedOption).not.toBeNull();
+  expect(drawerFooter).not.toBeNull();
+  expect(focusedOption!.y + focusedOption!.height).toBeLessThanOrEqual(
+    drawerFooter!.y,
+  );
+  await neckline.screenshot({
+    path: testInfo.outputPath('neckline-options.png'),
+    scale: 'css',
+  });
   await page.screenshot({
     path: testInfo.outputPath('customize.png'),
     fullPage: false,
@@ -126,12 +170,14 @@ test('outfit examples disclose their source, respect jacket boundary and recover
   await expect(page.getByRole('article')).toHaveCount(3);
   await expect(page.getByRole('img', { name: 'Olive jacket' })).toHaveCount(0);
   await page
-    .getByRole('combobox', { name: 'Season', exact: true })
-    .selectOption('Autumn');
+    .getByRole('group', { name: 'Season', exact: true })
+    .getByRole('radio', { name: 'Autumn', exact: true })
+    .check();
   await expect(page.getByRole('img', { name: 'Olive jacket' })).toBeVisible();
   await page
-    .getByRole('combobox', { name: 'Formality', exact: true })
-    .selectOption('Formal');
+    .getByRole('group', { name: 'Formality', exact: true })
+    .getByRole('radio', { name: 'Formal', exact: true })
+    .check();
   await expect(
     page.getByRole('heading', { name: 'No examples for these filters.' }),
   ).toBeVisible();
@@ -139,8 +185,10 @@ test('outfit examples disclose their source, respect jacket boundary and recover
     .getByRole('button', { name: 'Clear filters', exact: true })
     .click();
   await expect(
-    page.getByRole('combobox', { name: 'Season', exact: true }),
-  ).toHaveValue('Any');
+    page
+      .getByRole('group', { name: 'Season', exact: true })
+      .getByRole('radio', { name: 'Any', exact: true }),
+  ).toBeChecked();
   await expect(
     page.getByRole('button', { name: 'Favorite', exact: true }),
   ).toHaveCount(0);
