@@ -1,0 +1,130 @@
+// Deliberately isolated review fixtures. Never seed a real visitor wardrobe from these.
+export const samples = [
+  {
+    id: 'ivory-tee',
+    name: 'The everyday tee',
+    type: 'T-shirt',
+    group: 'Tops',
+    color: 'Ivory',
+    hex: '#e6e0d3',
+    tile: 0,
+    formality: 'Casual',
+  },
+  {
+    id: 'navy-tee',
+    name: 'A darker neutral',
+    type: 'T-shirt',
+    group: 'Tops',
+    color: 'Navy',
+    hex: '#293644',
+    tile: 1,
+    formality: 'Casual',
+  },
+  {
+    id: 'oxford',
+    name: 'The Oxford shirt',
+    type: 'Shirt',
+    group: 'Tops',
+    color: 'Light blue',
+    hex: '#a8b9c1',
+    tile: 2,
+    formality: 'Smart-casual',
+  },
+  {
+    id: 'knit',
+    name: 'A softer layer',
+    type: 'Sweater',
+    group: 'Tops',
+    color: 'Oatmeal',
+    hex: '#bcb09a',
+    tile: 3,
+    formality: 'Smart-casual',
+  },
+  {
+    id: 'jeans',
+    name: 'Straight-leg denim',
+    type: 'Jeans',
+    group: 'Bottoms',
+    color: 'Indigo',
+    hex: '#344659',
+    tile: 4,
+    formality: 'Casual',
+  },
+  {
+    id: 'chinos',
+    name: 'The easy chinos',
+    type: 'Chinos',
+    group: 'Bottoms',
+    color: 'Khaki',
+    hex: '#ac9877',
+    tile: 5,
+    formality: 'Smart-casual',
+  },
+  {
+    id: 'sneakers',
+    name: 'Clean everyday sneakers',
+    type: 'Sneakers',
+    group: 'Shoes',
+    color: 'Off-white',
+    hex: '#dcd7c9',
+    tile: 6,
+    formality: 'Casual',
+  },
+  {
+    id: 'jacket',
+    name: 'The light jacket',
+    type: 'Simple jacket',
+    group: 'Outerwear',
+    color: 'Olive',
+    hex: '#777c66',
+    tile: 7,
+    formality: 'Casual',
+  },
+] as const;
+
+export type Sample = (typeof samples)[number];
+export type ReviewScreen = 'wardrobe' | 'quick-add' | 'outfits';
+export const groups = [
+  'All clothing',
+  'Tops',
+  'Bottoms',
+  'Shoes',
+  'Outerwear',
+] as const;
+
+export const exampleOutfits = [
+  {
+    title: 'Keep it easy',
+    subtitle: 'Familiar shapes. A fresh combination.',
+    items: [0, 4, 6],
+    reason: 'An ivory tee and indigo denim make a simple casual pairing.',
+    season: 'Spring / Summer',
+    formality: 'Casual',
+  },
+  {
+    title: 'A little more considered',
+    subtitle: 'Soft blues meet warm neutrals.',
+    items: [2, 5, 6],
+    reason:
+      'Light blue and khaki balance warm and cool tones; casual shoes soften the smarter pieces.',
+    season: 'Spring / Summer',
+    formality: 'Smart-casual',
+  },
+  {
+    title: 'Layers, lightly',
+    subtitle: 'Ready for a cooler day.',
+    items: [1, 5, 6, 7],
+    reason:
+      'Navy, khaki and olive keep an autumn layer grounded in muted color.',
+    season: 'Autumn',
+    formality: 'Casual',
+  },
+  {
+    title: 'A softer everyday',
+    subtitle: 'Texture does the talking.',
+    items: [3, 4, 6],
+    reason: 'An oatmeal knit adds texture to indigo denim and clean sneakers.',
+    season: 'Autumn / Winter',
+    formality: 'Smart-casual',
+  },
+] as const;
