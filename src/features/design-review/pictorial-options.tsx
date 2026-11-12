@@ -12,10 +12,10 @@ export const seasonChoices: Choice[] = [
 export const anyChoice: Choice = { value: 'Any', picture: <Layers /> };
 
 export function ClothingPicture({ variant }: { variant: string }) {
-  const long = variant === 'Long sleeves';
   const sleeveless = variant === 'Sleeveless';
   const collared = variant === 'Collared' || variant === 'Smart-casual';
   const formal = variant === 'Formal';
+  const long = variant === 'Long sleeves' || collared || formal;
   const pattern = ['Solid', 'Striped', 'Checked', 'Printed'].includes(variant);
   return (
     <svg
@@ -60,10 +60,10 @@ export function ClothingPicture({ variant }: { variant: string }) {
           <path
             d={
               sleeveless
-                ? 'M24 10h16l5 9-4 8v28H23V27l-4-8Z'
+                ? 'M24 10h16l6 4-3 11 3 30H18l3-30-3-11Z'
                 : long
-                  ? 'M23 10h18l10 7 8 32-9 3-9-24v27H23V28l-9 24-9-3 8-32Z'
-                  : 'M23 10h18l13 9-7 12-6-4v28H23V27l-6 4-7-12Z'
+                  ? 'M24 10h16l8 4 10 33-8 3-4-18v23H18V32l-4 18-8-3 10-33Z'
+                  : 'M24 10h16l8 3 8 8-5 8-5-3v29H18V26l-5 3-5-8 8-8Z'
             }
           />
           {variant === 'V-neck' ? (

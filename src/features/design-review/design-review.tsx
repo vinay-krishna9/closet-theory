@@ -100,6 +100,7 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
   const [search, setSearch] = useState('');
   const [season, setSeason] = useState('Any');
   const [formality, setFormality] = useState('Any');
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState('Ivory');
   const [selection, setSelection] = useState<Set<string>>(() => new Set());
   const [notice, setNotice] = useState('');
@@ -324,11 +325,29 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
 
         {isOutfits && (
           <div className="review-outfit-filters">
-            <div className="review-filter-intro">
-              <SlidersHorizontal aria-hidden="true" />
-              <span>A starting point for your day</span>
+            <div className="review-filter-bar">
+              <button
+                type="button"
+                className="review-filter-toggle"
+                aria-expanded={filtersOpen}
+                aria-controls="review-outfit-filter-panel"
+                onClick={() => setFiltersOpen((open) => !open)}
+              >
+                <SlidersHorizontal aria-hidden="true" />
+                Filters
+                <ChevronDown aria-hidden="true" />
+              </button>
+              <p className="review-filter-summary">
+                {season === 'Any' ? 'All seasons' : season}{' '}
+                <span aria-hidden="true">·</span>{' '}
+                {formality === 'Any' ? 'Any formality' : formality}
+              </p>
             </div>
-            <div className="review-filter-fields">
+            <div
+              id="review-outfit-filter-panel"
+              className="review-filter-fields"
+              hidden={!filtersOpen}
+            >
               <PictorialOptions
                 legend="Season"
                 choices={[anyChoice, ...seasonChoices]}

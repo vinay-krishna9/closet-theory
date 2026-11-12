@@ -166,6 +166,22 @@ test('outfit examples disclose their source, respect jacket boundary and recover
     path: testInfo.outputPath('outfits.png'),
     fullPage: true,
   });
+  const filters = page.getByRole('button', { name: 'Filters', exact: true });
+  const season = page.getByRole('group', { name: 'Season', exact: true });
+  const formality = page.getByRole('group', { name: 'Formality', exact: true });
+  await expect(filters).toHaveAttribute('aria-expanded', 'false');
+  await expect(season).not.toBeVisible();
+  await filters.focus();
+  await page.keyboard.press('Enter');
+  await expect(filters).toHaveAttribute('aria-expanded', 'true');
+  await expect(season).toBeVisible();
+  const seasonBox = await season.boundingBox();
+  const formalityBox = await formality.boundingBox();
+  expect(seasonBox!.y + seasonBox!.height).toBeLessThan(formalityBox!.y);
+  await page.screenshot({
+    path: testInfo.outputPath('outfit-filters-expanded.png'),
+    fullPage: true,
+  });
   await page.getByRole('button', { name: 'Show more examples' }).click();
   await expect(page.getByRole('article')).toHaveCount(3);
   await expect(page.getByRole('img', { name: 'Olive jacket' })).toHaveCount(0);
@@ -174,6 +190,15 @@ test('outfit examples disclose their source, respect jacket boundary and recover
     .getByRole('radio', { name: 'Autumn', exact: true })
     .check();
   await expect(page.getByRole('img', { name: 'Olive jacket' })).toBeVisible();
+  await filters.click();
+  await expect(season).not.toBeVisible();
+  await expect(page.locator('.review-filter-summary')).toContainText('Autumn');
+  await filters.focus();
+  await page.keyboard.press('Space');
+  await expect(
+    season.getByRole('radio', { name: 'Autumn', exact: true }),
+  ).toBeChecked();
+
   await page
     .getByRole('group', { name: 'Formality', exact: true })
     .getByRole('radio', { name: 'Formal', exact: true })
@@ -203,6 +228,8 @@ test('review screens reflow at the design breakpoints with reduced motion', asyn
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const screen of ['wardrobe', 'quick-add', 'outfits']) {
     await page.goto(`/design-review/${screen}`);
+    if (screen === 'outfits')
+      await page.getByRole('button', { name: 'Filters', exact: true }).click();
     for (const width of [320, 390, 767, 768, 1023, 1024, 1280, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       expect(
