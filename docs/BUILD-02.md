@@ -35,7 +35,7 @@ Approve or request changes to typography, spacing, navigation, clothing cards, t
 
 ## Verification
 
-Dark revision (12 November 2026): section 17 of `design.md` supersedes the warm palette. The root foundation page and all mockups now use cool charcoal/graphite without a theme switch. Calculated contrast: main text/page 15.13:1; muted text/panel 7.31:1; sample label/canvas 4.91:1; primary action text/fill 13.53:1; control border/panel 4.33:1. These calculations do not replace full accessibility auditing or visual review of dark garments. Mannequin feasibility remains a separate issue draft in `docs/issues/SPIKE-03-mannequin.md`; no mannequin rendering has been added.
+Dark revision (12 November 2026): section 17 of `design.md` supersedes the warm palette. The root foundation page and all mockups now use cool charcoal/graphite without a theme switch. Calculated contrast: main text/page 15.13:1; muted text/panel 7.31:1; sample label/canvas 4.91:1; primary action text/fill 13.53:1; control border/panel 4.33:1. These calculations do not replace full accessibility auditing or visual review of dark garments. Mannequin feasibility is tracked in [SPIKE-03, GitHub issue #22](https://github.com/vinay-krishna9/closet-theory/issues/22); the local issue draft was removed after creation. No mannequin rendering has been added.
 
 - `npm run check` passed (Prettier, ESLint with zero warnings, generated route types/strict TypeScript, and the existing component test).
 - `npm run build` passed with the three statically rendered design-review routes. Fonts are bundled locally, not fetched from Google at build time or in the browser.
