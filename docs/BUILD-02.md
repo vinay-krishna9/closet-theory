@@ -6,7 +6,7 @@ Status: mockups ready for user design review; production shell implementation aw
 
 The isolated `/design-review/wardrobe`, `/design-review/quick-add` and `/design-review/outfits` routes are browser mockups. The root entry page keeps its foundation content and adopts the same approved dark palette. A review-only toolbar exposes populated, empty, loading and error states; it is not a proposed product feature.
 
-The mockups follow `design.md`: cool graphite surfaces, near-black header (design.md section 17), Archivo headings, Inter Tight UI, image-first 3:4 clothing cards, 4:3 composition canvases, visitor-only navigation, and 768px/1024px navigation/gutter boundaries. Mobile visitor links are Wardrobe, Outfits and Sign in; they do not expose Statistics/Profile. Dialog mockups use the native browser modal mechanism for keyboard containment and Escape, with focus restoration and body scroll locking. They illustrate the desktop side drawer/mobile full-screen pattern, not the final shadcn/ui editor.
+The mockups follow `design.md`: cool graphite surfaces, near-black header (design.md section 17), Space Grotesk headings, Manrope UI, image-first 3:4 clothing cards, 4:3 composition canvases, visitor-only navigation, and 768px/1024px navigation/gutter boundaries. Mobile visitor links are Wardrobe, Outfits and Sign in; they do not expose Statistics/Profile. Dialog mockups use the native browser modal mechanism for keyboard containment and Escape, with focus restoration and body scroll locking. They illustrate the desktop side drawer/mobile full-screen pattern, not the final shadcn/ui editor.
 
 Local font packages use SIL Open Font License; copies are in `public/design-review/`. Lucide provides outline icons. They were approved in the BUILD-02 plan. shadcn/ui controls and the final reusable token/component system will follow design approval; no primitive family is installed yet.
 
@@ -21,7 +21,7 @@ Local font packages use SIL Open Font License; copies are in `public/design-revi
 
 ## Asset record
 
-File: `public/design-review/garment-atlas.png`. Generated with the built-in ImageGen tool on 12 November 2026, transparent alpha preserved and copied into this checkout. It is one 4×2 sprite atlas, not an exact visualization of user-selected customizations. No garment colors are changed by CSS. Font licenses: `public/design-review/archivo-LICENSE.txt` and `inter-tight-LICENSE.txt`.
+File: `public/design-review/garment-atlas.png`. Generated with the built-in ImageGen tool on 12 November 2026, transparent alpha preserved and copied into this checkout. It is one 4×2 sprite atlas, not an exact visualization of user-selected customizations. No garment colors are changed by CSS. Font licenses: `public/design-review/space-grotesk-LICENSE.txt` and `manrope-LICENSE.txt`.
 
 Generation prompt:
 
@@ -34,6 +34,8 @@ Run `npm.cmd run dev` and open http://127.0.0.1:3000/design-review/wardrobe. Use
 Approve or request changes to typography, spacing, navigation, clothing cards, the outfit composition and detail panel. After design approval, implement the production shell and shared shadcn/ui controls in this branch with its own verification. This stage is not the completion of all BUILD-02 acceptance criteria.
 
 ## Verification
+
+Typography revision (12 November 2026): user approved Space Grotesk for headings/wordmark and Manrope for UI/body text, replacing Archivo/Inter Tight. Both are locally bundled variable fonts using their supported weight ranges. Superseded font packages and license copies were removed; current SIL OFL copies are included with the review assets. Section 18 of `design.md` records this decision. After replacement, formatting, lint, types, the component test, a fresh production build and all 12 browser checks passed; desktop outfit and mobile detail-panel screenshots were reviewed for wrapping and readability.
 
 Dark revision (12 November 2026): section 17 of `design.md` supersedes the warm palette. The root foundation page and all mockups now use cool charcoal/graphite without a theme switch. Calculated contrast: main text/page 15.13:1; muted text/panel 7.31:1; sample label/canvas 4.91:1; primary action text/fill 13.53:1; control border/panel 4.33:1. These calculations do not replace full accessibility auditing or visual review of dark garments. Mannequin feasibility is tracked in [SPIKE-03, GitHub issue #22](https://github.com/vinay-krishna9/closet-theory/issues/22); the local issue draft was removed after creation. No mannequin rendering has been added.
 

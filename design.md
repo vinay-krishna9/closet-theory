@@ -2,7 +2,7 @@
 
 Status: implementation specification · Cool charcoal revision approved 12 November 2026 · Comfortable density
 
-Original specification finalized: 6 November 2026. The explicit darker, sleeker direction approved on 12 November 2026 supersedes the warm palette and light-workspace wording below; section 17 is authoritative for color roles. Other layout, interaction and product rules remain in effect.
+Original specification finalized: 6 November 2026. The explicit darker, sleeker direction approved on 12 November 2026 supersedes the warm palette and light-workspace wording below; section 17 is authoritative for color roles and section 18 for the newly approved font pairing. Other layout, interaction and product rules remain in effect.
 
 ## 1. Authority and provenance
 
@@ -21,7 +21,7 @@ Priority: explicit future user decisions → approved decisions in this file →
 | 01  | Direction          | Editorial Minimalism                                                 |
 | 02  | Palette            | Cool charcoal and graphite; see revision 17                          |
 | 03  | Accent             | Monochrome only                                                      |
-| 04  | Typography         | Archivo + Inter Tight                                                |
+| 04  | Typography         | Space Grotesk + Manrope                                                |
 | 05  | Motion             | Balanced                                                             |
 | 06  | Theme              | Dark workspace; no theme toggle or OS-driven switching               |
 | 07  | Desktop navigation | Top navigation                                                       |
@@ -89,8 +89,8 @@ The base warm palette was accepted in follow-up. Supporting semantic colors and 
   --color-warning-text: #191919;
   --color-warning-bg: #ddd6ca;
 
-  --font-display: "Archivo", Arial, sans-serif;
-  --font-ui: "Inter Tight", Arial, sans-serif;
+  --font-display: "Space Grotesk", Arial, sans-serif;
+  --font-ui: "Manrope", Arial, sans-serif;
   --text-hero: 2.75rem; /* 44px mobile */
   --text-page: 2rem; /* 32px mobile */
   --text-section: 1.625rem; /* 26px mobile */
@@ -213,15 +213,15 @@ Use the quiet border for decoration and cards. Use `--color-border-control` wher
 
 | Role            | Font        | Desktop | Mobile |
 | --------------- | ----------- | ------- | ------ |
-| Hero display    | Archivo     | 88px    | 44px   |
-| Page heading    | Archivo     | 48px    | 32px   |
-| Section heading | Archivo     | 32px    | 26px   |
-| Card heading    | Inter Tight | 18px    | 16px   |
-| Body            | Inter Tight | 16px    | 16px   |
-| Metadata        | Inter Tight | 14px    | 14px   |
-| Small label     | Inter Tight | 12px    | 12px   |
+| Hero display    | Space Grotesk     | 88px    | 44px   |
+| Page heading    | Space Grotesk     | 48px    | 32px   |
+| Section heading | Space Grotesk     | 32px    | 26px   |
+| Card heading    | Manrope | 18px    | 16px   |
+| Body            | Manrope | 16px    | 16px   |
+| Metadata        | Manrope | 14px    | 14px   |
+| Small label     | Manrope | 12px    | 12px   |
 
-Completion defaults: Archivo hero weight 600, page/section weight 600; Inter Tight card and buttons weight 600, navigation and labels 500, body and metadata 400. Use the line heights and tracking above. Use normal width for Archivo; do not import the reference's condensed artboard typography. Tablet uses mobile type sizes until the desktop breakpoint. Allow wrapping; do not force a hero onto a single line or shrink body text to fit.
+Completion defaults: Space Grotesk hero weight 600, page/section weight 600; Manrope card and buttons weight 600, navigation and labels 500, body and metadata 400. Use the line heights and tracking above. Use normal width for Space Grotesk; do not import the reference's condensed artboard typography. Tablet uses mobile type sizes until the desktop breakpoint. Allow wrapping; do not force a hero onto a single line or shrink body text to fit.
 
 Use sentence case for controls and copy. Uppercase 12px labels may identify short editorial sections; never use them for paragraphs or essential instructions. Use tabular numerals for statistics. Keep prose around 60–70 characters per line. One semantic `h1` per page; choose heading levels by document structure rather than visual size.
 
@@ -352,7 +352,7 @@ Completion default processing timeout: 30 seconds before showing recovery; the u
 
 Warm paper public header and editorial hero → charcoal three-step feature section → warm stone product demonstration and supporting features → charcoal final CTA and footer with privacy/accessibility/contact links. Suggested hero: **“Your wardrobe. Reimagined.”** Supporting copy: **“Less searching. Better outfits. More of what you already own.”** Use a clear primary action such as “Build your wardrobe” and a visitor action “Try with quick-add clothes”. There is no separate demo mode or prefilled wardrobe. These phrases reflect the source's illustrative direction; they are not required product claims.
 
-Use 88px desktop / 44px mobile Archivo hero type and generous whitespace. Pair copy with original garment photography or a representative neutral composition. A two-column desktop hero stacks in a logical reading order on mobile. Include actual product UI so the service is understandable. Use restrained 500–700ms reveals only below the fold; hero content must be visible and usable without animation or JavaScript. Do not copy Orvante media, agency copy, counters, glass plates or absolute page coordinates. No fake testimonials, users or performance claims.
+Use 88px desktop / 44px mobile Space Grotesk hero type and generous whitespace. Pair copy with original garment photography or a representative neutral composition. A two-column desktop hero stacks in a logical reading order on mobile. Include actual product UI so the service is understandable. Use restrained 500–700ms reveals only below the fold; hero content must be visible and usable without animation or JavaScript. Do not copy Orvante media, agency copy, counters, glass plates or absolute page coordinates. No fake testimonials, users or performance claims.
 
 ### Section color composition
 
@@ -454,7 +454,7 @@ These are implementation conventions, not a requirement to scaffold or build the
 
 1. Put source tokens in one global stylesheet. Map Tailwind semantic colors, typography, spacing, radii and shadows to CSS variables; avoid scattering hex literals or arbitrary pixel classes through JSX. For Tailwind versions using config-based themes, extend the theme with `var(--color-...)`; for CSS-first themes, expose the same roles through the supported theme mechanism. Keep aliases separate from the source variables to avoid circular references.
 2. Align responsive variants explicitly: `sm: 360px` for the narrow wardrobe grid if used, `md: 768px`, `lg: 1024px`, `xl: 1280px`. The app's navigation switch is `md`, not Tailwind's default `sm`. Media-query thresholds cannot use ordinary runtime CSS custom properties; keep breakpoint definitions synchronized with this document.
-3. Load Archivo and Inter Tight using Next.js font facilities with local licensed files or the supported font loader, `display: swap`, latin subset where appropriate, and stable fallback metrics. Connect generated font variables to `--font-display`/`--font-ui` without defining a variable in terms of itself. Keep body text visible while fonts load.
+3. Load Space Grotesk and Manrope using Next.js font facilities with local licensed files or the supported font loader, `display: swap`, latin subset where appropriate, and stable fallback metrics. Connect generated font variables to `--font-display`/`--font-ui` without defining a variable in terms of itself. Keep body text visible while fonts load.
 4. Use **shadcn/ui** as the shared component foundation, installed selectively into `components/ui` and customized to these semantic tokens. Reuse its buttons, fields, selection controls, menus, dialogs, sheets, tooltips, alerts and skeletons as appropriate. Pick one supported underlying primitive family consistently; follow the installed version's APIs rather than mixing examples across families or versions. Preserve accessible behavior while changing styles. The defaults do not override this file's fonts, colors, radii, control heights, breakpoint rules or motion. Do not import a generic dashboard/sidebar template. Build custom `SelectionChip`, `AppHeader`, `MobileTabs`, `WardrobeCard`, `OutfitCanvas`, `OutfitCard`, `OutfitFeedback`, `ItemEditor`, `UploadField`, `StatusMessage`, `EmptyState` and `StatCard` around these foundations. Use **Lucide outline** icons through one shared icon wrapper. Reuse one item form across drawer/full-screen presentations. Adapt the sheet/dialog shell to a right-side drawer at 768px+ and full-screen below 768px; a default mobile bottom sheet is not the approved editor. Test focus, scrolling and dismissal after customization.
 5. Use App Router server rendering for noninteractive layout and initial data where appropriate. Isolate client components for forms, dialogs, upload processing and interactive feedback. Lazy-load background-removal code; it must not inflate the public landing page bundle or block first render.
 6. Use Next.js image rendering with explicit dimensions or a correctly constrained fill container and an accurate `sizes` value. Configure only required image hosts. Private image delivery must preserve authorization: use an authorized delivery route or an appropriate private-image strategy, and verify caching behavior. Never assume a public optimizer/cache can safely handle owner-only media. Alpha cutouts must preserve transparency.
@@ -491,7 +491,7 @@ styles/tokens.css    semantic tokens and shared type roles
 
 ### Visual and responsive
 
-- [ ] All 15 approved decisions are implemented. Warm stone surfaces, charcoal sections, monochrome UI, Archivo headings and Inter Tight UI are consistent across routes. No pure-white interface surfaces or controls.
+- [ ] All 15 approved decisions are implemented. Warm stone surfaces, charcoal sections, monochrome UI, Space Grotesk headings and Manrope UI are consistent across routes. No pure-white interface surfaces or controls.
 - [ ] Source typography sizes, 4–96px spacing scale, 1280px content maximum, 48/32/16px gutters, 8/12px radii and exact breakpoint boundaries are respected.
 - [ ] Check 320, 390, 767, 768, 1023, 1024, 1280 and 1440px widths. No unintended page overflow, clipped labels or unreachable controls. Check 200% text zoom and reflow at 400% browser zoom.
 - [ ] Desktop/tablet use top app navigation; below 768px uses four labelled bottom links with correct active state and safe-area/content clearance.
@@ -562,7 +562,7 @@ Undo appears for 10 seconds after confirmed outfit logging, pausing dismissal wh
 
 User direction: “Use more darker tones. This feels warm. I want more darker sleek design.” This replaces the earlier warm-stone palette, light workspace and alternating warm-light landing guidance. Earlier palette tables, token values, examples and color-specific acceptance checks are historical where they conflict with this section; do not reintroduce them. No theme toggle or operating-system theme switching is added.
 
-Use a cool charcoal workspace, near-black navigation, graphite surfaces and subdued neutral borders. Preserve Archivo/Inter Tight, responsive flow, spacing, accessible targets, monochrome controls, real garment colors and the existing flat composition while mannequin feasibility is investigated separately. No glow, glass panels, decorative gradients or altered garment colors.
+Use a cool charcoal workspace, near-black navigation, graphite surfaces and subdued neutral borders. Preserve Space Grotesk/Manrope, responsive flow, spacing, accessible targets, monochrome controls, real garment colors and the existing flat composition while mannequin feasibility is investigated separately. No glow, glass panels, decorative gradients or altered garment colors.
 
 | Role | Value |
 | --- | --- |
@@ -580,3 +580,9 @@ Use a cool charcoal workspace, near-black navigation, graphite surfaces and subd
 | Primary action hover | `#BDC5D0` |
 
 Use `color-scheme: dark` for native controls. Main text and primary-action fill are separate roles; never use the text token as a header background. Secondary actions stay dark with visible borders. Use the fixed neutral canvas during review; defer any adaptive garment tint until it is revalidated for dark surfaces, rather than applying the former 82% lightness algorithm. Dark garments may need a lighter neutral media surface after visual review. Check text, focus, borders and image separation against the actual surfaces; do not grayscale or brighten garment assets.
+
+## 18. Typography revision — approved 12 November 2026
+
+Space Grotesk replaces Archivo for display headings and the wordmark. Manrope replaces Inter Tight for navigation, controls, garment details and body text. The font names elsewhere in this document reflect this new decision; the earlier font pairing is superseded, while source sizes and responsive rules remain unchanged.
+
+Self-host Latin variable WOFF2 assets with `next/font/local`, `display: swap`, and Arial/sans-serif fallbacks. Space Grotesk supports weights 300–700; use 600 for display headings and 700 for the wordmark, without synthesizing heavier weights. Manrope supports 200–800; retain 400 body/metadata, 500 labels/navigation and 600 buttons. Preserve readable body sizes and allow headings to wrap naturally on mobile. Do not load third-party font stylesheets or impose a single-line heading.

@@ -59,7 +59,7 @@ tests/e2e/                Playwright journeys
 docs/                     Requirements, decisions, architecture and delivery plan
 ```
 
-No empty feature, persistence or UI-component folders are created. `src/features/design-review/` contains only the mockup implementation, with scoped styles, local Archivo/Inter Tight fonts, Lucide icons and illustrative assets in `public/design-review/`. Shared production controls (shadcn/ui) and the final semantic token system follow design approval. The root scaffold retains its temporary font fallback and project palette. Pages are marked noindex while incomplete.
+No empty feature, persistence or UI-component folders are created. `src/features/design-review/` contains only the mockup implementation, with scoped styles, local Space Grotesk/Manrope fonts, Lucide icons and illustrative assets in `public/design-review/`. Shared production controls (shadcn/ui) and the final semantic token system follow design approval. The root scaffold retains its temporary font fallback and project palette. Pages are marked noindex while incomplete.
 
 ## Tooling and CI
 
