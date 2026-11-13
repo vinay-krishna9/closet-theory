@@ -81,13 +81,17 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### VISITOR-01 — Quick-add catalog
 
+The later user-approved studio image revision supersedes this task's initial real-photograph sourcing requirement. All eight types now use AI-generated studio samples with labelled provenance and locally prepared color variants; see [catalog assets](catalog-assets.md).
+
 - Model the eight launch types and their named color variants/default tags. Source appropriately licensed realistic photos and record provenance.
+- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and free licensed photos; see [implementation plan](VISITOR-01-plan.md) and `design.md` section 20.
 - Let visitors select only clothes they own, inspect/edit tags and remove selections. No prefilling or uploads.
 - **Acceptance:** group/type relationships are valid; sample photos are identified; color names are accessible; unselected garments are never added. Catalog ownership does not change when a user selects an item.
+- **Local result:** the approved plan is implemented with eight types/64 color variants, editable selections, duplicate/similarity handling and public photo attribution. See [VISITOR-01 completion record](VISITOR-01.md) for actual verification and limits. Reload persistence remains VISITOR-02.
 
 ### VISITOR-02 — Local wardrobe persistence
 
-- Add stable selection IDs, versioned browser storage and shared React state.
+- Build on VISITOR-01's stable selection IDs and shared React context/reducer; add versioned browser storage and schema validation/migration.
 - Recover after reload; handle blocked/corrupt storage gracefully with in-memory use and an explanatory notice.
 - **Acceptance:** selections survive the intended lifecycle; no personal photos/session tokens are stored; visitors cannot perform account-only operations. Test reset and schema migration behavior.
 
@@ -223,7 +227,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-BUILD-02 is complete locally with recorded verification. Next, prepare the concrete VISITOR-01 catalog plan under the repository's brief-plan/approval workflow, then continue M2 visitor features and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
+VISITOR-01 is implemented locally with its completion record. Next, prepare the concrete VISITOR-02 browser-persistence plan under the repository's brief-plan/approval workflow, then continue the M2 outfit engine/results and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
 
 ## Resolved PLAN-02 decisions
 

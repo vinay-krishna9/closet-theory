@@ -1,0 +1,90 @@
+[
+  {
+    "id": "tshirt",
+    "source": "https://commons.wikimedia.org/wiki/File:T-shirt2.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0f/T-shirt2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:T-shirt2.jpg",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Elkagye",
+    "derivativeLicense": "Public domain"
+  },
+  {
+    "id": "shirt",
+    "source": "https://commons.wikimedia.org/wiki/File:Blue_Business_Shirt.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Blue_Business_Shirt.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "ChristianGlaeser",
+    "derivativeLicense": "CC BY-SA 3.0"
+  },
+  {
+    "id": "sweater",
+    "source": "https://commons.wikimedia.org/wiki/File:Grey_knitted_sweater.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Grey_knitted_sweater.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Aslak Raanes",
+    "derivativeLicense": "CC BY 2.0"
+  },
+  {
+    "id": "jeans",
+    "source": "https://commons.wikimedia.org/wiki/File:Jeans.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Jeans.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Jeans.jpg",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Oktaeder",
+    "derivativeLicense": "Public domain"
+  },
+  {
+    "id": "chinos",
+    "source": "https://commons.wikimedia.org/wiki/File:Chino_pants.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Chino_pants.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Kuha455405",
+    "derivativeLicense": "CC BY-SA 3.0"
+  },
+  {
+    "id": "shorts",
+    "source": "https://commons.wikimedia.org/wiki/File:Pantaloneta.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Pantaloneta.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Oscarin200",
+    "derivativeLicense": "CC BY-SA 4.0"
+  },
+  {
+    "id": "sneakers",
+    "source": "https://commons.wikimedia.org/wiki/File:A_pair_of_white_shoes.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b4/A_pair_of_white_shoes.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "JustinLiang522",
+    "derivativeLicense": "CC BY-SA 4.0"
+  },
+  {
+    "id": "jacket",
+    "source": "https://commons.wikimedia.org/wiki/File:Jacke_Microfaser.jpg",
+    "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/38/Jacke_Microfaser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Jacke_Microfaser.jpg",
+    "retrieved": "2026-11-13",
+    "modifications": "Resized source; garment masks, crop, transparent background and deterministic color variants. No endorsement implied.",
+    "creator": "Ryj",
+    "derivativeLicense": "Public domain"
+  }
+]

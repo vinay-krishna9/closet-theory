@@ -1,0 +1,578 @@
+[
+  {
+    "type": "tshirt",
+    "color": "white",
+    "path": "/catalog/v1/tshirt-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 155478,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "black",
+    "path": "/catalog/v1/tshirt-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 181553,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "navy",
+    "path": "/catalog/v1/tshirt-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 213808,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "grey",
+    "path": "/catalog/v1/tshirt-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 191900,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "olive",
+    "path": "/catalog/v1/tshirt-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 217539,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "beige",
+    "path": "/catalog/v1/tshirt-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 224721,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "burgundy",
+    "path": "/catalog/v1/tshirt-burgundy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 218531,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "tshirt",
+    "color": "light-blue",
+    "path": "/catalog/v1/tshirt-light-blue.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 223009,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "white",
+    "path": "/catalog/v1/shirt-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 72994,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "light-blue",
+    "path": "/catalog/v1/shirt-light-blue.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 100336,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "navy",
+    "path": "/catalog/v1/shirt-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 95723,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "black",
+    "path": "/catalog/v1/shirt-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 81753,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "grey",
+    "path": "/catalog/v1/shirt-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 86839,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "beige",
+    "path": "/catalog/v1/shirt-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 100499,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "pink",
+    "path": "/catalog/v1/shirt-pink.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 99770,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shirt",
+    "color": "olive",
+    "path": "/catalog/v1/shirt-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 97259,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "oatmeal",
+    "path": "/catalog/v1/sweater-oatmeal.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 223281,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "grey",
+    "path": "/catalog/v1/sweater-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 207174,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "navy",
+    "path": "/catalog/v1/sweater-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 220156,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "black",
+    "path": "/catalog/v1/sweater-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 202209,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "beige",
+    "path": "/catalog/v1/sweater-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 225877,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "brown",
+    "path": "/catalog/v1/sweater-brown.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 222631,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "burgundy",
+    "path": "/catalog/v1/sweater-burgundy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 221204,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sweater",
+    "color": "olive",
+    "path": "/catalog/v1/sweater-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 223765,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "indigo",
+    "path": "/catalog/v1/jeans-indigo.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 324484,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "light-blue",
+    "path": "/catalog/v1/jeans-light-blue.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 325451,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "black",
+    "path": "/catalog/v1/jeans-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 269901,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "grey",
+    "path": "/catalog/v1/jeans-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 287599,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "dark-grey",
+    "path": "/catalog/v1/jeans-dark-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 300971,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "white",
+    "path": "/catalog/v1/jeans-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 233197,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "beige",
+    "path": "/catalog/v1/jeans-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 327471,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jeans",
+    "color": "brown",
+    "path": "/catalog/v1/jeans-brown.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 321513,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "khaki",
+    "path": "/catalog/v1/chinos-khaki.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 245616,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "navy",
+    "path": "/catalog/v1/chinos-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 234486,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "olive",
+    "path": "/catalog/v1/chinos-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 237933,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "black",
+    "path": "/catalog/v1/chinos-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 193223,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "grey",
+    "path": "/catalog/v1/chinos-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 206412,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "beige",
+    "path": "/catalog/v1/chinos-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 244647,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "brown",
+    "path": "/catalog/v1/chinos-brown.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 242320,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "chinos",
+    "color": "white",
+    "path": "/catalog/v1/chinos-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 159434,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "khaki",
+    "path": "/catalog/v1/shorts-khaki.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 104335,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "navy",
+    "path": "/catalog/v1/shorts-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 98160,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "olive",
+    "path": "/catalog/v1/shorts-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 100426,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "black",
+    "path": "/catalog/v1/shorts-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 79388,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "grey",
+    "path": "/catalog/v1/shorts-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 90118,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "beige",
+    "path": "/catalog/v1/shorts-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 105193,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "white",
+    "path": "/catalog/v1/shorts-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 67574,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "shorts",
+    "color": "light-blue",
+    "path": "/catalog/v1/shorts-light-blue.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 105355,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "white",
+    "path": "/catalog/v1/sneakers-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 302008,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "off-white",
+    "path": "/catalog/v1/sneakers-off-white.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 318950,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "black",
+    "path": "/catalog/v1/sneakers-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 322151,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "grey",
+    "path": "/catalog/v1/sneakers-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 327324,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "navy",
+    "path": "/catalog/v1/sneakers-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 337154,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "beige",
+    "path": "/catalog/v1/sneakers-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 338230,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "brown",
+    "path": "/catalog/v1/sneakers-brown.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 340148,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "sneakers",
+    "color": "burgundy",
+    "path": "/catalog/v1/sneakers-burgundy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 338990,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "olive",
+    "path": "/catalog/v1/jacket-olive.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 174088,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "navy",
+    "path": "/catalog/v1/jacket-navy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 169470,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "black",
+    "path": "/catalog/v1/jacket-black.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 146192,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "beige",
+    "path": "/catalog/v1/jacket-beige.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 178557,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "grey",
+    "path": "/catalog/v1/jacket-grey.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 161175,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "brown",
+    "path": "/catalog/v1/jacket-brown.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 174657,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "khaki",
+    "path": "/catalog/v1/jacket-khaki.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 179143,
+    "recipe": "masked-luminance-v1"
+  },
+  {
+    "type": "jacket",
+    "color": "burgundy",
+    "path": "/catalog/v1/jacket-burgundy.png",
+    "width": 512,
+    "height": 640,
+    "bytes": 173775,
+    "recipe": "masked-luminance-v1"
+  }
+]

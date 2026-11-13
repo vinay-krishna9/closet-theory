@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   useState,
+  useEffect,
+  useRef,
   type CSSProperties,
   type ReactNode,
   type MouseEvent,
@@ -43,6 +45,47 @@ export function AppShell({
   mode?: 'visitor' | 'account';
 }) {
   const pathname = usePathname();
+  const mobileTabs = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const tabs = mobileTabs.current;
+    if (!tabs) return;
+    const root = document.documentElement;
+    const previous = root.style.getPropertyValue('--mobile-tabs-height');
+    function measure() {
+      root.style.setProperty(
+        '--mobile-tabs-height',
+        `${tabs!.getBoundingClientRect().height}px`,
+      );
+    }
+    measure();
+    const observer =
+      typeof ResizeObserver === 'undefined'
+        ? undefined
+        : new ResizeObserver(measure);
+    observer?.observe(tabs);
+    function revealFocus(event: FocusEvent) {
+      const target = event.target;
+      if (
+        !(target instanceof HTMLElement) ||
+        !target.closest('main') ||
+        !target.matches('a,button,input,select,textarea,summary')
+      )
+        return;
+      const tabBox = tabs!.getBoundingClientRect();
+      if (
+        tabBox.height &&
+        target.getBoundingClientRect().bottom > tabBox.top - 8
+      )
+        target.scrollIntoView({ block: 'center', behavior: 'instant' });
+    }
+    document.addEventListener('focusin', revealFocus);
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener('focusin', revealFocus);
+      if (previous) root.style.setProperty('--mobile-tabs-height', previous);
+      else root.style.removeProperty('--mobile-tabs-height');
+    };
+  }, []);
   const [accountNotice, setAccountNotice] = useState(false);
   const [opener, setOpener] = useState<HTMLElement | null>(null);
   const links = mode === 'account' ? accountLinks : visitorLinks;
@@ -92,6 +135,7 @@ export function AppShell({
       </header>
       {children}
       <nav
+        ref={mobileTabs}
         className="app-mobile-tabs"
         style={{ '--tab-count': mode === 'account' ? 4 : 3 } as CSSProperties}
         aria-label={

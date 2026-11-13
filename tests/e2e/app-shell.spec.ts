@@ -10,7 +10,7 @@ test('workspace stays empty and account actions explain their availability', asy
     page.getByRole('heading', { name: 'Your wardrobe', exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(/this foundation does not save wardrobe data/),
+    page.getByText(/Your selections last while browsing and reset on refresh/),
   ).toBeVisible();
   await expect(page.getByRole('article')).toHaveCount(0);
   await expect(
@@ -56,10 +56,10 @@ test('workspace stays empty and account actions explain their availability', asy
   await expect(
     page.getByRole('button', { name: 'Sign in', exact: true }).last(),
   ).toBeFocused();
-  await page.getByRole('link', { name: 'Explore quick-add' }).click();
+  await page.getByRole('link', { name: 'Choose your first pieces' }).click();
   await expect(page).toHaveURL(/\/quick-add$/);
   await expect(
-    page.getByRole('heading', { name: 'The catalog is coming next.' }),
+    page.getByRole('heading', { name: 'The everyday essentials' }),
   ).toBeVisible();
   await page
     .getByRole('link', { name: 'Back to wardrobe', exact: true })
@@ -104,8 +104,17 @@ test('shared shell reflows with reduced motion, enlarged text and safe bottom cl
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await page.getByRole('main').getByRole('link').scrollIntoViewIfNeeded();
-    const action = await page.getByRole('main').getByRole('link').boundingBox();
+    await page.getByRole('main').getByRole('link').first().focus();
+    await page
+      .getByRole('main')
+      .getByRole('link')
+      .first()
+      .scrollIntoViewIfNeeded();
+    const action = await page
+      .getByRole('main')
+      .getByRole('link')
+      .first()
+      .boundingBox();
     const tabs = await page
       .getByRole('navigation', { name: 'Mobile visitor navigation' })
       .boundingBox();
@@ -168,7 +177,7 @@ test('shell uses readable semantic colors, visible keyboard focus and touch targ
   ).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('main')).toBeFocused();
-  const action = page.getByRole('link', { name: 'Explore quick-add' });
+  const action = page.getByRole('link', { name: 'Choose your first pieces' });
   await action.focus();
   await expect(action).toHaveCSS('outline-style', 'solid');
   await expect(action).toHaveCSS('outline-width', '2px');

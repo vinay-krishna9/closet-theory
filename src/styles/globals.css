@@ -1,6 +1,8 @@
 @import 'tailwindcss' source('../');
 @import './tokens.css';
 @import './components.css';
+@import './selection-tiles.css';
+@import './wardrobe.css';
 
 @theme inline {
   --color-background: var(--background);
@@ -17,7 +19,7 @@
 
 html {
   scroll-padding-block: calc(var(--nav-height) + var(--space-4))
-    calc(var(--tabs-height) + var(--space-4));
+    calc(var(--mobile-tabs-height) + var(--space-4));
 }
 * {
   box-sizing: border-box;

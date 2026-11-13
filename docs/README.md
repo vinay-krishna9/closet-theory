@@ -2,9 +2,11 @@
 
 ## Current delivery status
 
-As of 13 November 2026, BUILD-01 and BUILD-02 are complete locally. The user approved the designs, visual review and shared foundation implementation. Shared tokens, fonts, Radix/shadcn controls, responsive editor foundations and the visitor shell are implemented and checked. [BUILD-02](BUILD-02.md) owns the completion checklist and verification evidence. Real catalog behavior, persistence, recommendations and accounts remain later milestones.
+As of 13 November 2026, BUILD-01/02 provide the verified shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. The user subsequently approved AI-generated studio imagery for all eight catalog types. [BUILD-02](BUILD-02.md) and [VISITOR-01](VISITOR-01.md) own their check results and limitations. Reload persistence, recommendations and accounts remain later milestones.
 
 ## Where information belongs
+
+The [VISITOR-01 plan](VISITOR-01-plan.md) is approved and implemented locally. See its [completion record](VISITOR-01.md) for behavior/checks and [catalog assets](catalog-assets.md) for studio provenance, earlier photographic terms and recoloring. Reload persistence is the next feature, VISITOR-02.
 
 | Document                                  | Purpose                                                                                                                      |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |

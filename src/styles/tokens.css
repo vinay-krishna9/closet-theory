@@ -23,6 +23,9 @@
   --page-gutter: 16px;
   --nav-height: 64px;
   --tabs-height: 64px;
+  --mobile-tabs-height: calc(
+    var(--tabs-height) + var(--space-4) + 1px + env(safe-area-inset-bottom)
+  );
   --drawer-width: 480px;
   --motion-fast: 150ms;
   --motion-standard: 250ms;

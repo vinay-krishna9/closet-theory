@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catalog photography review</title>
+    <link rel="stylesheet" href="../../../src/styles/tokens.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--foreground);
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1280px;
+        margin: auto;
+        padding: 40px 24px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 4vw, 40px);
+        letter-spacing: -0.04em;
+      }
+      header p {
+        max-width: 760px;
+        color: var(--muted-foreground);
+        margin: 0 0 32px;
+      }
+      .comparisons {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 0 0 16px;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      figure {
+        margin: 0;
+        min-width: 0;
+      }
+      .photo {
+        aspect-ratio: 3/4;
+        background: var(--canvas);
+        border-radius: var(--radius-card);
+        overflow: hidden;
+      }
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 12px;
+      }
+      figcaption {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      figcaption span {
+        display: block;
+        color: var(--muted-foreground);
+        font-size: 12px;
+      }
+      footer {
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        color: var(--muted-foreground);
+        font-size: 14px;
+      }
+      @media (max-width: 900px) {
+        .comparisons {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .pair {
+          max-width: 560px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Catalog photography review</h1>
+        <p>
+          Compare the current licensed photographs with proposed AI-generated
+          studio samples on the catalog’s charcoal canvas and 3:4 image frames.
+        </p>
+      </header>
+      <div class="comparisons">
+        <section aria-labelledby="tshirt-heading">
+          <h2 id="tshirt-heading">T-shirt</h2>
+          <div class="pair">
+            <figure>
+              <div class="photo">
+                <img
+                  src="../../../public/catalog/v1/tshirt-base.png"
+                  alt="Current white T-shirt with uneven folds and flat shape"
+                />
+              </div>
+              <figcaption>Current<span>Licensed photograph</span></figcaption>
+            </figure>
+            <figure>
+              <div class="photo">
+                <img
+                  src="tshirt-ai.png"
+                  alt="Proposed off-white T-shirt with studio lighting and shaped neckline"
+                />
+              </div>
+              <figcaption>Proposed<span>AI-generated sample</span></figcaption>
+            </figure>
+          </div>
+        </section>
+        <section aria-labelledby="jeans-heading">
+          <h2 id="jeans-heading">Jeans</h2>
+          <div class="pair">
+            <figure>
+              <div class="photo">
+                <img
+                  src="../../../public/catalog/v1/jeans-base.png"
+                  alt="Current denim jeans photograph"
+                />
+              </div>
+              <figcaption>Current<span>Licensed photograph</span></figcaption>
+            </figure>
+            <figure>
+              <div class="photo">
+                <img
+                  src="jeans-ai.png"
+                  alt="Proposed indigo straight-leg jeans with symmetrical product arrangement"
+                />
+              </div>
+              <figcaption>Proposed<span>AI-generated sample</span></figcaption>
+            </figure>
+          </div>
+        </section>
+        <section aria-labelledby="sneakers-heading">
+          <h2 id="sneakers-heading">Sneakers</h2>
+          <div class="pair">
+            <figure>
+              <div class="photo">
+                <img
+                  src="../../../public/catalog/v1/sneakers-base.png"
+                  alt="Current pair of worn white sneakers viewed from above"
+                />
+              </div>
+              <figcaption>Current<span>Licensed photograph</span></figcaption>
+            </figure>
+            <figure>
+              <div class="photo">
+                <img
+                  src="sneakers-ai.png"
+                  alt="Proposed pristine white sneaker in a three-quarter studio view"
+                />
+              </div>
+              <figcaption>Proposed<span>AI-generated sample</span></figcaption>
+            </figure>
+          </div>
+        </section>
+      </div>
+      <footer>
+        The user approved this studio style for all eight types on 13 November
+        2026. See <a href="studio-v2.html">the prepared studio catalog</a>. The
+        original T-shirt review cutout has visible edge artifacts requiring
+        cleanup in this initial sample. The prepared v2 set includes cutout
+        cleanup, consistent sizing, color-variant review and updated provenance.
+        Current sources and earlier photographic terms are recorded in
+        <a href="../../catalog-assets.md" style="color: inherit"
+          >the asset record</a
+        >.
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { VisitorWardrobeProvider } from '@/features/wardrobe/visitor-provider';
 import '@/styles/globals.css';
 
 const display = localFont({
@@ -32,7 +33,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        {children}
+        <VisitorWardrobeProvider>{children}</VisitorWardrobeProvider>
       </body>
     </html>
   );
