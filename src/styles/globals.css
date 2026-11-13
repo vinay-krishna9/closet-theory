@@ -1,28 +1,60 @@
 @import 'tailwindcss' source('../');
-
-/* Minimal foundation palette from design.md. Full tokens/fonts follow in BUILD-02. */
-:root {
-  color-scheme: dark;
-  --background: #101214;
-  --surface: #191c20;
-  --foreground: #e4e7eb;
-  --border: #41464f;
-}
+@import './tokens.css';
+@import './components.css';
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-ui);
+}
+
+html {
+  scroll-padding-block: calc(var(--nav-height) + var(--space-4))
+    calc(var(--tabs-height) + var(--space-4));
+}
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-ui), Arial, sans-serif;
   line-height: 1.5;
   overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), Arial, sans-serif;
+  font-weight: 600;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+a,
+button,
+input {
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible {
@@ -34,7 +66,7 @@ body {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  z-index: 10;
+  z-index: 60;
   transform: translateY(-200%);
   padding: 0.75rem 1rem;
   background: var(--foreground);
@@ -43,4 +75,14 @@ body {
 
 .skip-link:focus {
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }

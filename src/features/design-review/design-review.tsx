@@ -1,13 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type ReactNode,
-} from 'react';
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Button as SharedButton } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Editor } from '@/components/ui/editor';
 import {
   ArrowDown,
   ArrowLeft,
@@ -83,14 +81,14 @@ function Button({
   disabled?: boolean;
 }) {
   return (
-    <button
-      type="button"
+    <SharedButton
+      variant={secondary ? 'outline' : 'default'}
       className={`review-button ${secondary ? 'secondary' : ''} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >
       {children}
-    </button>
+    </SharedButton>
   );
 }
 
@@ -106,28 +104,16 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
   const [notice, setNotice] = useState('');
   const [detail, setDetail] = useState<Detail>(null);
   const [more, setMore] = useState(false);
-  const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
 
   const openDetail = (value: Exclude<Detail, null>) => {
     opener.current = document.activeElement as HTMLElement;
     if (value !== 'signin') setSelectedColor(value.color);
     setDetail(value);
-    dialog.current?.showModal();
   };
   const closeDetail = () => {
-    dialog.current?.close();
-    opener.current?.focus();
+    setDetail(null);
   };
-  useEffect(() => {
-    if (!detail) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.getElementById('review-detail-title')?.focus();
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [detail]);
   const toggleSelection = (id: string) => {
     const item = samples.find((sample) => sample.id === id)!;
     setSelection((previous) => {
@@ -314,7 +300,7 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
             <label className="review-search">
               <Search aria-hidden="true" />
               <span className="sr-only">Search clothing</span>
-              <input
+              <Input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder={wardrobe ? 'Find a piece…' : 'Find an essential…'}
@@ -708,169 +694,187 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
           Sign in
         </button>
       </nav>
-      <dialog
-        ref={dialog}
-        className="review-detail"
-        aria-labelledby="review-detail-title"
-        onClose={() => {
-          setDetail(null);
-          opener.current?.focus();
-        }}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) closeDetail();
+      <Editor
+        open={detail !== null}
+        onOpenChange={(open) => {
+          if (!open) setDetail(null);
         }}
       >
-        <div className="review-detail-header">
-          <span>
-            {detail === 'signin'
-              ? 'A place for your wardrobe'
-              : 'Make it your own'}
-          </span>
-          <button aria-label="Close preview" onClick={closeDetail}>
-            <X aria-hidden="true" />
-          </button>
-        </div>
-        {detail === 'signin' ? (
-          <div className="review-detail-body">
-            <h2 id="review-detail-title" tabIndex={-1}>
-              Your wardrobe, everywhere.
-            </h2>
-            <p>
-              An account will let you sync your clothing, add personal photos
-              and keep your favorite outfits.
-            </p>
-            <div className="review-inline-note">
-              Sign-in is not connected in this design review. No account is
-              created.
-            </div>
-            <Button onClick={closeDetail}>Back to the preview</Button>
+        <DialogContent
+          presentation="editor"
+          scopeClassName="design-review"
+          showCloseButton={false}
+          className="review-detail"
+          aria-describedby={undefined}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            opener.current?.focus();
+          }}
+        >
+          <div className="review-detail-header">
+            <span>
+              {detail === 'signin'
+                ? 'A place for your wardrobe'
+                : 'Make it your own'}
+            </span>
+            <button aria-label="Close preview" onClick={closeDetail}>
+              <X aria-hidden="true" />
+            </button>
           </div>
-        ) : (
-          detail && (
-            <>
-              <div className="review-detail-body">
-                <p className="review-eyebrow">
-                  {detail.group} / {detail.type}
-                </p>
-                <h2 id="review-detail-title" tabIndex={-1}>
-                  {detail.name}
+          {detail === 'signin' ? (
+            <div className="review-detail-body">
+              <DialogTitle asChild>
+                <h2 id="review-detail-title" tabIndex={-1} data-dialog-heading>
+                  Your wardrobe, everywhere.
                 </h2>
-                <div className="review-detail-image">
-                  <Garment
-                    tile={detail.tile}
-                    name={`${detail.color} ${detail.type}`}
-                  />
-                </div>
-                <p className="review-card-meta">
-                  Illustrative sample · Representative image
-                </p>
-                <p className="review-field-label">
-                  Garment color <span>Selected: {selectedColor}</span>
-                </p>
-                <div
-                  className="review-swatch-list"
-                  role="group"
-                  aria-label="Example color options"
-                >
-                  {['Ivory', 'Navy', 'Light blue', 'Oatmeal'].map(
-                    (color, index) => (
-                      <button
-                        key={color}
-                        className={selectedColor === color ? 'is-selected' : ''}
-                        aria-label={color}
-                        aria-pressed={selectedColor === color}
-                        onClick={() => setSelectedColor(color)}
-                      >
-                        <span
-                          className="review-swatch-color"
-                          style={{ background: samples[index].hex }}
-                        />
-                        <span className="review-swatch-name">{color}</span>
-                        {selectedColor === color && (
-                          <Check aria-hidden="true" />
-                        )}
-                      </button>
-                    ),
-                  )}
-                </div>
-                <p className="review-help">
-                  Choose the closest color to your garment. This labels its
-                  color; it doesn’t recolor the sample photo.
-                </p>
-                <PictorialOptions
-                  key={`${detail.id}-formality`}
-                  legend="Formality"
-                  choices={formalityChoices}
-                  defaultValue={detail.formality}
-                />
-                <PictorialOptions
-                  key={`${detail.id}-seasons`}
-                  legend="Seasons"
-                  choices={seasonChoices}
-                  multiple
-                  defaultValue={['Spring', 'Summer']}
-                />
-                <details className="review-customization">
-                  <summary>
-                    Customize the details <ChevronDown aria-hidden="true" />
-                  </summary>
-                  <p className="review-help">
-                    Examples for design review; exact per-type options will be
-                    configured with the catalog.
+              </DialogTitle>
+              <p>
+                An account will let you sync your clothing, add personal photos
+                and keep your favorite outfits.
+              </p>
+              <div className="review-inline-note">
+                Sign-in is not connected in this design review. No account is
+                created.
+              </div>
+              <Button onClick={closeDetail}>Back to the preview</Button>
+            </div>
+          ) : (
+            detail && (
+              <>
+                <div className="review-detail-body">
+                  <p className="review-eyebrow">
+                    {detail.group} / {detail.type}
                   </p>
-                  {detail.type === 'T-shirt' ||
-                  detail.type === 'Shirt' ||
-                  detail.type === 'Sweater' ? (
-                    <>
-                      <PictorialOptions
-                        key={`${detail.id}-neckline`}
-                        legend="Neckline / collar"
-                        choices={necklineChoices}
-                        defaultValue={
-                          detail.type === 'Shirt' ? 'Collared' : 'Crew neck'
-                        }
-                      />
-                      <PictorialOptions
-                        key={`${detail.id}-sleeves`}
-                        legend="Sleeves"
-                        choices={sleeveChoices}
-                        defaultValue={
-                          detail.type === 'T-shirt'
-                            ? 'Short sleeves'
-                            : 'Long sleeves'
-                        }
-                      />
-                    </>
-                  ) : null}
+                  <DialogTitle asChild>
+                    <h2
+                      id="review-detail-title"
+                      tabIndex={-1}
+                      data-dialog-heading
+                    >
+                      {detail.name}
+                    </h2>
+                  </DialogTitle>
+                  <div className="review-detail-image">
+                    <Garment
+                      tile={detail.tile}
+                      name={`${detail.color} ${detail.type}`}
+                    />
+                  </div>
+                  <p className="review-card-meta">
+                    Illustrative sample · Representative image
+                  </p>
+                  <p className="review-field-label">
+                    Garment color <span>Selected: {selectedColor}</span>
+                  </p>
+                  <div
+                    className="review-swatch-list"
+                    role="group"
+                    aria-label="Example color options"
+                  >
+                    {['Ivory', 'Navy', 'Light blue', 'Oatmeal'].map(
+                      (color, index) => (
+                        <button
+                          key={color}
+                          className={
+                            selectedColor === color ? 'is-selected' : ''
+                          }
+                          aria-label={color}
+                          aria-pressed={selectedColor === color}
+                          onClick={() => setSelectedColor(color)}
+                        >
+                          <span
+                            className="review-swatch-color"
+                            style={{ background: samples[index].hex }}
+                          />
+                          <span className="review-swatch-name">{color}</span>
+                          {selectedColor === color && (
+                            <Check aria-hidden="true" />
+                          )}
+                        </button>
+                      ),
+                    )}
+                  </div>
+                  <p className="review-help">
+                    Choose the closest color to your garment. This labels its
+                    color; it doesn’t recolor the sample photo.
+                  </p>
                   <PictorialOptions
-                    key={`${detail.id}-pattern`}
-                    legend="Pattern"
-                    choices={patternChoices}
-                    defaultValue="Solid"
+                    key={`${detail.id}-formality`}
+                    legend="Formality"
+                    choices={formalityChoices}
+                    defaultValue={detail.formality}
                   />
-                </details>
-                <p className="review-inline-note">
-                  Design preview only. Details are not saved, and do not change
-                  the sample image.
-                </p>
-              </div>
-              <div className="review-detail-footer">
-                <Button secondary onClick={closeDetail}>
-                  Close
-                </Button>
-                <Button
-                  onClick={() => {
-                    setNotice('Preview reviewed. No wardrobe data was saved.');
-                    closeDetail();
-                  }}
-                >
-                  Done reviewing <Check aria-hidden="true" />
-                </Button>
-              </div>
-            </>
-          )
-        )}
-      </dialog>
+                  <PictorialOptions
+                    key={`${detail.id}-seasons`}
+                    legend="Seasons"
+                    choices={seasonChoices}
+                    multiple
+                    defaultValue={['Spring', 'Summer']}
+                  />
+                  <details className="review-customization">
+                    <summary>
+                      Customize the details <ChevronDown aria-hidden="true" />
+                    </summary>
+                    <p className="review-help">
+                      Examples for design review; exact per-type options will be
+                      configured with the catalog.
+                    </p>
+                    {detail.type === 'T-shirt' ||
+                    detail.type === 'Shirt' ||
+                    detail.type === 'Sweater' ? (
+                      <>
+                        <PictorialOptions
+                          key={`${detail.id}-neckline`}
+                          legend="Neckline / collar"
+                          choices={necklineChoices}
+                          defaultValue={
+                            detail.type === 'Shirt' ? 'Collared' : 'Crew neck'
+                          }
+                        />
+                        <PictorialOptions
+                          key={`${detail.id}-sleeves`}
+                          legend="Sleeves"
+                          choices={sleeveChoices}
+                          defaultValue={
+                            detail.type === 'T-shirt'
+                              ? 'Short sleeves'
+                              : 'Long sleeves'
+                          }
+                        />
+                      </>
+                    ) : null}
+                    <PictorialOptions
+                      key={`${detail.id}-pattern`}
+                      legend="Pattern"
+                      choices={patternChoices}
+                      defaultValue="Solid"
+                    />
+                  </details>
+                  <p className="review-inline-note">
+                    Design preview only. Details are not saved, and do not
+                    change the sample image.
+                  </p>
+                </div>
+                <div className="review-detail-footer">
+                  <Button secondary onClick={closeDetail}>
+                    Close
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setNotice(
+                        'Preview reviewed. No wardrobe data was saved.',
+                      );
+                      closeDetail();
+                    }}
+                  >
+                    Done reviewing <Check aria-hidden="true" />
+                  </Button>
+                </div>
+              </>
+            )
+          )}
+        </DialogContent>
+      </Editor>
     </>
   );
 }

@@ -2,6 +2,8 @@
 
 Status: implementation specification · Cool charcoal revision approved 12 November 2026 · Comfortable density
 
+Wardrobe, Quick-add and Outfits browser designs and user visual review approved 13 November 2026. See [BUILD-02](docs/BUILD-02.md) for the production completion checklist and verification limits.
+
 Original specification finalized: 6 November 2026. The explicit darker, sleeker direction approved on 12 November 2026 supersedes the warm palette and light-workspace wording below; section 17 is authoritative for color roles and section 18 for the newly approved font pairing. Other layout, interaction and product rules remain in effect.
 
 ## 1. Authority and provenance

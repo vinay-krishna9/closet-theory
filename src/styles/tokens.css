@@ -1,0 +1,57 @@
+:root {
+  color-scheme: dark;
+  --background: #101214;
+  --surface: #191c20;
+  --surface-subtle: #22262b;
+  --canvas: #343a42;
+  --navigation: #0a0c0f;
+  --foreground: #e4e7eb;
+  --muted-foreground: #a4aab3;
+  --border: #41464f;
+  --input: #78818d;
+  --primary: #d8dde5;
+  --primary-foreground: #111419;
+  --primary-hover: #bdc5d0;
+  --hover: #303640;
+  --ring: #e4e7eb;
+  --overlay: rgb(0 0 0 / 40%);
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --control-height: 48px;
+  --target-min: 44px;
+  --content-max: 1280px;
+  --page-gutter: 16px;
+  --nav-height: 64px;
+  --tabs-height: 64px;
+  --drawer-width: 480px;
+  --motion-fast: 150ms;
+  --motion-standard: 250ms;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --text-page: 2rem;
+  --text-section: 1.625rem;
+  --text-body: 1rem;
+  --text-meta: 0.875rem;
+  --text-label: 0.75rem;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 48px;
+    --text-page: 3rem;
+    --text-section: 2rem;
+  }
+}

@@ -1,6 +1,6 @@
 # Personal Stylist — MVP Development Plan
 
-Status: proposed delivery plan for review · 7 November 2026
+Status: delivery plan with recorded sequencing and design updates through 13 November 2026. Per-feature approval and verification still apply; see [documentation index](README.md) for current implementation status.
 
 Save at `docs/development-plan.md`. Read alongside `MVP.md`, `user-flows.md`, `architecture.md`, root `design.md` and root `AGENTS.md`. This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
 
@@ -72,8 +72,8 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### BUILD-02 — Tokens and shared app shell
 
-- First design mobile/desktop Wardrobe, Quick-add and Outfits screens using `design.md`, then review and obtain user approval before implementing those designs. Design remaining screens before their respective features.
-- Implement warm stone/charcoal tokens, fonts, Lucide icons, shadcn/ui controls, dialog/editor foundations and route layouts.
+- Mobile/desktop Wardrobe, Quick-add and Outfits mockups are designed and user-approved, with visual review signed off on 13 November 2026. See [BUILD-02 status and evidence](BUILD-02.md). Design remaining screens before their respective features.
+- Completed locally on 13 November 2026: shared cool charcoal/graphite tokens (authoritative `design.md` section 17), global Space Grotesk/Manrope typography, Lucide icon wrapper, Radix/shadcn controls, dialog/editor foundations and route layouts. Production visitor routes show honest unavailable states; illustrative data stays in review routes. See BUILD-02 for check results and limits.
 - Desktop/tablet account shell uses top navigation; mobile account shell uses bottom links. Public/visitor shell follows the approved flow decision.
 - **Acceptance:** responsive shell, keyboard focus and reduced motion reviewed; no pure-white UI defaults or theme toggle; controls match `design.md`. Keep authentication-dependent destinations honest while backend features are incomplete.
 
@@ -223,7 +223,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-Review this milestone order. Document reconciliation has been performed locally; review its diff and run link/consistency checks before marking PLAN-01 complete. Settle genuinely blocking M0 questions. Use the existing vinay-krishna9/closet-theory repository and linked MVP board; do not recreate the 21 existing issues. No scaffold or feature implementation should begin merely because this file exists.
+BUILD-02 is complete locally with recorded verification. Next, prepare the concrete VISITOR-01 catalog plan under the repository's brief-plan/approval workflow, then continue M2 visitor features and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
 
 ## Resolved PLAN-02 decisions
 

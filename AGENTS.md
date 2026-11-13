@@ -101,6 +101,8 @@ Use standard software tests. AI-assisted development does not replace them or ju
 
 The BUILD-01 scaffold uses `src/app/` for App Router routes and `src/styles/globals.css` for base styling. Add feature directories only when needed. Co-locate component/unit tests; browser journeys live in `tests/e2e/`, with shared test setup in `tests/setup.ts`.
 
+BUILD-02 adds `src/app/(workspace)/` for the shared visitor layout, `src/components/app-shell.tsx`, Radix/shadcn controls in `src/components/ui/`, and shared styling in `src/styles/tokens.css` and `src/styles/components.css`. Fonts load globally in the root layout. Keep illustrative data confined to `src/features/design-review/`; production visitor routes start empty until their features are implemented.
+
 See `README.md` and `package.json` for installation, development, formatting, linting, type checking, tests and production commands. Use Node 22.18+ within the 22.x line and npm 10+. On restricted PowerShell installations, use `npm.cmd`/`npx.cmd` rather than changing execution policy.
 
 `npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.

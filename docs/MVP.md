@@ -67,7 +67,7 @@ Quick-add items have editable category/type, color, formality and season default
 
 ## Experience, privacy and quality
 
-- `design.md` governs appearance, accessibility, navigation, motion, image handling and the warm stone/charcoal palette. This PRD governs release scope; identify conflicts before implementation.
+- `design.md` governs appearance, accessibility, navigation, motion, image handling and the approved cool charcoal/graphite palette (section 17). This PRD governs release scope; identify conflicts before implementation.
 - Show distinct loading, empty, no-match, error and recovery states. Essential actions work on touch and keyboard.
 - Enforce owner-only data/media access. Use isolated test data; no private photos in fixtures or analytics.
 - Provide accurate privacy information, account/data deletion access and documented retention behavior before release.

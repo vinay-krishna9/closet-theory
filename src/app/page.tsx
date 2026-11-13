@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
 export default function Home() {
   return (
     <main
@@ -24,6 +27,11 @@ export default function Home() {
           does not collect photos, create accounts or save wardrobe data.
         </p>
       </section>
+      <div className="mt-8">
+        <Button asChild>
+          <Link href="/wardrobe">Explore your wardrobe</Link>
+        </Button>
+      </div>
     </main>
   );
 }

@@ -1,20 +1,22 @@
-/* Scoped review styles, not the approved production component system. */
+/* Review-only garment layouts consume the shared production tokens. */
 .design-review {
-  --review-paper: #101214;
-  --review-surface: #191c20;
-  --review-subtle: #22262b;
-  --review-canvas: #343a42;
-  --review-ink: #e4e7eb;
-  --review-muted: #a4aab3;
-  --review-line: #41464f;
-  --review-control-line: #78818d;
-  --review-on-dark: #e4e7eb;
-  --review-on-dark-muted: #a4aab3;
-  --review-hover: #303640;
-  --review-header: #0a0c0f;
-  --review-action: #d8dde5;
-  --review-action-text: #111419;
-  --review-action-hover: #bdc5d0;
+  --review-paper: var(--background);
+  --review-surface: var(--surface);
+  --review-subtle: var(--surface-subtle);
+  --review-canvas: var(--canvas);
+  --review-ink: var(--foreground);
+  --review-muted: var(--muted-foreground);
+  --review-line: var(--border);
+  --review-control-line: var(--input);
+  --review-on-dark: var(--foreground);
+  --review-on-dark-muted: var(--muted-foreground);
+  --review-hover: var(--hover);
+  --review-header: var(--navigation);
+  --review-action: var(--primary);
+  --review-action-text: var(--primary-foreground);
+  --review-action-hover: var(--primary-hover);
+  --review-font-display: var(--font-display);
+  --review-font-ui: var(--font-ui);
   --review-gutter: 16px;
   --review-radius: 12px;
   color-scheme: dark;
@@ -313,6 +315,9 @@
   color: var(--review-muted);
 }
 .review-search input {
+  min-height: 40px;
+  border: 0;
+  padding: 0;
   font-size: 14px;
   width: 100%;
   min-width: 0;
@@ -953,29 +958,14 @@
   margin-top: 8px;
 }
 .review-detail {
-  scroll-padding-block: 24px 112px;
-  position: fixed;
-  inset: 0 0 0 auto;
   margin: 0;
   padding: 0;
-  border: none;
-  border-radius: 12px 0 0 12px;
-  width: min(480px, 100vw);
-  max-width: none;
-  height: 100dvh;
-  max-height: 100dvh;
-  background: var(--review-surface);
-  color: var(--review-ink);
-  box-shadow: 0 12px 40px rgb(0 0 0 / 14%);
-  overflow-y: auto;
 }
 .review-detail .review-picture-choice > input {
   scroll-margin-block: 24px 112px;
 }
-.review-detail::backdrop {
-  background: rgb(0 0 0 / 40%);
-}
 .review-detail-header {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -992,6 +982,10 @@
   color: var(--review-ink);
 }
 .review-detail-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scroll-padding-block: 24px;
   padding: 32px;
 }
 .review-detail h2 {
@@ -1115,8 +1109,8 @@
   color: var(--review-muted);
 }
 .review-detail-footer {
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0;
+  flex-wrap: wrap;
   display: flex;
   justify-content: space-between;
   gap: 16px;

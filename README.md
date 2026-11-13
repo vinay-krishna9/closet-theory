@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. This branch contains the **BUILD-01 foundation and BUILD-02 design-review mockups**, not the completed product. The temporary entry page explains that wardrobe, account and upload features are unavailable. Review the mockups before implementing the final shared app shell.
+A personal stylist app for outfits from clothes you already own. **BUILD-01 and BUILD-02 are complete locally:** quality tooling, approved designs, shared tokens/controls and a responsive app shell. The product is still in development. Catalog selection, recommendations, accounts and uploads are later features; the current workspace explains their availability honestly.
 
 ## Local setup
 
@@ -11,7 +11,7 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open http://127.0.0.1:3000. Stop the server with Ctrl+C. On shells without PowerShell's script restriction, `npm` and `npx` work without `.cmd`; no execution-policy change is needed.
+Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe for the shared shell. `/quick-add` and `/outfits` are honest foundation states without selections or generated suggestions. Stop the server with Ctrl+C. On shells without PowerShell's script restriction, `npm` and `npx` work without `.cmd`; no execution-policy change is needed.
 
 For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
@@ -51,15 +51,20 @@ Vitest handles synchronous components and pure logic; use browser/integration co
 ## Repository map
 
 ```text
-src/app/                  App Router pages, layout and co-located tests
-src/styles/globals.css    Minimal foundation palette and Tailwind import
+src/app/                  Thin App Router pages, layouts and co-located tests
+src/app/(workspace)/      Visitor shell layout and wardrobe/quick-add/outfits routes
+src/components/           Shared app shell and its navigation modes
+src/components/ui/        Token-styled Radix/shadcn controls and editor foundation
+src/features/design-review/  Isolated sample screens; no real wardrobe data
+src/lib/utils.ts          Shared class merging for UI controls
+src/styles/               Global fonts/base styles, tokens and shared component styles
 tests/setup.ts            Component-test setup and cleanup
 tests/e2e/                Playwright journeys
 .github/workflows/        Branch/PR checks, without deployment
 docs/                     Requirements, decisions, architecture and delivery plan
 ```
 
-No empty feature, persistence or UI-component folders are created. `src/features/design-review/` contains only the mockup implementation, with scoped styles, local Space Grotesk/Manrope fonts, Lucide icons and illustrative assets in `public/design-review/`. Shared production controls (shadcn/ui) and the final semantic token system follow design approval. The root scaffold retains its temporary font fallback and project palette. Pages are marked noindex while incomplete.
+No empty feature or persistence folders are created. The root layout self-hosts Space Grotesk/Manrope for all routes; shared colors, spacing and controls follow the approved charcoal design. `components.json` records the shadcn/ui setup with Radix as the only primitive family. `src/features/design-review/` retains review-specific garment layouts and illustrative assets in `public/design-review/`, while consuming shared tokens, buttons, fields and editor foundations. Pages remain noindex while the product is incomplete.
 
 ## Tooling and CI
 
@@ -72,6 +77,8 @@ Tailwind 4 uses `@tailwindcss/postcss` and a CSS import, not a Tailwind 3 config
 GitHub Actions runs installation, formatting, lint, types, component tests, production build and Chromium checks on branch pushes and pull requests. It uses read-only repository permissions, no service secrets and no deployment action. Failure reports/traces are retained for seven days; keep fixtures free of private data. Workflow execution can only be verified after an authorized push. `NEXT_TELEMETRY_DISABLED=1` is set for CI and the browser-test server; it can also be set locally if desired.
 
 ## Product references and prototype
+
+Use the [documentation index](docs/README.md) for document ownership, current delivery status and verification records.
 
 - [Repository instructions](AGENTS.md)
 - [Design specification](design.md)
