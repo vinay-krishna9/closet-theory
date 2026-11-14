@@ -37,6 +37,16 @@ The following initial-feature results preceded the studio revision.
 
 These checks use local isolated visitor data. Physical-device testing, Safari/Firefox, a full screen-reader audit and manual browser-zoom review were not performed. Text-size/reflow checks do not substitute for that review. Remote CI has not run for these uncommitted changes. Generated details and approximate recoloring retain the limitations described in the asset record.
 
+## Interaction refinement · 14 November 2026
+
+The user approved three changes after reviewing the studio catalog. Catalog cards now display their default color and retain direct Add and Customize actions. Color selection lives inside Customize/the item editor. The shared garment image component reserves its 3:4 frame and shows a full-area skeleton during initial loading, color changes and retry. The skeleton respects reduced motion, and loading blocks Add/Save until the selected preview succeeds. Error recovery and stale-result protection remain covered. Season choices use individual tiles without the “Use all seasons” shortcut.
+
+- `npm.cmd run check` passed formatting, lint, TypeScript and **24 unit/component tests across seven files**. The updated component interactions cover default card Add, Customize-only color choice, skeleton loading/failure/retry, saved color and individual seasons.
+- `npm.cmd run build` passed.
+- `npm.cmd run test:e2e -- --workers=2` passed **all 32 desktop/mobile Chromium checks**. The held-image journey verifies the skeleton, disabled Add, matching preview heights before/during/after loading within browser subpixel rounding, rapid color switching and reduced-motion CSS. Existing failure/retry and visitor journeys also passed.
+- The default ten-worker runs hit desktop image-request timeouts under concurrent local load. The four affected journeys passed in isolation; the complete suite passed with the two-worker command above. Assertions and existing timeouts were retained. This records a local concurrency limitation, and a default-concurrency pass for this revision is still unverified.
+- Visual review covered the loaded desktop catalog and mobile loading skeleton. Keyboard, responsive shell, reduced-motion and editor journeys passed under Chromium emulation. Physical-device and full screen-reader review remain unperformed.
+
 ## Next
 
 Proceed to VISITOR-02 under its approved-plan workflow: persist selections safely across reloads, validate/version the stored schema and handle reset, migration, corrupt data and unavailable storage. Then implement the independent deterministic outfit engine and visitor suggestions. Commit/push and issue/board changes remain separately authorized actions.

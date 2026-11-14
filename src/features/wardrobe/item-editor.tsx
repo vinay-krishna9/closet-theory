@@ -24,7 +24,6 @@ import {
   colors,
   getType,
   groups,
-  seasons,
   type Formality,
   type Neckline,
   type Pattern,
@@ -301,12 +300,6 @@ export function ItemEditor({
                 patch({ seasons: values as Season[] })
               }
             />
-            <Button
-              variant="outline"
-              onClick={() => patch({ seasons: [...seasons] })}
-            >
-              Use all seasons
-            </Button>
             <details className="item-customize">
               <summary>Customize the details</summary>
               {type.necklines.length > 1 && (

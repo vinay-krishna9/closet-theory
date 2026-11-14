@@ -33,14 +33,18 @@ test('select, customize, edit and remove only owned clothing across visitor navi
     animations: 'disabled',
   });
   const tee = page.getByRole('article', { name: 'T-shirt catalog item' });
-  await tee.getByLabel('Color').selectOption('navy');
-  await expect(tee.getByRole('img')).toHaveAttribute('alt', /Navy T-shirt/);
+  await expect(tee.getByRole('combobox')).toHaveCount(0);
   await expect(tee.getByRole('button', { name: 'I own this' })).toBeEnabled();
   await tee.getByRole('button', { name: 'Customize', exact: true }).click();
   const editor = page.getByRole('dialog');
   await expect(
     editor.getByRole('heading', { name: 'Make it your own' }),
   ).toBeFocused();
+  await editor.getByRole('radio', { name: 'Navy', exact: true }).check();
+  await expect(editor.getByRole('img')).toHaveAttribute('alt', /Navy T-shirt/);
+  await expect(
+    editor.getByRole('button', { name: 'Use all seasons' }),
+  ).toHaveCount(0);
   await expect(
     editor.getByRole('button', { name: 'Add to wardrobe' }),
   ).toBeEnabled();
@@ -226,9 +230,9 @@ test('failed color previews preserve tags and retry without saving the wrong ima
   ).toHaveAttribute('alt', /Navy T-shirt/);
 });
 
-test('late image results cannot replace the current selected color', async ({
+test('color changes retain preview height with a skeleton and ignore late results', async ({
   page,
-}) => {
+}, testInfo) => {
   let release: () => void = () => {};
   let navyRequested = false;
   const held = new Promise<void>((resolve) => {
@@ -248,14 +252,44 @@ test('late image results cannot replace the current selected color', async ({
   });
   await page.goto('/quick-add');
   const tee = page.getByRole('article', { name: 'T-shirt catalog item' });
-  await tee.getByLabel('Color').selectOption('navy');
+  await tee.getByRole('button', { name: 'Customize', exact: true }).click();
+  const editor = page.getByRole('dialog');
+  const add = editor.getByRole('button', { name: 'Add to wardrobe' });
+  await expect(add).toBeEnabled();
+  const photo = editor.locator('.garment-photo');
+  const height = await photo.evaluate(
+    (element) => element.getBoundingClientRect().height,
+  );
+  await editor.getByRole('radio', { name: 'Navy', exact: true }).check();
   await expect.poll(() => navyRequested).toBe(true);
-  await expect(tee.getByRole('button', { name: 'I own this' })).toBeDisabled();
-  await tee.getByLabel('Color').selectOption('burgundy');
-  await expect(tee.getByRole('button', { name: 'I own this' })).toBeEnabled();
+  await expect(add).toBeDisabled();
+  await expect(editor.getByRole('status')).toHaveText('Loading photo…');
+  await expect(photo).toHaveAttribute('aria-busy', 'true');
+  expect(
+    await photo.evaluate((element) => element.getBoundingClientRect().height),
+  ).toBeCloseTo(height, 2);
+  await photo.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: testInfo.outputPath('color-loading.png'),
+    animations: 'disabled',
+  });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(editor.locator('.garment-photo-skeleton')).toHaveCSS(
+    'animation-name',
+    'none',
+  );
+  await editor.getByRole('radio', { name: 'Burgundy', exact: true }).check();
+  await expect(add).toBeEnabled();
   release();
-  await expect(tee.getByRole('img')).toHaveAttribute('alt', /Burgundy T-shirt/);
-  await tee.getByRole('button', { name: 'I own this' }).click();
+  await expect(editor.getByRole('img')).toHaveAttribute(
+    'alt',
+    /Burgundy T-shirt/,
+  );
+  await expect(editor.getByRole('status')).toHaveCount(0);
+  expect(
+    await photo.evaluate((element) => element.getBoundingClientRect().height),
+  ).toBeCloseTo(height, 2);
+  await add.click();
   await page.getByRole('link', { name: '1 piece in your wardrobe' }).click();
   await expect(page).toHaveURL(/\/wardrobe$/);
   await expect(page.getByRole('article')).toHaveCount(1);

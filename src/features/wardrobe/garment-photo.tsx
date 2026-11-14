@@ -75,7 +75,9 @@ export function GarmentPhoto({
             }}
           />
           {status === 'loading' && (
-            <span className="garment-photo-loading">Loading photo…</span>
+            <div className="garment-photo-skeleton" role="status">
+              <span className="sr-only">Loading photo…</span>
+            </div>
           )}
         </>
       )}

@@ -13,6 +13,8 @@ npm.cmd run dev
 
 Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive in-app navigation but **reset on refresh** until VISITOR-02; the wardrobe starts empty. `/outfits` still explains that recommendations are unavailable. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
 
+Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Garment images show a skeleton that preserves their space during loading, color changes and retry, with reduced-motion support.
+
 For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
 No environment variables, Clerk application, Supabase project, database, storage bucket or paid service is required for this foundation. Do not add real service credentials to source control. Future adapter work must document exact environment variable names with placeholders and separate development/test services before use. No provisioning, database migrations or deployment is configured here.

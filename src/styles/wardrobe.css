@@ -45,15 +45,6 @@
   font-size: var(--text-meta);
   margin: var(--space-2) 0 var(--space-3);
 }
-.selected-color-swatch {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 1px solid var(--input);
-  border-radius: 50%;
-  vertical-align: middle;
-  margin-right: var(--space-2);
-}
 .wardrobe-tools {
   display: flex;
   align-items: end;
@@ -96,6 +87,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3/4;
+  flex-shrink: 0;
   border-radius: var(--radius-card);
   background: var(--canvas);
   overflow: hidden;
@@ -116,15 +108,28 @@
 .garment-photo-error .ui-button {
   padding-inline: var(--space-3);
 }
-.garment-photo-loading {
+.garment-photo[aria-busy='true'] img {
+  opacity: 0;
+}
+.garment-photo-skeleton {
   position: absolute;
-  inset: auto var(--space-3) var(--space-3);
-  padding: var(--space-2);
-  border-radius: var(--radius-control);
-  background: var(--surface);
-  color: var(--foreground);
-  font-size: var(--text-label);
-  text-align: center;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--canvas) 25%,
+    var(--input) 50%,
+    var(--canvas) 75%
+  );
+  background-size: 200% 100%;
+  animation: garment-loading 1.5s ease-in-out infinite;
+}
+@keyframes garment-loading {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
 }
 .garment-card-heading {
   display: flex;

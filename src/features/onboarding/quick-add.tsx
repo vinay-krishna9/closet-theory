@@ -8,13 +8,7 @@ import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { EmptyState } from '@/components/ui/empty-state';
-import {
-  catalog,
-  colors,
-  groups,
-  type CatalogType,
-  type ColorId,
-} from './catalog';
+import { catalog, colors, groups, type CatalogType } from './catalog';
 import {
   defaultGarment,
   sameConfiguration,
@@ -33,16 +27,12 @@ function CatalogCard({
   onCustomize: (garment: Garment, opener: HTMLElement) => void;
 }) {
   const { items, dispatch, announce } = useVisitorWardrobe();
-  const [color, setColor] = useState<ColorId>(type.colors[0]);
-  const [ready, setReady] = useState('');
-  const garment = {
-    ...defaultGarment(type.id),
-    color,
-    name: `${colors[color].name} ${type.name}`,
-  };
+  const [ready, setReady] = useState(false);
+  const garment = defaultGarment(type.id);
+  const color = garment.color;
   const selected = items.some((item) => sameConfiguration(item, garment));
   function add(event: React.MouseEvent<HTMLButtonElement>) {
-    if (ready !== color) return;
+    if (!ready) return;
     if (similarItems(items, garment).length) {
       onCustomize(garment, event.currentTarget);
       return;
@@ -52,12 +42,7 @@ function CatalogCard({
   }
   return (
     <article className="garment-card" aria-label={`${type.name} catalog item`}>
-      <GarmentPhoto
-        key={color}
-        typeId={type.id}
-        color={color}
-        onReady={(loaded) => setReady(loaded ? color : '')}
-      />
+      <GarmentPhoto typeId={type.id} color={color} onReady={setReady} />
       <div className="garment-card-heading">
         <h2>{type.name}</h2>
         <span>{type.group}</span>
@@ -65,26 +50,6 @@ function CatalogCard({
       <p className="wardrobe-meta">
         {colors[color].name} · {type.formality}
       </p>
-      <Label htmlFor={`color-${type.id}`}>
-        <span
-          className="selected-color-swatch"
-          style={{ background: colors[color].hex }}
-          aria-hidden="true"
-        />
-        Color
-      </Label>
-      <select
-        id={`color-${type.id}`}
-        className="ui-input"
-        value={color}
-        onChange={(event) => setColor(event.target.value as ColorId)}
-      >
-        {type.colors.map((value) => (
-          <option value={value} key={value}>
-            {colors[value].name}
-          </option>
-        ))}
-      </select>
       <p className="wardrobe-image-caption">AI-generated sample</p>
       <div className="garment-actions">
         {selected ? (
@@ -95,7 +60,7 @@ function CatalogCard({
             </Link>
           </Button>
         ) : (
-          <Button onClick={add} disabled={ready !== color}>
+          <Button onClick={add} disabled={!ready}>
             <Icon icon={Plus} />I own this
           </Button>
         )}

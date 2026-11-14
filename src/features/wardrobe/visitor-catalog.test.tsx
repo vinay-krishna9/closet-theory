@@ -54,19 +54,20 @@ function loadEditor() {
 }
 
 describe('visitor catalog interactions', () => {
-  it('adds only the selected color, prevents rapid duplicate adds and leaves all other types unselected', () => {
+  it('adds the default configuration from a card without color controls or accidental duplicates', () => {
     setup();
     const card = tee();
-    fireEvent.change(within(card).getByLabelText('Color'), {
-      target: { value: 'navy' },
-    });
+    expect(within(card).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(within(card).queryByRole('radio')).not.toBeInTheDocument();
     expect(
       within(card).getByRole('button', { name: 'I own this' }),
     ).toBeDisabled();
     fireEvent.load(within(card).getByRole('img'));
-    fireEvent.click(within(card).getByRole('button', { name: 'I own this' }));
+    const add = within(card).getByRole('button', { name: 'I own this' });
+    fireEvent.click(add);
+    fireEvent.click(add);
     expect(
-      screen.getByRole('article', { name: 'Navy T-shirt' }),
+      screen.getByRole('article', { name: 'White T-shirt' }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole('article', { hidden: true })).toHaveLength(9);
     expect(
@@ -75,6 +76,43 @@ describe('visitor catalog interactions', () => {
     expect(
       screen.queryByRole('button', { name: 'Favorite' }),
     ).not.toBeInTheDocument();
+  });
+  it('chooses color in Customize and uses a loading skeleton through failure and retry', () => {
+    setup();
+    fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
+    const dialog = loadEditor();
+    fireEvent.change(
+      within(dialog).getByRole('textbox', { name: 'Garment name' }),
+      {
+        target: { value: 'My navy tee' },
+      },
+    );
+    fireEvent.click(within(dialog).getByRole('radio', { name: /^Navy$/ }));
+    const add = within(dialog).getByRole('button', { name: 'Add to wardrobe' });
+    expect(within(dialog).getByRole('status')).toHaveTextContent(
+      'Loading photo',
+    );
+    expect(add).toBeDisabled();
+    fireEvent.error(within(dialog).getByRole('img'));
+    expect(within(dialog).queryByRole('status')).not.toBeInTheDocument();
+    expect(within(dialog).getByText('Photo unavailable')).toBeVisible();
+    fireEvent.click(
+      within(dialog).getByRole('button', { name: 'Retry photo' }),
+    );
+    expect(within(dialog).getByRole('status')).toHaveTextContent(
+      'Loading photo',
+    );
+    expect(add).toBeDisabled();
+    fireEvent.load(within(dialog).getByRole('img'));
+    expect(within(dialog).queryByRole('status')).not.toBeInTheDocument();
+    expect(add).toBeEnabled();
+    fireEvent.click(add);
+    const item = screen.getByRole('article', { name: 'My navy tee' });
+    expect(within(item).getByRole('img')).toHaveAttribute(
+      'alt',
+      expect.stringContaining('Navy T-shirt'),
+    );
+    expect(within(tee()).getByText(/White/)).toBeVisible();
   });
   it('retains invalid draft values, focuses the invalid field and preserves edits when dismissal is cancelled', async () => {
     setup();
@@ -102,6 +140,9 @@ describe('visitor catalog interactions', () => {
     fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
     const dialog = loadEditor();
     const season = within(dialog).getByRole('group', { name: /^Seasons/ });
+    expect(
+      within(dialog).queryByRole('button', { name: 'Use all seasons' }),
+    ).not.toBeInTheDocument();
     for (const label of ['Spring', 'Summer', 'Autumn', 'Winter'])
       fireEvent.click(within(season).getByRole('checkbox', { name: label }));
     fireEvent.click(within(season).getByRole('checkbox', { name: 'Winter' }));
