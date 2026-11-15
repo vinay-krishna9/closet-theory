@@ -8,6 +8,8 @@ As of 13 November 2026, BUILD-01/02 provide the verified shared foundation and V
 
 The [VISITOR-01 plan](VISITOR-01-plan.md) is approved and implemented locally. See its [completion record](VISITOR-01.md) for behavior/checks and [catalog assets](catalog-assets.md) for studio provenance, earlier photographic terms and recoloring. Reload persistence is the next feature, VISITOR-02.
 
+The [custom button spinner plan](VISITOR-01-spinner-plan.md) records the requested follow-up for stable editor actions during color-preview loading. Implementation and verification are pending.
+
 | Document                                  | Purpose                                                                                                                      |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | [Root README](../README.md)               | Installation, commands, repository map and tooling limitations                                                               |
