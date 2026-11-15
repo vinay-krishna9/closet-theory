@@ -1,6 +1,8 @@
-# VISITOR-01 — Stable editor actions and custom loading spinner
+# VISITOR-03 — Stable editor actions and custom loading spinner
 
 Status recorded 15 November 2026. The user requested a custom spinner inside Add to wardrobe and asked for a documented plan and GitHub issue. This document records the proposed implementation for review. Implementation and verification are pending.
+
+Tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23) under M2 — Visitor wardrobe and suggestions. Builds on [VISITOR-01, issue #7](https://github.com/vinay-krishna9/closet-theory/issues/7).
 
 ## User need
 

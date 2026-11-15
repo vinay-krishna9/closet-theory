@@ -8,7 +8,7 @@ As of 13 November 2026, BUILD-01/02 provide the verified shared foundation and V
 
 The [VISITOR-01 plan](VISITOR-01-plan.md) is approved and implemented locally. See its [completion record](VISITOR-01.md) for behavior/checks and [catalog assets](catalog-assets.md) for studio provenance, earlier photographic terms and recoloring. Reload persistence is the next feature, VISITOR-02.
 
-The [custom button spinner plan](VISITOR-01-spinner-plan.md) records the requested follow-up for stable editor actions during color-preview loading. Implementation and verification are pending.
+The [VISITOR-03 plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the requested custom spinner and stable editor actions during color-preview loading. Implementation and verification are pending.
 
 | Document                                  | Purpose                                                                                                                      |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |

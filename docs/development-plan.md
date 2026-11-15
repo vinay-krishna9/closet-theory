@@ -95,6 +95,13 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Recover after reload; handle blocked/corrupt storage gracefully with in-memory use and an explanatory notice.
 - **Acceptance:** selections survive the intended lifecycle; no personal photos/session tokens are stored; visitors cannot perform account-only operations. Test reset and schema migration behavior.
 
+### VISITOR-03 — Stable editor actions and custom loading spinner
+
+- Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Show a custom spinner inside the primary action with reserved icon space and its visible label.
+- Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
+- **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
+- **Status:** planned; implementation and verification pending. Depends on VISITOR-01 (#7).
+
 ### ENGINE-01 — Deterministic matching and reasons
 
 - Implement eligibility, top/bottom/shoe completeness, approved optional-jacket policy, compatibility and freshness inputs in pure TypeScript.
