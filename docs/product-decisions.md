@@ -4,11 +4,21 @@ Status: agreed, 7 November 2026. This record resolves the product choices discus
 
 ## Quick-add and customization
 
+Editor layout, approved 14 November 2026: the garment stays visible while editing. On desktop use a wider two-column editor, with preview/name/color on the left and Group/Type/Formality/Seasons/optional details on the right. The user subsequently clarified that catalog Group and Type stay fixed. Retain the icon-and-name Group/Type tiles in Customize and wardrobe editing, with the catalog values selected and all Group/Type choices disabled; editable attributes remain specific to that garment type. Personal uploads retain their separate classification workflow. On phones use a compact pinned preview above scrolling controls. Allow scrolling for expanded details, short screens and enlarged text while retaining the preview.
+
+Interaction refinement, approved 14 November 2026: direct card Add uses the default color. Change color inside Customize or the item editor. Keep the shared image area at a stable height with a loading skeleton during initial load, color changes and retry, respecting reduced motion. Select seasons individually; remove the “Use all seasons” shortcut.
+
+Catalog imagery revision, approved 13 November 2026: the user rejected the initial photographic set's informal appearance, compared three AI-generated studio samples and approved that style for all eight garment types. Use consistent unbranded studio product imagery, clean cutouts and material-only named-color variants. Label generated samples accurately and retain generation prompts/provenance. This decision supersedes earlier real/licensed-photograph-only wording for the shared catalog. See [catalog assets](catalog-assets.md).
+
 Choose a garment type and named color, then add the basic item immediately or optionally open Customize. T-shirts support neckline/collar, sleeve length and pattern choices; examples include crew/V-neck/polo, sleeveless/short/long sleeves, and solid/striped/checked/printed. Other garments expose only relevant options. Exact per-type option lists are implementation configuration to review, not permission to introduce new garment groups.
 
 Solid is a default example, not a restriction on catalog clothing. Quick-add tags have sensible editable formality/season defaults. Uploaded garments require tag confirmation, including editable color and customization details needed for matching. These describe clothes the user already owns, not products to buy.
 
 Keep shared catalog templates unique. Save customizations on the user's selected item rather than creating a new shared catalog record for every possible combination. Never add a private photo to the shared catalog. Use realistic licensed representative imagery; label it Representative image when it does not show the exact customization, and list the selected details. Do not pretend to render an exact photo for every combination.
+
+## Catalog recoloring follow-up — 13 November 2026
+
+The user selected free licensed catalog photography, broad color coverage (about 8–10 named colors per type) and visual garment recoloring, with placement delegated to implementation planning. Place recoloring in VISITOR-01 Quick-add, before Add: show the chosen color on the garment, then use the same color/image reference in Wardrobe and later Outfits. This intentionally supersedes earlier catalog no-recoloring wording; `design.md` section 20 defines its boundary. Personal-photo recoloring and automatic pattern/shape synthesis are not included. The detailed plan and output quality still require implementation approval and validation.
 
 ## Similarity, exact matching and import
 

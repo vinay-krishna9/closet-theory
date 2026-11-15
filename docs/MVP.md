@@ -35,7 +35,7 @@ Core promise: select or upload clothes you own, then receive understandable, rul
 | Shoes | Sneakers |
 | Outerwear | Simple jacket |
 
-Use realistic, appropriately licensed sample photos and named common-color swatches per garment. Label sample imagery; selections represent clothes users already own. Do not add unselected catalog clothes automatically. Replacing sample imagery with a personal photo preserves item identity and history.
+Use realistic studio garment samples and named common-color swatches per garment. On 13 November 2026 the user approved AI-generated studio imagery for all eight types, superseding the earlier photographic-source requirement. Label generated samples and retain prompts/provenance; selections represent clothes users already own. Do not add unselected catalog clothes automatically. Replacing sample imagery with a personal photo preserves item identity and history.
 
 Quick-add items have editable category/type, color, formality and season defaults. Clothing groups define outfit slots; types refine classification, such as Bottoms → Jeans. No custom color picker is required at launch.
 
@@ -67,7 +67,7 @@ Quick-add items have editable category/type, color, formality and season default
 
 ## Experience, privacy and quality
 
-- `design.md` governs appearance, accessibility, navigation, motion, image handling and the warm stone/charcoal palette. This PRD governs release scope; identify conflicts before implementation.
+- `design.md` governs appearance, accessibility, navigation, motion, image handling and the approved cool charcoal/graphite palette (section 17). This PRD governs release scope; identify conflicts before implementation.
 - Show distinct loading, empty, no-match, error and recovery states. Essential actions work on touch and keyboard.
 - Enforce owner-only data/media access. Use isolated test data; no private photos in fixtures or analytics.
 - Provide accurate privacy information, account/data deletion access and documented retention behavior before release.

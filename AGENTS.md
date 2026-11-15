@@ -101,6 +101,10 @@ Use standard software tests. AI-assisted development does not replace them or ju
 
 The BUILD-01 scaffold uses `src/app/` for App Router routes and `src/styles/globals.css` for base styling. Add feature directories only when needed. Co-locate component/unit tests; browser journeys live in `tests/e2e/`, with shared test setup in `tests/setup.ts`.
 
+BUILD-02 adds `src/app/(workspace)/` for the shared visitor layout, `src/components/app-shell.tsx`, Radix/shadcn controls in `src/components/ui/`, and shared styling in `src/styles/tokens.css` and `src/styles/components.css`. Fonts load globally in the root layout. Keep illustrative wardrobes/outfits confined to `src/features/design-review/`; production visitor wardrobes start empty and only explicit user selections add clothing.
+
+VISITOR-01 uses `src/features/onboarding/` for the real public catalog and `src/features/wardrobe/` for selections/editor state. The root layout hosts the in-memory visitor provider; reload persistence belongs to VISITOR-02. `npm.cmd run catalog:prepare` reproduces the approved studio catalog color variants from local sources/masks using existing Playwright tooling. Keep provenance, generation prompts and retained photographic credits in `docs/catalog-assets.md` and the shipped `/catalog-credits` page current when assets change.
+
 See `README.md` and `package.json` for installation, development, formatting, linting, type checking, tests and production commands. Use Node 22.18+ within the 22.x line and npm 10+. On restricted PowerShell installations, use `npm.cmd`/`npx.cmd` rather than changing execution policy.
 
 `npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.
@@ -123,7 +127,7 @@ Keep this file concise and accurate as the repository evolves. Update concrete p
 
 - Visitors select owned clothes from the real quick-add catalog, use season/formality filters and get up to six suggestions with Show more. No separate demo or prefilled wardrobe. React context/reducer plus browser storage remembers selections; Redux is deferred.
 - Visitors cannot upload personal photos, save preferences or log wears. Google/email-password signup or existing-account sign-in automatically imports selections once; retain local source until persistence succeeds. Sign-out clears account caches and starts a fresh visitor wardrobe.
-- Catalog groups/types: Tops → T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and realistic licensed sample photos; editable defaults.
+- Catalog groups/types: Tops → T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and editable defaults. The user approved AI-generated studio product samples for all eight types on 13 November 2026, superseding the earlier real-photograph requirement; label generated imagery and retain provenance.
 - Upload one garment at a time, confirm Group → Type, color, formality and seasons, review automatic background removal, then save or explicitly use the original. Offer Add another after success.
 - Complete outfits need top, bottom and shoes; jacket optional. Season/formality filters include Any. No extra occasion requirement.
 - Statistics are all-time. Removing a garment preserves historical wears, excludes it and dependent outfits from future suggestions, deletes its private photos and uses existing catalog imagery or a placeholder in history. Never add personal garments/photos to the shared catalog. Lifetime totals retain valid history; current most/least/never-worn lists include active items only. Account deletion is a separate privacy operation.

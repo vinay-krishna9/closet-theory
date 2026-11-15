@@ -73,6 +73,8 @@ Use elevated server credentials only for narrowly defined maintenance/cleanup op
 
 ### Visitor
 
+Current VISITOR-01 implementation: static typed catalog data in `src/features/onboarding/`, pure selection rules and context/reducer in `src/features/wardrobe/`, and a client provider in the server root layout so Home/Quick-add/Wardrobe navigation retains selections. Refresh resets this in-memory state; the persistence requirements below are VISITOR-02 work. The user-approved v2 catalog uses public AI-generated studio sources with locally prepared cutouts, protected-detail masks and color derivatives. Preparation runs before shipping; see [catalog assets](catalog-assets.md) for provenance and earlier photographic credits. No database or private-media integration has been introduced.
+
 - No separate demo account, prefilled wardrobe or personal-photo upload.
 - Visitors select catalog garments and named color variants they actually own, then request suggestions.
 - Persist only catalog references, selection IDs, editable tags and schema version in browser storage. Do not persist personal photos or application-managed authentication tokens there.

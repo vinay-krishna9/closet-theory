@@ -1,6 +1,6 @@
 # Personal Stylist — MVP Development Plan
 
-Status: proposed delivery plan for review · 7 November 2026
+Status: delivery plan with recorded sequencing and design updates through 13 November 2026. Per-feature approval and verification still apply; see [documentation index](README.md) for current implementation status.
 
 Save at `docs/development-plan.md`. Read alongside `MVP.md`, `user-flows.md`, `architecture.md`, root `design.md` and root `AGENTS.md`. This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
 
@@ -72,8 +72,8 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### BUILD-02 — Tokens and shared app shell
 
-- First design mobile/desktop Wardrobe, Quick-add and Outfits screens using `design.md`, then review and obtain user approval before implementing those designs. Design remaining screens before their respective features.
-- Implement warm stone/charcoal tokens, fonts, Lucide icons, shadcn/ui controls, dialog/editor foundations and route layouts.
+- Mobile/desktop Wardrobe, Quick-add and Outfits mockups are designed and user-approved, with visual review signed off on 13 November 2026. See [BUILD-02 status and evidence](BUILD-02.md). Design remaining screens before their respective features.
+- Completed locally on 13 November 2026: shared cool charcoal/graphite tokens (authoritative `design.md` section 17), global Space Grotesk/Manrope typography, Lucide icon wrapper, Radix/shadcn controls, dialog/editor foundations and route layouts. Production visitor routes show honest unavailable states; illustrative data stays in review routes. See BUILD-02 for check results and limits.
 - Desktop/tablet account shell uses top navigation; mobile account shell uses bottom links. Public/visitor shell follows the approved flow decision.
 - **Acceptance:** responsive shell, keyboard focus and reduced motion reviewed; no pure-white UI defaults or theme toggle; controls match `design.md`. Keep authentication-dependent destinations honest while backend features are incomplete.
 
@@ -81,15 +81,26 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### VISITOR-01 — Quick-add catalog
 
+The later user-approved studio image revision supersedes this task's initial real-photograph sourcing requirement. All eight types now use AI-generated studio samples with labelled provenance and locally prepared color variants; see [catalog assets](catalog-assets.md).
+
 - Model the eight launch types and their named color variants/default tags. Source appropriately licensed realistic photos and record provenance.
+- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and free licensed photos; see [implementation plan](VISITOR-01-plan.md) and `design.md` section 20.
 - Let visitors select only clothes they own, inspect/edit tags and remove selections. No prefilling or uploads.
 - **Acceptance:** group/type relationships are valid; sample photos are identified; color names are accessible; unselected garments are never added. Catalog ownership does not change when a user selects an item.
+- **Local result:** the approved plan is implemented with eight types/64 color variants, editable selections, duplicate/similarity handling and public photo attribution. See [VISITOR-01 completion record](VISITOR-01.md) for actual verification and limits. Reload persistence remains VISITOR-02.
 
 ### VISITOR-02 — Local wardrobe persistence
 
-- Add stable selection IDs, versioned browser storage and shared React state.
+- Build on VISITOR-01's stable selection IDs and shared React context/reducer; add versioned browser storage and schema validation/migration.
 - Recover after reload; handle blocked/corrupt storage gracefully with in-memory use and an explanatory notice.
 - **Acceptance:** selections survive the intended lifecycle; no personal photos/session tokens are stored; visitors cannot perform account-only operations. Test reset and schema migration behavior.
+
+### VISITOR-03 — Stable editor actions and custom loading spinner
+
+- Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Show a custom spinner inside the primary action with reserved icon space and its visible label.
+- Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
+- **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
+- **Status:** planned; implementation and verification pending. Depends on VISITOR-01 (#7).
 
 ### ENGINE-01 — Deterministic matching and reasons
 
@@ -223,7 +234,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-Review this milestone order. Document reconciliation has been performed locally; review its diff and run link/consistency checks before marking PLAN-01 complete. Settle genuinely blocking M0 questions. Use the existing vinay-krishna9/closet-theory repository and linked MVP board; do not recreate the 21 existing issues. No scaffold or feature implementation should begin merely because this file exists.
+VISITOR-01 is implemented locally with its completion record. Next, prepare the concrete VISITOR-02 browser-persistence plan under the repository's brief-plan/approval workflow, then continue the M2 outfit engine/results and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
 
 ## Resolved PLAN-02 decisions
 
