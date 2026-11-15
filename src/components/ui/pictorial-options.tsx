@@ -122,6 +122,7 @@ export function PictorialOptions({
   values,
   onValuesChange,
   invalid = false,
+  disabled = false,
   errorId,
 }: {
   legend: string;
@@ -133,6 +134,7 @@ export function PictorialOptions({
   values?: readonly string[];
   onValuesChange?: (values: string[]) => void;
   invalid?: boolean;
+  disabled?: boolean;
   errorId?: string;
 }) {
   const name = useId();
@@ -155,6 +157,7 @@ export function PictorialOptions({
               type={multiple ? 'checkbox' : 'radio'}
               name={name}
               value={choice.value}
+              disabled={disabled}
               checked={
                 multiple && values !== undefined
                   ? values.includes(choice.value)

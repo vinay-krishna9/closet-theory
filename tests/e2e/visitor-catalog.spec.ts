@@ -122,6 +122,109 @@ test('select, customize, edit and remove only owned clothing across visitor navi
   expect(errors).toEqual([]);
 });
 
+test('editor keeps its catalog type fixed and its preview visible', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/quick-add');
+  await page
+    .getByRole('article', { name: 'T-shirt catalog item' })
+    .getByRole('button', { name: 'Customize', exact: true })
+    .click();
+  const editor = page.getByRole('dialog');
+  const group = editor.getByRole('group', { name: 'Group', exact: true });
+  const type = editor.getByRole('group', { name: 'Type', exact: true });
+  await expect(
+    group.getByRole('radio', { name: 'Tops', exact: true }),
+  ).toBeChecked();
+  await expect(
+    type.getByRole('radio', { name: 'T-shirt', exact: true }),
+  ).toBeChecked();
+  for (const choice of [
+    ...(await group.getByRole('radio').all()),
+    ...(await type.getByRole('radio').all()),
+  ])
+    await expect(choice).toBeDisabled();
+  await group.getByText('Shoes', { exact: true }).click({ force: true });
+  await expect(
+    group.getByRole('radio', { name: 'Tops', exact: true }),
+  ).toBeChecked();
+  await expect(editor.getByRole('combobox')).toHaveCount(0);
+  await editor.getByRole('radio', { name: 'White', exact: true }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    editor.getByRole('radio', { name: 'Black', exact: true }),
+  ).toBeChecked();
+  await expect(editor.locator('.item-editor-preview img')).toHaveAttribute(
+    'alt',
+    /Black T-shirt/,
+  );
+  await page.keyboard.press('Tab');
+  await expect(
+    editor.getByRole('radio', { name: 'Casual', exact: true }),
+  ).toBeFocused();
+  await editor.getByText('Customize the details', { exact: true }).click();
+  await expect(
+    editor.getByRole('button', { name: 'Add to wardrobe' }),
+  ).toBeEnabled();
+  const photo = editor.locator('.item-editor-preview .garment-photo');
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 1024, height: 768 },
+    { width: 768, height: 768 },
+    { width: 390, height: 844 },
+    { width: 320, height: 568 },
+    { width: 844, height: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await editor
+      .locator(
+        '.item-editor-fields, .item-editor-identity, .item-editor-options',
+      )
+      .evaluateAll((elements) =>
+        elements.forEach((element) => (element.scrollTop = 0)),
+      );
+    const before = (await photo.boundingBox())!;
+    const header = (await editor.locator('.editor-header').boundingBox())!;
+    const footer = (await editor.locator('.editor-footer').boundingBox())!;
+    expect(before.y).toBeGreaterThanOrEqual(header.y + header.height - 1);
+    expect(before.y + before.height).toBeLessThanOrEqual(footer.y + 1);
+    const scroller = editor.locator(
+      viewport.width >= 768 ? '.item-editor-options' : '.item-editor-fields',
+    );
+    await scroller.evaluate(
+      (element) => (element.scrollTop = element.scrollHeight),
+    );
+    const after = (await photo.boundingBox())!;
+    expect(after.y).toBeCloseTo(before.y, 1);
+    expect(after.height).toBeCloseTo(before.height, 1);
+    expect(
+      await editor.evaluate(
+        (element) => element.scrollWidth > element.clientWidth,
+      ),
+    ).toBe(false);
+    if (viewport.width === 1440 || viewport.width === 390)
+      await page.screenshot({
+        path: testInfo.outputPath(`editor-pinned-${viewport.width}.png`),
+        animations: 'disabled',
+      });
+  }
+  await page.setViewportSize({ width: 320, height: 480 });
+  await page.evaluate(() => (document.documentElement.style.fontSize = '200%'));
+  await editor.getByRole('radio', { name: 'Printed', exact: true }).focus();
+  const preview = (await photo.boundingBox())!;
+  const footer = (await editor.locator('.editor-footer').boundingBox())!;
+  expect(preview.y + preview.height).toBeLessThanOrEqual(footer.y + 1);
+  await expect(
+    editor.getByRole('radio', { name: 'Printed', exact: true }),
+  ).toBeInViewport();
+  expect(
+    await editor.evaluate(
+      (element) => element.scrollWidth > element.clientWidth,
+    ),
+  ).toBe(false);
+});
+
 test('duplicate choices keep or replace existing clothing and separate garments need confirmation', async ({
   page,
 }) => {

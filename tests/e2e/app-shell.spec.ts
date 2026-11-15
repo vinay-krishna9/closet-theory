@@ -159,9 +159,12 @@ test('shared editor is full-screen on phones and a drawer on larger screens', as
   await expect(
     footer.getByRole('button', { name: 'Done reviewing' }),
   ).toBeVisible();
-  expect(
-    (await footer.boundingBox())!.y + (await footer.boundingBox())!.height,
-  ).toBeLessThanOrEqual(480);
+  await expect
+    .poll(async () => {
+      const footerBox = (await footer.boundingBox())!;
+      return footerBox.y + footerBox.height;
+    })
+    .toBeLessThanOrEqual(480);
   await page.keyboard.press('Escape');
   await expect(opener).toBeFocused();
   await expect(page.locator('body')).not.toHaveAttribute('data-scroll-locked');

@@ -36,6 +36,14 @@
   margin: 0;
   z-index: 1;
 }
+.picture-choice:has(> input:disabled),
+.picture-choice > input:disabled {
+  cursor: default;
+}
+.picture-choice > input:disabled:not(:checked) + .picture-tile {
+  border-color: var(--border);
+  opacity: 0.6;
+}
 .picture-tile {
   display: flex;
   align-items: center;

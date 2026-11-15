@@ -135,35 +135,67 @@ describe('visitor catalog interactions', () => {
       'My everyday tee',
     );
   });
-  it('clears inapplicable options on group/type changes and supports explicit multiple seasons', () => {
-    setup();
-    fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
-    const dialog = loadEditor();
-    const season = within(dialog).getByRole('group', { name: /^Seasons/ });
-    expect(
-      within(dialog).queryByRole('button', { name: 'Use all seasons' }),
-    ).not.toBeInTheDocument();
-    for (const label of ['Spring', 'Summer', 'Autumn', 'Winter'])
-      fireEvent.click(within(season).getByRole('checkbox', { name: label }));
-    fireEvent.click(within(season).getByRole('checkbox', { name: 'Winter' }));
-    expect(
-      within(season).getByRole('checkbox', { name: 'Winter' }),
-    ).toBeChecked();
-    fireEvent.change(within(dialog).getByLabelText('Group'), {
-      target: { value: 'Shoes' },
-    });
-    expect(within(dialog).getByLabelText('Type')).toHaveValue('sneakers');
-    fireEvent.click(within(dialog).getByText('Customize the details'));
-    expect(
-      within(dialog).queryByRole('group', { name: 'Neckline / collar' }),
-    ).not.toBeInTheDocument();
-    expect(
-      within(dialog).queryByRole('group', { name: 'Sleeves' }),
-    ).not.toBeInTheDocument();
-    expect(
-      within(dialog).getByRole('checkbox', { name: 'Winter' }),
-    ).toBeChecked();
-  });
+  it.each([
+    { name: 'T-shirt', group: 'Tops' },
+    { name: 'Sneakers', group: 'Shoes' },
+  ])(
+    'keeps catalog $name identity fixed while customizing and editing',
+    ({ name, group }) => {
+      setup();
+      const card = screen.getByRole('article', {
+        name: name + ' catalog item',
+      });
+      fireEvent.click(within(card).getByRole('button', { name: 'Customize' }));
+      let dialog = loadEditor();
+      const groupChoices = within(dialog).getByRole('group', {
+        name: /^Group$/,
+      });
+      const typeChoices = within(dialog).getByRole('group', { name: /^Type$/ });
+      expect(
+        within(groupChoices).getByRole('radio', { name: group }),
+      ).toBeChecked();
+      expect(within(typeChoices).getByRole('radio', { name })).toBeChecked();
+      for (const choice of [
+        ...within(groupChoices).getAllByRole('radio'),
+        ...within(typeChoices).getAllByRole('radio'),
+      ])
+        expect(choice).toBeDisabled();
+      expect(within(dialog).queryByRole('combobox')).not.toBeInTheDocument();
+      const season = within(dialog).getByRole('group', { name: /^Seasons/ });
+      for (const label of ['Spring', 'Summer', 'Autumn', 'Winter'])
+        fireEvent.click(within(season).getByRole('checkbox', { name: label }));
+      fireEvent.click(within(season).getByRole('checkbox', { name: 'Winter' }));
+      fireEvent.change(
+        within(dialog).getByRole('textbox', { name: 'Garment name' }),
+        { target: { value: 'My winter staple' } },
+      );
+      fireEvent.click(within(dialog).getByRole('radio', { name: /^Navy$/ }));
+      fireEvent.load(within(dialog).getAllByRole('img')[0]);
+      fireEvent.click(
+        within(dialog).getByRole('button', { name: 'Add to wardrobe' }),
+      );
+      const saved = screen.getByRole('article', { name: 'My winter staple' });
+      expect(within(saved).getByRole('img')).toHaveAttribute(
+        'alt',
+        expect.stringContaining('Navy ' + name),
+      );
+      fireEvent.click(
+        within(saved).getByRole('button', { name: 'Edit clothing' }),
+      );
+      dialog = loadEditor();
+      expect(
+        within(dialog).getByRole('checkbox', { name: 'Winter' }),
+      ).toBeChecked();
+      expect(
+        within(dialog).getByRole('radio', { name: /^Navy$/ }),
+      ).toBeChecked();
+      const savedType = within(
+        within(dialog).getByRole('group', { name: /^Type$/ }),
+      ).getByRole('radio', { name });
+      expect(savedType).toBeChecked();
+      expect(savedType).toBeDisabled();
+    },
+  );
   it('asks about similar clothing, keeps the existing entry and requires confirmation for a separate garment', () => {
     setup();
     const card = tee();

@@ -4,6 +4,8 @@ Status: agreed, 7 November 2026. This record resolves the product choices discus
 
 ## Quick-add and customization
 
+Editor layout, approved 14 November 2026: the garment stays visible while editing. On desktop use a wider two-column editor, with preview/name/color on the left and Group/Type/Formality/Seasons/optional details on the right. The user subsequently clarified that catalog Group and Type stay fixed. Retain the icon-and-name Group/Type tiles in Customize and wardrobe editing, with the catalog values selected and all Group/Type choices disabled; editable attributes remain specific to that garment type. Personal uploads retain their separate classification workflow. On phones use a compact pinned preview above scrolling controls. Allow scrolling for expanded details, short screens and enlarged text while retaining the preview.
+
 Interaction refinement, approved 14 November 2026: direct card Add uses the default color. Change color inside Customize or the item editor. Keep the shared image area at a stable height with a loading skeleton during initial load, color changes and retry, respecting reduced motion. Select seasons individually; remove the “Use all seasons” shortcut.
 
 Catalog imagery revision, approved 13 November 2026: the user rejected the initial photographic set's informal appearance, compared three AI-generated studio samples and approved that style for all eight garment types. Use consistent unbranded studio product imagery, clean cutouts and material-only named-color variants. Label generated samples accurately and retain generation prompts/provenance. This decision supersedes earlier real/licensed-photograph-only wording for the shared catalog. See [catalog assets](catalog-assets.md).

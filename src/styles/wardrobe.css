@@ -189,6 +189,134 @@
   width: min(100%, 280px);
   margin-inline: auto;
 }
+.item-editor-layout {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.item-editor-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.item-editor-preview .garment-photo {
+  width: auto;
+  height: clamp(64px, 18dvh, 144px);
+  margin: 0;
+}
+.item-editor-preview .wardrobe-image-caption {
+  max-width: 160px;
+}
+.item-editor-fields {
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-4);
+  scroll-padding-block: var(--space-4);
+}
+.item-editor-identity,
+.item-editor-options {
+  min-width: 0;
+}
+.item-editor .wardrobe-field {
+  margin-top: 0;
+}
+.item-editor .picture-tile {
+  min-height: 76px;
+  padding: var(--space-2);
+  gap: var(--space-1);
+}
+.item-editor .picture-icon > svg[viewBox='0 0 64 64'] {
+  width: 36px;
+  height: 36px;
+}
+.item-editor .color-options-grid label > span {
+  min-height: 68px;
+  padding: var(--space-2) var(--space-1);
+  gap: var(--space-1);
+}
+.item-editor .color-options-grid i {
+  width: 24px;
+  height: 24px;
+}
+.item-customize-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+@media (min-width: 768px) {
+  .ui-dialog--editor.item-editor {
+    width: min(1040px, 100vw);
+  }
+  .item-editor-layout {
+    grid-template-columns: minmax(240px, 32%) minmax(0, 1fr);
+  }
+  .item-editor-preview {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    padding: var(--space-4) var(--space-6) 0;
+    border: 0;
+    text-align: center;
+  }
+  .item-editor-preview .garment-photo {
+    height: clamp(140px, 28dvh, 280px);
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  .item-editor-preview .wardrobe-image-caption {
+    max-width: none;
+  }
+  .item-editor-fields {
+    display: contents;
+  }
+  .item-editor-identity {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-6);
+  }
+  .item-editor-identity .color-options {
+    margin-bottom: 0;
+  }
+  .item-editor-options {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-6);
+    border-left: 1px solid var(--border);
+  }
+  .item-editor-options > .picture-options:first-of-type {
+    margin-top: var(--space-4);
+  }
+  .item-editor-options .picture-grid {
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .item-customize-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .item-customize-grid > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-height: 600px) {
+  .item-editor-preview {
+    padding-block: var(--space-2);
+  }
+  .item-editor-preview .garment-photo {
+    height: clamp(48px, 15dvh, 90px);
+  }
+  .item-editor-preview .wardrobe-image-caption {
+    display: none;
+  }
+}
 .wardrobe-field {
   margin-block: var(--space-6);
 }
