@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Editor } from '@/components/ui/editor';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icon } from '@/components/ui/icon';
@@ -38,7 +39,7 @@ import {
   type WardrobeItem,
 } from './model';
 import { useVisitorWardrobe } from './visitor-provider';
-import { GarmentPhoto } from './garment-photo';
+import { GarmentPhoto, type PhotoStatus } from './garment-photo';
 import { CatalogPicture } from '@/features/onboarding/catalog-picture';
 
 export function ItemEditor({
@@ -55,7 +56,10 @@ export function ItemEditor({
   const { items, dispatch, announce } = useVisitorWardrobe();
   const [draft, setDraft] = useState<Garment>(initial);
   const [errors, setErrors] = useState<string[]>([]);
-  const [readyKey, setReadyKey] = useState('');
+  const [preview, setPreview] = useState<{ key: string; status: PhotoStatus }>({
+    key: '',
+    status: 'loading',
+  });
   const [conflicts, setConflicts] = useState<readonly WardrobeItem[] | null>(
     null,
   );
@@ -66,11 +70,12 @@ export function ItemEditor({
   const errorSummary = useRef<HTMLDivElement>(null);
   const type = getType(draft.typeId),
     previewKey = `${draft.typeId}:${draft.color}`;
-  const previewReady = readyKey === previewKey;
+  const previewStatus = preview.key === previewKey ? preview.status : 'loading';
+  const previewReady = previewStatus === 'ready';
   const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
   function patch(patch: Partial<Omit<Garment, 'typeId'>>) {
     if (patch.color !== undefined && patch.color !== draft.color)
-      setReadyKey('');
+      setPreview({ key: '', status: 'loading' });
     setDraft((current) => ({ ...current, ...patch }));
     setErrors([]);
     setConflicts(null);
@@ -158,7 +163,9 @@ export function ItemEditor({
                 typeId={draft.typeId}
                 color={draft.color}
                 priority
-                onReady={(ready) => setReadyKey(ready ? previewKey : '')}
+                onStatusChange={(status) =>
+                  setPreview({ key: previewKey, status })
+                }
               />
               <p className="wardrobe-image-caption">
                 AI-generated sample · Representative details
@@ -432,14 +439,20 @@ export function ItemEditor({
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" disabled={!previewReady || !!conflicts}>
-              {itemId ? 'Save changes' : 'Add to wardrobe'}
-            </Button>
-            {!previewReady && (
-              <span className="wardrobe-help">
-                A loaded color preview is required before saving.
+            <Button
+              type="submit"
+              className="item-editor-submit"
+              disabled={!previewReady || !!conflicts}
+              aria-busy={previewStatus === 'loading'}
+              aria-label={itemId ? 'Save changes' : 'Add to wardrobe'}
+            >
+              <span className="item-editor-loading" aria-hidden="true">
+                {previewStatus === 'loading' && <Spinner />}
               </span>
-            )}
+              <span className="item-editor-action-label">
+                {itemId ? 'Save changes' : 'Add to wardrobe'}
+              </span>
+            </Button>
           </div>
         </form>
       </DialogContent>

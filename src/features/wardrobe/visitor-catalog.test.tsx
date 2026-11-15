@@ -80,7 +80,12 @@ describe('visitor catalog interactions', () => {
   it('chooses color in Customize and uses a loading skeleton through failure and retry', () => {
     setup();
     fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
-    const dialog = loadEditor();
+    const dialog = screen.getByRole('dialog');
+    const add = within(dialog).getByRole('button', { name: 'Add to wardrobe' });
+    expect(add).toHaveAttribute('aria-busy', 'true');
+    expect(add).toHaveAccessibleName('Add to wardrobe');
+    fireEvent.load(within(dialog).getByRole('img'));
+    expect(add).toHaveAttribute('aria-busy', 'false');
     fireEvent.change(
       within(dialog).getByRole('textbox', { name: 'Garment name' }),
       {
@@ -88,14 +93,19 @@ describe('visitor catalog interactions', () => {
       },
     );
     fireEvent.click(within(dialog).getByRole('radio', { name: /^Navy$/ }));
-    const add = within(dialog).getByRole('button', { name: 'Add to wardrobe' });
     expect(within(dialog).getByRole('status')).toHaveTextContent(
       'Loading photo',
     );
     expect(add).toBeDisabled();
+    expect(add).toHaveAttribute('aria-busy', 'true');
     fireEvent.error(within(dialog).getByRole('img'));
     expect(within(dialog).queryByRole('status')).not.toBeInTheDocument();
     expect(within(dialog).getByText('Photo unavailable')).toBeVisible();
+    expect(add).toHaveAttribute('aria-busy', 'false');
+    expect(add).toBeDisabled();
+    expect(within(dialog).getByLabelText('Garment name')).toHaveValue(
+      'My navy tee',
+    );
     fireEvent.click(
       within(dialog).getByRole('button', { name: 'Retry photo' }),
     );
@@ -103,9 +113,11 @@ describe('visitor catalog interactions', () => {
       'Loading photo',
     );
     expect(add).toBeDisabled();
+    expect(add).toHaveAttribute('aria-busy', 'true');
     fireEvent.load(within(dialog).getByRole('img'));
     expect(within(dialog).queryByRole('status')).not.toBeInTheDocument();
     expect(add).toBeEnabled();
+    expect(add).toHaveAttribute('aria-busy', 'false');
     fireEvent.click(add);
     const item = screen.getByRole('article', { name: 'My navy tee' });
     expect(within(item).getByRole('img')).toHaveAttribute(

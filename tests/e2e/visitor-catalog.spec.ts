@@ -316,6 +316,10 @@ test('failed color previews preserve tags and retry without saving the wrong ima
     editor.getByRole('button', { name: 'Add to wardrobe' }),
   ).toBeDisabled();
   await expect(
+    editor.getByRole('button', { name: 'Add to wardrobe' }),
+  ).toHaveAttribute('aria-busy', 'false');
+  await expect(editor.locator('.clothing-spinner')).toHaveCount(0);
+  await expect(
     editor.getByRole('textbox', { name: 'Garment name' }),
   ).toHaveValue('My recovery tee');
   await expect(
@@ -333,74 +337,205 @@ test('failed color previews preserve tags and retry without saving the wrong ima
   ).toHaveAttribute('alt', /Navy T-shirt/);
 });
 
-test('color changes retain preview height with a skeleton and ignore late results', async ({
-  page,
-}, testInfo) => {
-  let release: () => void = () => {};
-  let navyRequested = false;
-  const held = new Promise<void>((resolve) => {
-    release = resolve;
-  });
-  await page.route('**/_next/image*', async (route) => {
-    const url = new URL(route.request().url());
-    if (url.searchParams.get('url')?.includes('tshirt-navy')) {
-      navyRequested = true;
-      await held;
-    }
+for (const mode of ['customize', 'edit'] as const) {
+  test(`${mode} color changes keep actions stable and ignore late results`, async ({
+    page,
+  }, testInfo) => {
+    let release: () => void = () => {};
+    let navyRequested = false;
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await page.route('**/_next/image*', async (route) => {
+      const url = new URL(route.request().url());
+      if (url.searchParams.get('url')?.includes('tshirt-navy')) {
+        navyRequested = true;
+        await held;
+      }
+      try {
+        await route.continue();
+      } catch {
+        /* A removed image request may have been cancelled by the browser. */
+      }
+    });
     try {
-      await route.continue();
-    } catch {
-      /* A removed image request may have been cancelled by the browser. */
+      await page.goto('/quick-add');
+      const tee = page.getByRole('article', { name: 'T-shirt catalog item' });
+      if (mode === 'edit') {
+        await tee.getByRole('button', { name: 'I own this' }).click();
+        await page
+          .getByRole('link', { name: '1 piece in your wardrobe' })
+          .click();
+        await page.getByRole('button', { name: 'Edit clothing' }).click();
+      } else {
+        await tee
+          .getByRole('button', { name: 'Customize', exact: true })
+          .click();
+      }
+      const editor = page.getByRole('dialog');
+      const add = editor.getByRole('button', {
+        name: mode === 'edit' ? 'Save changes' : 'Add to wardrobe',
+      });
+      await expect(add).toBeEnabled();
+      const actionLabel = add.locator('.item-editor-action-label');
+      await expect(actionLabel).toBeVisible();
+      await editor.evaluate(async (element) => {
+        await Promise.all(
+          element.getAnimations().map((animation) => animation.finished),
+        );
+      });
+      const actionBounds = () =>
+        editor
+          .locator(
+            '.editor-footer button, .item-editor-submit > span:last-child',
+          )
+          .evaluateAll((elements) =>
+            elements.map((element) => {
+              const { x, y, width, height } = element.getBoundingClientRect();
+              return [x, y, width, height].map(
+                (value) => Math.round(value * 100) / 100,
+              );
+            }),
+          );
+      const before = await actionBounds();
+      const photo = editor.locator('.garment-photo');
+      const height = await photo.evaluate(
+        (element) => element.getBoundingClientRect().height,
+      );
+      await editor.getByRole('radio', { name: 'Navy', exact: true }).check();
+      await expect.poll(() => navyRequested).toBe(true);
+      await expect(add).toBeDisabled();
+      await expect(add).toHaveAttribute('aria-busy', 'true');
+      await expect(add.locator('.clothing-spinner')).toBeVisible();
+      await expect(actionLabel).toBeHidden();
+      const centered = await add.evaluate((button) => {
+        const action = button.getBoundingClientRect();
+        const spinner = button
+          .querySelector('.clothing-spinner')!
+          .getBoundingClientRect();
+        return Math.abs(
+          action.x + action.width / 2 - spinner.x - spinner.width / 2,
+        );
+      });
+      expect(centered).toBeLessThan(1);
+      await expect.poll(actionBounds).toEqual(before);
+      await expect(editor.getByRole('status')).toHaveText('Loading photo…');
+      await expect(photo).toHaveAttribute('aria-busy', 'true');
+      expect(
+        await photo.evaluate(
+          (element) => element.getBoundingClientRect().height,
+        ),
+      ).toBeCloseTo(height, 2);
+      await photo.scrollIntoViewIfNeeded();
+      await page.screenshot({
+        path: testInfo.outputPath('color-loading.png'),
+      });
+      await expect(add.locator('.clothing-spinner-trace--shirt')).toHaveCSS(
+        'animation-name',
+        'clothing-spinner-shirt',
+      );
+      await expect(add.locator('.clothing-spinner-trace--dress')).toHaveCSS(
+        'animation-name',
+        'clothing-spinner-dress',
+      );
+      await expect(add.locator('.clothing-spinner-trace--sneaker')).toHaveCSS(
+        'animation-name',
+        'clothing-spinner-sneaker',
+      );
+      const traceProgress = async (time: number) =>
+        add
+          .locator('.clothing-spinner')
+          .evaluate(async (element, currentTime) => {
+            for (const animation of element.getAnimations({ subtree: true })) {
+              animation.pause();
+              await animation.ready;
+              animation.currentTime = currentTime;
+            }
+            await new Promise(requestAnimationFrame);
+            return [...element.querySelectorAll('.clothing-spinner-trace')].map(
+              (path) =>
+                Number.parseFloat(getComputedStyle(path).strokeDashoffset),
+            );
+          }, time);
+      const shirt = await traceProgress(300);
+      expect(shirt[0]).toBeLessThan(1);
+      expect(shirt.slice(1)).toEqual([1, 1]);
+      const dress = await traceProgress(800);
+      expect(dress[0]).toBe(0);
+      expect(dress[1]).toBeLessThan(1);
+      expect(dress[1]).toBeGreaterThan(0);
+      expect(dress[2]).toBe(1);
+      const sneaker = await traceProgress(1300);
+      expect(sneaker.slice(0, 2)).toEqual([0, 0]);
+      expect(sneaker[2]).toBeLessThan(1);
+      expect(sneaker[2]).toBeGreaterThan(0);
+      await traceProgress(1750);
+      await page.screenshot({
+        path: testInfo.outputPath('spinner-complete.png'),
+      });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await expect(editor.locator('.garment-photo-skeleton')).toHaveCSS(
+        'animation-name',
+        'none',
+      );
+      for (const path of await add.locator('.clothing-spinner-trace').all()) {
+        await expect(path).toHaveCSS('animation-name', 'none');
+        await expect(path).toHaveCSS('stroke-dashoffset', '0px');
+      }
+      await page.emulateMedia({ forcedColors: 'active' });
+      const systemText = await page.evaluate(() => {
+        const probe = document.createElement('span');
+        probe.style.color = 'CanvasText';
+        document.body.append(probe);
+        const color = getComputedStyle(probe).color;
+        probe.remove();
+        return color;
+      });
+      await expect(add.locator('.clothing-spinner-trace').first()).toHaveCSS(
+        'stroke',
+        systemText,
+      );
+      await expect.poll(actionBounds).toEqual(before);
+      await page.emulateMedia({ forcedColors: 'none' });
+      await editor.getByRole('radio', { name: 'White', exact: true }).check();
+      await expect(add).toBeEnabled();
+      await expect(add).toHaveAttribute('aria-busy', 'false');
+      await expect.poll(actionBounds).toEqual(before);
+      await editor
+        .getByRole('radio', { name: 'Burgundy', exact: true })
+        .check();
+      await expect(add).toBeEnabled();
+      release();
+      await expect(editor.getByRole('img')).toHaveAttribute(
+        'alt',
+        /Burgundy T-shirt/,
+      );
+      await expect(editor.getByRole('status')).toHaveCount(0);
+      await expect(add).toHaveAttribute('aria-busy', 'false');
+      await expect(add.locator('.clothing-spinner')).toHaveCount(0);
+      await expect(actionLabel).toBeVisible();
+      await expect.poll(actionBounds).toEqual(before);
+      expect(
+        await photo.evaluate(
+          (element) => element.getBoundingClientRect().height,
+        ),
+      ).toBeCloseTo(height, 2);
+      await add.click();
+      if (mode === 'customize')
+        await page
+          .getByRole('link', { name: '1 piece in your wardrobe' })
+          .click();
+      await expect(page).toHaveURL(/\/wardrobe$/);
+      await expect(page.getByRole('article')).toHaveCount(1);
+      await expect(page.getByRole('article').getByRole('img')).toHaveAttribute(
+        'alt',
+        /Burgundy T-shirt/,
+      );
+    } finally {
+      release();
     }
   });
-  await page.goto('/quick-add');
-  const tee = page.getByRole('article', { name: 'T-shirt catalog item' });
-  await tee.getByRole('button', { name: 'Customize', exact: true }).click();
-  const editor = page.getByRole('dialog');
-  const add = editor.getByRole('button', { name: 'Add to wardrobe' });
-  await expect(add).toBeEnabled();
-  const photo = editor.locator('.garment-photo');
-  const height = await photo.evaluate(
-    (element) => element.getBoundingClientRect().height,
-  );
-  await editor.getByRole('radio', { name: 'Navy', exact: true }).check();
-  await expect.poll(() => navyRequested).toBe(true);
-  await expect(add).toBeDisabled();
-  await expect(editor.getByRole('status')).toHaveText('Loading photo…');
-  await expect(photo).toHaveAttribute('aria-busy', 'true');
-  expect(
-    await photo.evaluate((element) => element.getBoundingClientRect().height),
-  ).toBeCloseTo(height, 2);
-  await photo.scrollIntoViewIfNeeded();
-  await page.screenshot({
-    path: testInfo.outputPath('color-loading.png'),
-    animations: 'disabled',
-  });
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(editor.locator('.garment-photo-skeleton')).toHaveCSS(
-    'animation-name',
-    'none',
-  );
-  await editor.getByRole('radio', { name: 'Burgundy', exact: true }).check();
-  await expect(add).toBeEnabled();
-  release();
-  await expect(editor.getByRole('img')).toHaveAttribute(
-    'alt',
-    /Burgundy T-shirt/,
-  );
-  await expect(editor.getByRole('status')).toHaveCount(0);
-  expect(
-    await photo.evaluate((element) => element.getBoundingClientRect().height),
-  ).toBeCloseTo(height, 2);
-  await add.click();
-  await page.getByRole('link', { name: '1 piece in your wardrobe' }).click();
-  await expect(page).toHaveURL(/\/wardrobe$/);
-  await expect(page.getByRole('article')).toHaveCount(1);
-  await expect(page.getByRole('article').getByRole('img')).toHaveAttribute(
-    'alt',
-    /Burgundy T-shirt/,
-  );
-});
+}
 
 test('visitor state resets on reload and catalog search recovers honestly', async ({
   page,

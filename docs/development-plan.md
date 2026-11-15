@@ -84,7 +84,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 The later user-approved studio image revision supersedes this task's initial real-photograph sourcing requirement. All eight types now use AI-generated studio samples with labelled provenance and locally prepared color variants; see [catalog assets](catalog-assets.md).
 
 - Model the eight launch types and their named color variants/default tags. Source appropriately licensed realistic photos and record provenance.
-- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and free licensed photos; see [implementation plan](VISITOR-01-plan.md) and `design.md` section 20.
+- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and studio imagery; see [completion record](VISITOR-01.md) and `design.md` section 20.
 - Let visitors select only clothes they own, inspect/edit tags and remove selections. No prefilling or uploads.
 - **Acceptance:** group/type relationships are valid; sample photos are identified; color names are accessible; unselected garments are never added. Catalog ownership does not change when a user selects an item.
 - **Local result:** the approved plan is implemented with eight types/64 color variants, editable selections, duplicate/similarity handling and public photo attribution. See [VISITOR-01 completion record](VISITOR-01.md) for actual verification and limits. Reload persistence remains VISITOR-02.
@@ -97,10 +97,10 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### VISITOR-03 — Stable editor actions and custom loading spinner
 
-- Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Show a custom spinner inside the primary action with reserved icon space and its visible label.
+- Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Switch between a centered spinner during loading and the visible action text afterward, preserving button dimensions and accessible names.
 - Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
 - **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
-- **Status:** planned; implementation and verification pending. Depends on VISITOR-01 (#7).
+- **Status:** implemented and verified locally on `visitor/03-loading-spinner` with the user-approved shirt/dress/sneaker tracing animation. All 25 unit/component tests, the production build and 36 desktop/mobile browser checks passed. Review and remote CI are pending. Depends on completed VISITOR-01 (#7).
 
 ### ENGINE-01 — Deterministic matching and reasons
 

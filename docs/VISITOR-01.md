@@ -1,6 +1,6 @@
 # VISITOR-01 — Quick-add catalog
 
-Status: complete locally, including the studio image revision, on 13 November 2026. The user approved AI-generated studio imagery for all eight types after rejecting the initial photographs. The v2 replacement and final verification are recorded below. See the [implementation plan](VISITOR-01-plan.md) and its recorded source-decision revision.
+Status: completed and merged through [PR #24](https://github.com/vinay-krishna9/closet-theory/pull/24) on 15 November 2026. [Issue #7](https://github.com/vinay-krishna9/closet-theory/issues/7) is closed as completed. The user approved AI-generated studio imagery for all eight types after rejecting the initial photographs. The v2 replacement and verification are recorded below. The [approved implementation plan](https://github.com/vinay-krishna9/closet-theory/blob/f58bb20570b694c2ea1b3fc44d4ad6f89a039b52/docs/VISITOR-01-plan.md) is retained in Git history after completion.
 
 ## Result
 
@@ -61,6 +61,10 @@ Following the user's catalog-identity correction, Group and Type retain their ic
 - An existing shared-editor resize assertion caught a transient 0.012px animation overshoot. It now waits for layout to settle while retaining its strict footer-within-viewport boundary. Its targeted ESLint check passed.
 - Full physical-device and screen-reader reviews remain outside this verification. Browser testing uses the previously recorded two-worker command because of local contention at default concurrency.
 
+## Merge verification · 15 November 2026
+
+[GitHub Actions run 43705867085](https://github.com/vinay-krishna9/closet-theory/actions/runs/43705867085) passed installation, formatting, lint, TypeScript, component tests, production build and the configured browser suite for PR #24. The merge commit is `f58bb20570b694c2ea1b3fc44d4ad6f89a039b52`. This supersedes the earlier remote-CI limitation for the merged revision. The recorded local concurrency and device/assistive-technology limits still apply.
+
 ## Next
 
-Proceed to VISITOR-02 under its approved-plan workflow: persist selections safely across reloads, validate/version the stored schema and handle reset, migration, corrupt data and unavailable storage. Then implement the independent deterministic outfit engine and visitor suggestions. Commit/push and issue/board changes remain separately authorized actions.
+VISITOR-03 tracks the custom button spinner and stable footer in its [execution plan](VISITOR-03-plan.md) and [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23). VISITOR-02 will persist selections safely across reloads, validate/version the stored schema and handle reset, migration, corrupt data and unavailable storage. The independent deterministic outfit engine and visitor suggestions follow their own plans.

@@ -43,6 +43,103 @@
 .ui-button svg {
   flex-shrink: 0;
 }
+.clothing-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  width: 3.5em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.clothing-spinner svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: clothing-spinner-fade 2.4s ease-in-out infinite;
+}
+.clothing-spinner-track {
+  opacity: 0.18;
+}
+.clothing-spinner-trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-duration: 2.4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.clothing-spinner-trace--shirt {
+  animation-name: clothing-spinner-shirt;
+}
+.clothing-spinner-trace--dress {
+  animation-name: clothing-spinner-dress;
+}
+.clothing-spinner-trace--sneaker {
+  animation-name: clothing-spinner-sneaker;
+}
+@keyframes clothing-spinner-shirt {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  20%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes clothing-spinner-dress {
+  0%,
+  22% {
+    stroke-dashoffset: 1;
+  }
+  42%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes clothing-spinner-sneaker {
+  0%,
+  44% {
+    stroke-dashoffset: 1;
+  }
+  64%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes clothing-spinner-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  6%,
+  78% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clothing-spinner svg,
+  .clothing-spinner-trace {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+@media (forced-colors: active) {
+  .clothing-spinner-track {
+    stroke: GrayText;
+    opacity: 1;
+  }
+  .clothing-spinner-trace {
+    stroke: CanvasText;
+  }
+}
 .ui-input {
   width: 100%;
   min-width: 0;

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Button as SharedButton } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 import { DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Editor } from '@/components/ui/editor';
 import {
@@ -15,7 +16,6 @@ import {
   CircleAlert,
   Shirt as Hanger,
   LayoutGrid,
-  LoaderCircle,
   MoreHorizontal,
   Plus,
   Search,
@@ -373,7 +373,7 @@ export function DesignReview({ screen }: { screen: ReviewScreen }) {
         {preview === 'loading' ? (
           <section aria-label="Loading preview" aria-busy="true">
             <p className="review-section-label" role="status">
-              <LoaderCircle aria-hidden="true" />
+              <Spinner />
               {isOutfits
                 ? 'Finding combinations…'
                 : 'Getting your pieces ready…'}{' '}
