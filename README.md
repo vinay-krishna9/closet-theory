@@ -13,7 +13,7 @@ npm.cmd run dev
 
 Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive in-app navigation but **reset on refresh** until VISITOR-02; the wardrobe starts empty. `/outfits` still explains that recommendations are unavailable. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
 
-Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Catalog group/type stay fixed in Customize and wardrobe editing. The editor keeps the garment visible, with name/color on the left and garment details and other options on the right on desktop. Phones use a compact pinned preview. Garment images show a skeleton that preserves their space during loading, color changes and retry, with reduced-motion support.
+Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Catalog group/type stay fixed in Customize and wardrobe editing. The editor keeps the garment visible, with name/color on the left and garment details and other options on the right on desktop. Phones use a compact pinned preview. Garment images show a skeleton that preserves their space during loading, color changes and retry. A shared carousel shows one larger shirt, dress or sneaker at a time inside Add to wardrobe/Save changes while the selected preview loads. The centered animation replaces the button text while loading and restores it afterward, keeping button dimensions steady. Reduced motion shows one still shirt.
 
 For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
@@ -93,7 +93,7 @@ Use the [documentation index](docs/README.md) for document ownership, current de
 - [MVP requirements](docs/MVP.md), [user flows](docs/user-flows.md) and [resolved decisions](docs/product-decisions.md)
 - [Architecture](docs/architecture.md) and [development plan](docs/development-plan.md)
 - [BUILD-01 verification and limitations](docs/BUILD-01.md)
-- [VISITOR-01 implementation and verification](docs/VISITOR-01.md), [approved plan](docs/VISITOR-01-plan.md) and [catalog photo credits](docs/catalog-assets.md)
+- [VISITOR-01 implementation and verification](docs/VISITOR-01.md), [VISITOR-03 execution plan](docs/VISITOR-03-plan.md) and [catalog photo credits](docs/catalog-assets.md)
 - Background-removal experiment: [prototype branch](https://github.com/vinay-krishna9/closet-theory/tree/spike/01-browser-background-removal), [recorded findings](https://github.com/vinay-krishna9/closet-theory/blob/70eec67e429787632a893405c0992c8a06f487a5/docs/spikes/SPIKE-01.md). Its code is not merged into the application; local photos and downloaded artifacts remain ignored.
 
 SPIKE-02 will validate Clerk/Supabase owner isolation after visitor features and before account/private-data features. Outstanding physical-mobile image-processing checks remain a gate for personal-photo work. Neither integration is verified by this scaffold.

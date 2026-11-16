@@ -13,21 +13,23 @@ import {
   type TypeId,
 } from '@/features/onboarding/catalog';
 
+export type PhotoStatus = 'loading' | 'ready' | 'error';
+
 // Remount this component with a type/color key; stale loads cannot authorize Add.
 export function GarmentPhoto({
   typeId,
   color,
   onReady,
+  onStatusChange,
   priority = false,
 }: {
   typeId: TypeId;
   color: ColorId;
   onReady?: (ready: boolean) => void;
+  onStatusChange?: (status: PhotoStatus) => void;
   priority?: boolean;
 }) {
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
-    'loading',
-  );
+  const [status, setStatus] = useState<PhotoStatus>('loading');
   const [attempt, setAttempt] = useState(0);
   const live = useRef(true);
   useEffect(() => {
@@ -49,6 +51,7 @@ export function GarmentPhoto({
               setAttempt((n) => n + 1);
               setStatus('loading');
               onReady?.(false);
+              onStatusChange?.('loading');
             }}
           >
             Retry photo
@@ -67,11 +70,13 @@ export function GarmentPhoto({
               if (!live.current) return;
               setStatus('ready');
               onReady?.(true);
+              onStatusChange?.('ready');
             }}
             onError={() => {
               if (!live.current) return;
               setStatus('error');
               onReady?.(false);
+              onStatusChange?.('error');
             }}
           />
           {status === 'loading' && (

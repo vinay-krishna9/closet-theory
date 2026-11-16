@@ -392,6 +392,16 @@ Account identity, settings, privacy information and deletion/export entry points
 
 ## 10. Motion and reduced motion
 
+### Shared loading animation
+
+Use the shared `Spinner` from `src/components/ui/spinner.tsx` wherever an indeterminate loading indicator is appropriate, including busy actions and loading status rows. Show one large, complete garment outline at a time, cycling shirt → dress → sneaker. Each garment rests in the center, then slides left as the next enters from the right. Use a 3.6-second cycle with 1.2 seconds per garment. Keep each icon `2em` square inside a fixed `2.5em` wide, `2em` high clipped viewport, using the surrounding text color and rounded strokes. Preserve each garment's natural proportions instead of stretching it to fill the frame.
+
+For busy actions, center the animation in place of the visible action text. Switch between the animation while loading and the action text when ready or failed. Preserve the label's layout space and the button's accessible name so its dimensions and surrounding controls stay steady. Status rows may show the animation beside concise loading text. The animation runs only during actual loading and stops on success or failure. Keep appropriate image/card skeletons for reserved content layout. Supply concise loading text/status from the surrounding control or region, mark busy controls with `aria-busy`, and hide decorative garment shapes from assistive technology. Reduced motion displays one still shirt outline; forced-colors mode uses system colors.
+
+The user selected the single-garment carousel on 15 November 2026 after reviewing the smaller three-icon tracing treatment. Animate transforms and opacity while preserving the fixed layout footprint. Reduced motion stops the carousel and shows the shirt. This is the common loading indicator for current and future appropriate surfaces.
+
+Use clean garment silhouettes with rounded construction details that read at icon size. The shirt has a curved neckline and hem, the dress has a V-neck bodice, defined waist and flared skirt with restrained pleat lines, and the sneaker has a rounded toe, three lace marks and a separate sole line. Keep internal detail sparse enough for the shared small loading treatment.
+
 **Exact source motion values:**
 
 | Interaction       | Duration  | Behavior                          |
@@ -613,4 +623,4 @@ Use the selected broad palette of about 8–10 named colors per type. Show visib
 
 Recolor only intended garment regions, retaining material texture, shading, transparency and protected details such as soles or trim. A blanket whole-image CSS filter is insufficient. Preview and saved metadata must agree; failed or stale results must not be presented as successful recoloring. Preserve the selection on failure and give useful recovery. Source photography must permit the actual modifications and redistribution, with provenance and required notices retained.
 
-The product capability is approved; the specific implementation and rendering quality remain to be validated under the [VISITOR-01 plan](docs/VISITOR-01-plan.md). Current review routes remain unchanged. This does not introduce personal-photo recoloring, an unrestricted color picker, hosted image processing or model-generated outfit matching.
+The approved catalog recoloring implementation and reviewed rendering quality are recorded in the [VISITOR-01 completion record](docs/VISITOR-01.md). Provenance and visual limitations are maintained in [catalog assets](docs/catalog-assets.md).
