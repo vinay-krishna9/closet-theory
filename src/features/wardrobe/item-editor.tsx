@@ -93,9 +93,7 @@ export function ItemEditor({
         intentionalDuplicate: separate,
       });
     }
-    announce(
-      `${draft.name.trim()} ${targetId ? 'updated' : 'added'}. Selections reset on refresh.`,
-    );
+    announce(`${draft.name.trim()} ${targetId ? 'updated' : 'added'}.`);
     onClose();
   }
   function submit(event: FormEvent) {

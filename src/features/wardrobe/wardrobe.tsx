@@ -17,13 +17,24 @@ import {
 import { colors, getType, groups } from '@/features/onboarding/catalog';
 import { useVisitorWardrobe } from './visitor-provider';
 import { type WardrobeItem } from './model';
+import {
+  VisitorRestoring,
+  VisitorStorageNotice,
+} from './visitor-storage-notice';
 import { ItemEditor } from './item-editor';
 import { GarmentPhoto } from './garment-photo';
 
 export function Wardrobe() {
   const removalOpener = useRef<HTMLElement | null>(null);
-  const { items, dispatch, notice, announce, filters, setFilters } =
-    useVisitorWardrobe();
+  const {
+    items,
+    dispatch,
+    notice,
+    announce,
+    filters,
+    setFilters,
+    persistence,
+  } = useVisitorWardrobe();
   const [editor, setEditor] = useState<{
     item: WardrobeItem;
     opener: HTMLElement;
@@ -48,6 +59,7 @@ export function Wardrobe() {
       </Link>
     </Button>
   );
+  if (persistence === 'loading') return <VisitorRestoring />;
   return (
     <main
       id="main-content"
@@ -66,9 +78,9 @@ export function Wardrobe() {
       </div>
       <p className="wardrobe-inline-note">
         Visitor wardrobe · {items.length}{' '}
-        {items.length === 1 ? 'piece' : 'pieces'}. Your selections last while
-        browsing and reset on refresh.
+        {items.length === 1 ? 'piece' : 'pieces'}.
       </p>
+      <VisitorStorageNotice />
       {items.length > 0 && (
         <div className="wardrobe-tools">
           <div className="group-filters" aria-label="Filter clothing group">

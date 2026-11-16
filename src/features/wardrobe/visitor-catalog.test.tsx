@@ -6,7 +6,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { QuickAdd } from '@/features/onboarding/quick-add';
 import { VisitorWardrobeProvider } from './visitor-provider';
 import { Wardrobe } from './wardrobe';
@@ -36,13 +36,14 @@ beforeAll(() => {
   });
 });
 
-function setup() {
+async function setup() {
   render(
     <VisitorWardrobeProvider>
       <QuickAdd />
       <Wardrobe />
     </VisitorWardrobeProvider>,
   );
+  await screen.findByRole('article', { name: 'T-shirt catalog item' });
 }
 function tee() {
   return screen.getByRole('article', { name: 'T-shirt catalog item' });
@@ -53,9 +54,11 @@ function loadEditor() {
   return dialog;
 }
 
+beforeEach(() => localStorage.clear());
+
 describe('visitor catalog interactions', () => {
-  it('adds the default configuration from a card without color controls or accidental duplicates', () => {
-    setup();
+  it('adds the default configuration from a card without color controls or accidental duplicates', async () => {
+    await setup();
     const card = tee();
     expect(within(card).queryByRole('combobox')).not.toBeInTheDocument();
     expect(within(card).queryByRole('radio')).not.toBeInTheDocument();
@@ -77,8 +80,8 @@ describe('visitor catalog interactions', () => {
       screen.queryByRole('button', { name: 'Favorite' }),
     ).not.toBeInTheDocument();
   });
-  it('chooses color in Customize and uses a loading skeleton through failure and retry', () => {
-    setup();
+  it('chooses color in Customize and uses a loading skeleton through failure and retry', async () => {
+    await setup();
     fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
     const dialog = screen.getByRole('dialog');
     const add = within(dialog).getByRole('button', { name: 'Add to wardrobe' });
@@ -127,7 +130,7 @@ describe('visitor catalog interactions', () => {
     expect(within(tee()).getByText(/White/)).toBeVisible();
   });
   it('retains invalid draft values, focuses the invalid field and preserves edits when dismissal is cancelled', async () => {
-    setup();
+    await setup();
     fireEvent.click(within(tee()).getByRole('button', { name: 'Customize' }));
     const dialog = loadEditor();
     const name = within(dialog).getByRole('textbox', { name: 'Garment name' });
@@ -152,8 +155,8 @@ describe('visitor catalog interactions', () => {
     { name: 'Sneakers', group: 'Shoes' },
   ])(
     'keeps catalog $name identity fixed while customizing and editing',
-    ({ name, group }) => {
-      setup();
+    async ({ name, group }) => {
+      await setup();
       const card = screen.getByRole('article', {
         name: name + ' catalog item',
       });
@@ -208,8 +211,8 @@ describe('visitor catalog interactions', () => {
       expect(savedType).toBeDisabled();
     },
   );
-  it('asks about similar clothing, keeps the existing entry and requires confirmation for a separate garment', () => {
-    setup();
+  it('asks about similar clothing, keeps the existing entry and requires confirmation for a separate garment', async () => {
+    await setup();
     const card = tee();
     fireEvent.load(within(card).getByRole('img'));
     fireEvent.click(within(card).getByRole('button', { name: 'I own this' }));
@@ -247,8 +250,8 @@ describe('visitor catalog interactions', () => {
     );
     expect(screen.getAllByRole('article', { hidden: true })).toHaveLength(10);
   });
-  it('requires explicit removal and leaves the catalog available', () => {
-    setup();
+  it('requires explicit removal and leaves the catalog available', async () => {
+    await setup();
     const card = tee();
     fireEvent.load(within(card).getByRole('img'));
     fireEvent.click(within(card).getByRole('button', { name: 'I own this' }));
