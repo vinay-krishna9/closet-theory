@@ -44,99 +44,64 @@
   flex-shrink: 0;
 }
 .clothing-spinner {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25em;
-  width: 3.5em;
-  height: 1em;
+  position: relative;
+  display: inline-block;
+  width: 2.5em;
+  height: 2em;
   flex-shrink: 0;
+  overflow: hidden;
   vertical-align: middle;
 }
 .clothing-spinner svg {
-  width: 1em;
-  height: 1em;
-  flex-shrink: 0;
+  position: absolute;
+  inset: 0;
+  width: 2em;
+  height: 2em;
+  margin: auto;
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
-  animation: clothing-spinner-fade 2.4s ease-in-out infinite;
+  opacity: 0;
+  animation: clothing-spinner-carousel 3.6s cubic-bezier(0.4, 0, 0.2, 1)
+    infinite;
+  animation-delay: var(--garment-offset, 0s);
 }
-.clothing-spinner-track {
-  opacity: 0.18;
+.clothing-spinner-garment--dress {
+  --garment-offset: -2.4s;
 }
-.clothing-spinner-trace {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation-duration: 2.4s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+.clothing-spinner-garment--sneaker {
+  --garment-offset: -1.2s;
 }
-.clothing-spinner-trace--shirt {
-  animation-name: clothing-spinner-shirt;
-}
-.clothing-spinner-trace--dress {
-  animation-name: clothing-spinner-dress;
-}
-.clothing-spinner-trace--sneaker {
-  animation-name: clothing-spinner-sneaker;
-}
-@keyframes clothing-spinner-shirt {
-  0% {
-    stroke-dashoffset: 1;
-  }
-  20%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes clothing-spinner-dress {
+@keyframes clothing-spinner-carousel {
   0%,
-  22% {
-    stroke-dashoffset: 1;
-  }
-  42%,
+  23%,
   100% {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes clothing-spinner-sneaker {
-  0%,
-  44% {
-    stroke-dashoffset: 1;
-  }
-  64%,
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes clothing-spinner-fade {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  6%,
-  78% {
     opacity: 1;
+    transform: translateX(0);
   }
-  94% {
+  33.333% {
     opacity: 0;
+    transform: translateX(-2.5em);
+  }
+  33.334%,
+  90% {
+    opacity: 0;
+    transform: translateX(2.5em);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .clothing-spinner svg,
-  .clothing-spinner-trace {
+  .clothing-spinner svg {
     animation: none;
+    opacity: 0;
+    transform: none;
+  }
+  .clothing-spinner svg:first-child {
     opacity: 1;
-    stroke-dashoffset: 0;
   }
 }
 @media (forced-colors: active) {
-  .clothing-spinner-track {
-    stroke: GrayText;
-    opacity: 1;
-  }
-  .clothing-spinner-trace {
+  .clothing-spinner svg {
     stroke: CanvasText;
   }
 }

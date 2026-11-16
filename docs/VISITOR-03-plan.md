@@ -1,6 +1,6 @@
 # VISITOR-03 — Stable editor actions and custom loading spinner execution plan
 
-Status recorded 15 November 2026. Complete locally on `visitor/03-loading-spinner`, created from merged main at `f58bb20`. The user approved implementation of the shirt → dress → sneaker tracing animation on 15 November 2026. Implementation and verification are recorded below.
+Status updated 16 November 2026. Complete locally on `visitor/03-loading-spinner`, created from merged main at `f58bb20`. The user initially approved implementation of the shirt → dress → sneaker tracing animation on 15 November 2026. The later single-garment carousel supersedes the initial three-icon tracing design. Its final verification is recorded below.
 
 Tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23) under M2 — Visitor wardrobe and suggestions. Builds on [VISITOR-01, issue #7](https://github.com/vinay-krishna9/closet-theory/issues/7).
 
@@ -17,21 +17,20 @@ Changing a color in Customize currently inserts “A loaded color preview is req
 
 ## Spinner appearance
 
-Use three tiny garment outlines in a fixed horizontal row, shirt → dress → sneaker. Trace the shirt, then the dress, then the sneaker; briefly hold all three outlines, fade them together and repeat. This user-selected treatment supersedes the initial ring proposal.
+Show one larger garment at a time, cycling from shirt to dress to sneaker. Each complete outline rests in the center, then slides left while the next garment enters from the right. The user requested this carousel after reviewing the small three-icon treatment. Preserve natural garment proportions within a larger shared frame.
 
-| Property       | Chosen treatment                                                                         |
-| -------------- | ---------------------------------------------------------------------------------------- |
-| Size           | Each garment is 1em square; three shapes and two 0.25em gaps occupy 3.5em                |
-| Stroke         | Rounded 1.6-unit strokes in a 24-unit SVG viewBox                                        |
-| Track          | Faint garment silhouettes at 18% opacity using currentColor                              |
-| Trace          | Full-color outline drawing sequentially in normalized path lengths                       |
-| Motion         | 2.4-second cycle, drawing each shape in order, holding, then fading together             |
-| Placement      | Centered over the action text, occupying the same button area                            |
-| Ready/error    | Restore the visible action text and remove the animation                                 |
-| Reduced motion | Show all three completed outlines still and retain the concise accessible loading status |
-| Forced colors  | System text colors distinguish the track and tracing outlines                            |
+| Property       | Chosen treatment                                                                                                           |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Size           | Each garment is 2em square inside a 2.5em wide, 2em high clipped viewport; 28px icons at the current 14px action text size |
+| Stroke         | Rounded 1.6-unit strokes in a 24-unit SVG viewBox                                                                          |
+| Detail         | Curved shirt neckline and hem, shaped dress waist/skirt, rounded sneaker toe and sole/laces                                |
+| Motion         | 3.6-second cycle with 1.2 seconds per garment, centered hold followed by a horizontal slide                                |
+| Placement      | Centered over the action text in the same button area                                                                      |
+| Ready/error    | Restore visible action text and remove the animation                                                                       |
+| Reduced motion | Show one still shirt and retain the accessible loading status                                                              |
+| Forced colors  | System text color outlines                                                                                                 |
 
-Build the shared Spinner with inline SVG paths and CSS stroke-dashoffset/opacity animation. Its styling and accessibility contract apply to appropriate busy actions and loading status rows throughout the app. Existing content skeletons retain their layout role. Use it in the editor primary action and the existing design-review loading row.
+Build the shared Spinner with full inline SVG outlines and CSS transform/opacity animation. Fixed negative phase offsets cycle the three stacked garments. The carousel is clipped within its own viewport. Existing content skeletons retain their layout role. Use the shared component in primary busy actions and the existing design-review loading row.
 
 ## Execution sequence
 
@@ -78,7 +77,7 @@ Build the shared Spinner with inline SVG paths and CSS stroke-dashoffset/opacity
 - The primary action becomes available only after the currently selected preview loads successfully.
 - Image failure stops the spinner, keeps submission disabled and preserves color and edited tags. Retry restarts loading and can recover.
 - Rapid color switching cannot enable submission from an earlier preview result or save a mismatched image.
-- Keyboard focus remains stable through preview updates. Reduced motion provides a static indicator with an accessible loading announcement.
+- Keyboard focus remains stable through preview updates. Reduced motion provides one still shirt with an accessible loading announcement.
 
 ## Preparation and documentation cleanup
 
@@ -107,3 +106,31 @@ Build the shared Spinner with inline SVG paths and CSS stroke-dashoffset/opacity
 - Sandboxed browser runs reached their assertions but hung during Windows server teardown. The final full browser run outside the sandbox exited successfully with all 36 checks passing in 34.7 seconds after the spinner/text switching correction.
 
 The user requested committing the implementation and corrected the button treatment to switch between animation and text. The correction preserves the text layout while centering the spinner in the same space, with a persistent accessible action name. Browser regressions verify the hidden/restored visual label, centered animation and unchanged button bounds for both Add and Save. Remote CI for VISITOR-03 has not run.
+
+## Motion refinement · 15 November 2026
+
+The user requested more animated motion. The three garments now rise approximately `0.22em`, tilt by up to 10 degrees and scale to 110% in sequence, then settle into their original positions before the shared fade. The movement aligns with each trace using delays of 0, 528 and 1056ms within the existing 2.4-second cycle. The surrounding button retains its layout size. Reduced motion shows all three completed outlines with no transform.
+
+`npm.cmd run check` passed formatting, lint, TypeScript and all 25 unit/component tests. The production build passed. All 36 desktop/mobile Chromium checks passed in 29.3 seconds using two workers. Browser assertions sample each garment's lift in order and verify still transforms with reduced motion, alongside the existing stable-button and tracing checks. Rendered mobile loading placement was visually reviewed. This refinement is uncommitted; the existing device and screen-reader limitations apply.
+
+## Silhouette refinement · 15 November 2026
+
+Following the user's request for nicer garment shapes, the shirt now has a curved crew neckline, shaped sleeves and a curved hem with a restrained seam. The dress has a V-neck bodice, defined waist, flared curved skirt and two pleat lines. The sneaker has a rounded toe, three lace marks, a separate sole line and a toe seam. The paths retain their existing tracing and lift animation.
+
+`npm.cmd run check` passed all source checks and 25 unit/component tests. The production build passed. All four affected desktop/mobile Customize/Edit browser journeys passed in 6.6 seconds, covering tracing order, staggered lift, fixed button bounds, label switching, reduced motion and forced colors. The rendered phone loading action was visually inspected at its actual button scale. This refinement is uncommitted.
+
+## Single-garment carousel · verified 16 November 2026
+
+The user found the three-icon row too small and requested a larger carousel. The loader now shows a complete shirt, dress or sneaker in one shared center position. The SVG frame is `2em` square, twice the previous icon size, in a fixed clipped viewport. Each garment holds centrally and slides left as the next enters from the right. Phase offsets preserve the shirt, dress, sneaker order over a 3.6-second cycle. Natural silhouette proportions are retained. Reduced motion shows one still shirt. The animation continues to replace the visible button label while loading.
+
+The source check passed formatting, lint, TypeScript and all 25 unit/component tests before the phase-offset correction. The production build passed after that correction. All six affected browser checks passed on 16 November using `npm.cmd run test:e2e -- --workers=2 --grep "color changes keep|review navigation"` in 20.3 seconds. Assertions inspect each centered garment and the transition positions, verify the enlarged SVG frame, stable button bounds, label switching, error recovery, stale results, reduced motion and forced colors. The design-review loading states also pass. Shirt, dress and sneaker frames were visually reviewed in the rendered desktop button.
+
+The first carousel browser run caught the base animation shorthand overriding per-garment delays. Moving phase offsets to custom properties fixed the sequence. Automatic approval review then blocked the immediate rerun because its usage limit had been reached; verification resumed successfully on 16 November. Physical-device, Safari/Firefox and full screen-reader review remain unperformed.
+
+## Final completion audit · 16 November 2026
+
+The final single-garment carousel satisfies the scoped acceptance criteria. The latest full `npm.cmd run check` passed formatting, lint, TypeScript and all 25 unit/component tests. The production build passed. The complete `npm.cmd run test:e2e -- --workers=2` suite passed all 36 desktop/mobile Chromium checks in 30.8 seconds.
+
+Verified behavior includes initial loading, selected-color changes, retry, failure, stale-image recovery, cached-color switches, stable Add/Save/Cancel bounds, centered loader/text switching, accessible action names, enlarged carousel frames, garment order and slide direction, reduced motion, forced colors, narrow reflow and keyboard focus. The current visual treatment and implementation agree with `design.md`. Earlier sections retain historical iteration evidence; this audit owns final completion status.
+
+The user authorized commit and push after this audit. Remote CI results are tracked in issue #23. Physical devices, Safari/Firefox and a full screen-reader audit remain outside the recorded verification.

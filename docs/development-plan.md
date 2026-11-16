@@ -100,7 +100,7 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Switch between a centered spinner during loading and the visible action text afterward, preserving button dimensions and accessible names.
 - Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
 - **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
-- **Status:** implemented and verified locally on `visitor/03-loading-spinner` with the user-approved shirt/dress/sneaker tracing animation. All 25 unit/component tests, the production build and 36 desktop/mobile browser checks passed. Review and remote CI are pending. Depends on completed VISITOR-01 (#7).
+- **Status:** implemented locally on `visitor/03-loading-spinner` with the user-approved larger single-garment carousel. The shirt, dress and sneaker appear in sequence. Completion verification for the final revision is recorded in the execution plan. Depends on completed VISITOR-01 (#7).
 
 ### ENGINE-01 — Deterministic matching and reasons
 

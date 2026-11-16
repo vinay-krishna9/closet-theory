@@ -8,7 +8,7 @@ BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add
 
 The [VISITOR-01 completion record](VISITOR-01.md) owns delivered behavior and checks. [Catalog assets](catalog-assets.md) owns studio provenance, earlier photographic terms and recoloring. Reload persistence belongs to VISITOR-02.
 
-The [VISITOR-03 execution plan and results](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the shared shirt/dress/sneaker tracing animation and stable editor actions during color-preview loading. Local checks passed; review and remote CI are pending.
+The [VISITOR-03 execution plan and results](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the shared single-garment carousel and stable editor actions during color-preview loading. The larger shirt, dress and sneaker appear one at a time. Local checks passed; remote CI is pending.
 
 | Document                                  | Purpose                                                                                                                      |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |

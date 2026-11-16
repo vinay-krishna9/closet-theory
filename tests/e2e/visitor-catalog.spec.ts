@@ -430,19 +430,7 @@ for (const mode of ['customize', 'edit'] as const) {
       await page.screenshot({
         path: testInfo.outputPath('color-loading.png'),
       });
-      await expect(add.locator('.clothing-spinner-trace--shirt')).toHaveCSS(
-        'animation-name',
-        'clothing-spinner-shirt',
-      );
-      await expect(add.locator('.clothing-spinner-trace--dress')).toHaveCSS(
-        'animation-name',
-        'clothing-spinner-dress',
-      );
-      await expect(add.locator('.clothing-spinner-trace--sneaker')).toHaveCSS(
-        'animation-name',
-        'clothing-spinner-sneaker',
-      );
-      const traceProgress = async (time: number) =>
+      const carouselFrame = async (time: number) =>
         add
           .locator('.clothing-spinner')
           .evaluate(async (element, currentTime) => {
@@ -452,36 +440,56 @@ for (const mode of ['customize', 'edit'] as const) {
               animation.currentTime = currentTime;
             }
             await new Promise(requestAnimationFrame);
-            return [...element.querySelectorAll('.clothing-spinner-trace')].map(
-              (path) =>
-                Number.parseFloat(getComputedStyle(path).strokeDashoffset),
-            );
+            return [...element.querySelectorAll('svg')].map((garment) => {
+              const style = getComputedStyle(garment);
+              return {
+                opacity: Number(style.opacity),
+                x: new DOMMatrix(style.transform).m41,
+                width: garment.getBoundingClientRect().width,
+              };
+            });
           }, time);
-      const shirt = await traceProgress(300);
-      expect(shirt[0]).toBeLessThan(1);
-      expect(shirt.slice(1)).toEqual([1, 1]);
-      const dress = await traceProgress(800);
-      expect(dress[0]).toBe(0);
-      expect(dress[1]).toBeLessThan(1);
-      expect(dress[1]).toBeGreaterThan(0);
-      expect(dress[2]).toBe(1);
-      const sneaker = await traceProgress(1300);
-      expect(sneaker.slice(0, 2)).toEqual([0, 0]);
-      expect(sneaker[2]).toBeLessThan(1);
-      expect(sneaker[2]).toBeGreaterThan(0);
-      await traceProgress(1750);
+      for (const [index, time] of [0, 1200, 2400].entries()) {
+        const frame = await carouselFrame(time);
+        expect(frame.map((garment) => garment.opacity)).toEqual(
+          [0, 1, 2].map((garment) => (garment === index ? 1 : 0)),
+        );
+        expect(frame[index].x).toBeCloseTo(0);
+        expect(frame[index].width).toBeGreaterThanOrEqual(24);
+      }
+      const transition = await carouselFrame(1000);
+      expect(transition[0].x).toBeLessThan(0);
+      expect(transition[1].x).toBeGreaterThan(0);
+      await expect.poll(actionBounds).toEqual(before);
+      await carouselFrame(0);
+      await page.screenshot({ path: testInfo.outputPath('spinner-shirt.png') });
+      await carouselFrame(1200);
+      await page.screenshot({ path: testInfo.outputPath('spinner-dress.png') });
+      await carouselFrame(2400);
       await page.screenshot({
-        path: testInfo.outputPath('spinner-complete.png'),
+        path: testInfo.outputPath('spinner-sneaker.png'),
       });
       await page.emulateMedia({ reducedMotion: 'reduce' });
       await expect(editor.locator('.garment-photo-skeleton')).toHaveCSS(
         'animation-name',
         'none',
       );
-      for (const path of await add.locator('.clothing-spinner-trace').all()) {
-        await expect(path).toHaveCSS('animation-name', 'none');
-        await expect(path).toHaveCSS('stroke-dashoffset', '0px');
+      for (const garment of await add.locator('.clothing-spinner svg').all()) {
+        await expect(garment).toHaveCSS('animation-name', 'none');
+        await expect(garment).toHaveCSS('transform', 'none');
       }
+      await expect(add.locator('.clothing-spinner svg').first()).toHaveCSS(
+        'opacity',
+        '1',
+      );
+      await expect(add.locator('.clothing-spinner svg').nth(1)).toHaveCSS(
+        'opacity',
+        '0',
+      );
+      await expect(add.locator('.clothing-spinner svg').nth(2)).toHaveCSS(
+        'opacity',
+        '0',
+      );
       await page.emulateMedia({ forcedColors: 'active' });
       const systemText = await page.evaluate(() => {
         const probe = document.createElement('span');
@@ -491,7 +499,7 @@ for (const mode of ['customize', 'edit'] as const) {
         probe.remove();
         return color;
       });
-      await expect(add.locator('.clothing-spinner-trace').first()).toHaveCSS(
+      await expect(add.locator('.clothing-spinner svg').first()).toHaveCSS(
         'stroke',
         systemText,
       );
