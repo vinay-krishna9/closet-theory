@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. The product is still in development: reload persistence, recommendations, accounts and personal uploads are later features.
+A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. The product is still in development: recommendations, accounts and personal uploads are later features.
 
 ## Local setup
 
@@ -11,7 +11,7 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive in-app navigation but **reset on refresh** until VISITOR-02; the wardrobe starts empty. `/outfits` still explains that recommendations are unavailable. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
+Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive navigation, refresh and reopening the same browser. A new visitor wardrobe starts empty. Browser saving is local to this browser and is not synced; clearing browser data can remove it. Use Clear visitor wardrobe to reset selections after confirmation. Storage failures preserve in-memory use and show recovery controls. `/outfits` still explains that recommendations are unavailable. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
 
 Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Catalog group/type stay fixed in Customize and wardrobe editing. The editor keeps the garment visible, with name/color on the left and garment details and other options on the right on desktop. Phones use a compact pinned preview. Garment images show a skeleton that preserves their space during loading, color changes and retry. A shared carousel shows one larger shirt, dress or sneaker at a time inside Add to wardrobe/Save changes while the selected preview loads. The centered animation replaces the button text while loading and restores it afterward, keeping button dimensions steady. Reduced motion shows one still shirt.
 
@@ -49,7 +49,7 @@ npm.cmd run test:e2e
 
 The browser suite requires a successful production build. Leave port **4174** free; Playwright starts and stops its own server and deliberately refuses to reuse an existing process. Tests use a fixed loopback URL, cannot be redirected to production via an environment override, and need no accounts or private photos. Pixel-device emulation checks responsive behavior, not physical Android performance. Chromium is the initial smoke-test browser; real Safari/Firefox/device verification remains later work.
 
-Vitest handles synchronous components and pure logic; use browser/integration coverage for async Server Components. Co-located tests cover catalog validation, selection identity/duplicates, editable forms and recoloring invariants. Browser checks cover actual catalog → customization → wardrobe → edit/remove, similarity choices, image failure/retry, stale image results and the current reload-reset boundary, plus foundation and design-review regressions. All user selections in product tests come from explicit actions; no visitor wardrobe is seeded from review data. Photo provenance and preparation details are in [the asset record](docs/catalog-assets.md).
+Vitest handles synchronous components and pure logic; use browser/integration coverage for async Server Components. Co-located tests cover catalog validation, selection identity/duplicates, editable forms and recoloring invariants. Browser checks cover actual catalog → customization → wardrobe → edit/remove, similarity choices, image failure/retry, stale image results and reload persistence, explicit reset and storage recovery, plus foundation and design-review regressions. All user selections in product tests come from explicit actions; no visitor wardrobe is seeded from review data. Photo provenance and preparation details are in [the asset record](docs/catalog-assets.md).
 
 ## Repository map
 

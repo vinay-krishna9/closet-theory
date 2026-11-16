@@ -24,8 +24,8 @@ export default function Home() {
         </h2>
         <p className="leading-relaxed">
           Choose owned clothes from the visitor catalog. Outfit suggestions are
-          coming next. This page does not collect photos, create accounts or
-          save wardrobe data.
+          coming next. Visitor selections are saved in this browser only.
+          Personal photo uploads and accounts are not available yet.
         </p>
       </section>
       <div className="mt-8">

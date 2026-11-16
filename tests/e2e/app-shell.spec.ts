@@ -10,7 +10,7 @@ test('workspace stays empty and account actions explain their availability', asy
     page.getByRole('heading', { name: 'Your wardrobe', exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByText(/Your selections last while browsing and reset on refresh/),
+    page.getByText(/Selections are saved in this browser only/),
   ).toBeVisible();
   await expect(page.getByRole('article')).toHaveCount(0);
   await expect(

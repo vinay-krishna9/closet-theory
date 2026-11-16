@@ -2,13 +2,13 @@
 
 ## Current delivery status
 
-BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](BUILD-02.md) and [VISITOR-01](VISITOR-01.md) own their results and limitations. VISITOR-03 is implemented and verified locally on branch `visitor/03-loading-spinner`. Reload persistence, recommendations and accounts remain later milestones.
+BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](BUILD-02.md) and [VISITOR-01](VISITOR-01.md) own their results and limitations. VISITOR-03 merged through PR #25 after CI passed. VISITOR-02 browser persistence is implemented locally on `visitor/02-local-persistence`; its [execution record](VISITOR-02-plan.md) owns the behavior, checks and limitations. Recommendations and accounts follow later.
 
 ## Where information belongs
 
-The [VISITOR-01 completion record](VISITOR-01.md) owns delivered behavior and checks. [Catalog assets](catalog-assets.md) owns studio provenance, earlier photographic terms and recoloring. Reload persistence belongs to VISITOR-02.
+The [VISITOR-01 completion record](VISITOR-01.md) owns delivered behavior and checks. [Catalog assets](catalog-assets.md) owns studio provenance, earlier photographic terms and recoloring. Browser persistence and recovery are recorded in [VISITOR-02](VISITOR-02-plan.md).
 
-The [VISITOR-03 execution plan and results](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the shared single-garment carousel and stable editor actions during color-preview loading. The larger shirt, dress and sneaker appear one at a time. Local checks passed; remote CI is pending.
+The [VISITOR-03 execution plan and results](VISITOR-03-plan.md), tracked in completed [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the shared single-garment carousel and stable editor actions during color-preview loading. The larger shirt, dress and sneaker appear one at a time. Local checks and remote CI passed before merge.
 
 | Document                                  | Purpose                                                                                                                      |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |

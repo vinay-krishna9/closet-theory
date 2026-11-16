@@ -16,6 +16,10 @@ import {
   type Garment,
 } from '@/features/wardrobe/model';
 import { useVisitorWardrobe } from '@/features/wardrobe/visitor-provider';
+import {
+  VisitorRestoring,
+  VisitorStorageNotice,
+} from '@/features/wardrobe/visitor-storage-notice';
 import { ItemEditor } from '@/features/wardrobe/item-editor';
 import { GarmentPhoto } from '@/features/wardrobe/garment-photo';
 
@@ -38,7 +42,7 @@ function CatalogCard({
       return;
     }
     dispatch({ type: 'add', item: { ...garment, id: crypto.randomUUID() } });
-    announce(`${garment.name} added. Selections reset on refresh.`);
+    announce(`${garment.name} added.`);
   }
   return (
     <article className="garment-card" aria-label={`${type.name} catalog item`}>
@@ -76,7 +80,7 @@ function CatalogCard({
 }
 
 export function QuickAdd() {
-  const { items, notice } = useVisitorWardrobe();
+  const { items, notice, persistence } = useVisitorWardrobe();
   const [group, setGroup] = useState('All clothing');
   const [search, setSearch] = useState('');
   const [editor, setEditor] = useState<{
@@ -90,6 +94,7 @@ export function QuickAdd() {
         .toLowerCase()
         .includes(search.trim().toLowerCase()),
   );
+  if (persistence === 'loading') return <VisitorRestoring />;
   return (
     <main
       id="main-content"
@@ -117,10 +122,7 @@ export function QuickAdd() {
         AI-generated garment samples show your selected color. Other garment
         details remain representative.
       </p>
-      <p className="wardrobe-help">
-        Your selections last while browsing this app and reset on refresh.
-        Browser saving is coming next.
-      </p>
+      <VisitorStorageNotice />
       <div className="wardrobe-tools">
         <div className="group-filters" aria-label="Filter clothing group">
           {['All clothing', ...groups].map((value) => (

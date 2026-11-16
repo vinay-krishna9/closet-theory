@@ -94,13 +94,14 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Build on VISITOR-01's stable selection IDs and shared React context/reducer; add versioned browser storage and schema validation/migration.
 - Recover after reload; handle blocked/corrupt storage gracefully with in-memory use and an explanatory notice.
 - **Acceptance:** selections survive the intended lifecycle; no personal photos/session tokens are stored; visitors cannot perform account-only operations. Test reset and schema migration behavior.
+- **Local result:** implemented on `visitor/02-local-persistence` with versioned schema validation, reload restoration, confirmed clearing, honest storage-failure recovery and cross-tab conflict detection. See [execution record](VISITOR-02-plan.md) for actual verification and limits.
 
 ### VISITOR-03 — Stable editor actions and custom loading spinner
 
 - Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Switch between a centered spinner during loading and the visible action text afterward, preserving button dimensions and accessible names.
 - Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
 - **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
-- **Status:** implemented locally on `visitor/03-loading-spinner` with the user-approved larger single-garment carousel. The shirt, dress and sneaker appear in sequence. Completion verification for the final revision is recorded in the execution plan. Depends on completed VISITOR-01 (#7).
+- **Status:** merged through PR #25 with passing CI from `visitor/03-loading-spinner` with the user-approved larger single-garment carousel. The shirt, dress and sneaker appear in sequence. Completion verification for the final revision is recorded in the execution plan. Depends on completed VISITOR-01 (#7).
 
 ### ENGINE-01 — Deterministic matching and reasons
 
@@ -234,7 +235,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-VISITOR-01 is implemented locally with its completion record. Next, prepare the concrete VISITOR-02 browser-persistence plan under the repository's brief-plan/approval workflow, then continue the M2 outfit engine/results and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
+VISITOR-01 and VISITOR-03 are merged. VISITOR-02 is implemented locally with its execution record. Next, prepare ENGINE-01's concrete deterministic matching plan under the repository's brief-plan/approval workflow, then OUTFITS-01 and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
 
 ## Resolved PLAN-02 decisions
 

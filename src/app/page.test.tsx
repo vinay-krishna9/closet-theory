@@ -8,7 +8,7 @@ describe('foundation entry page', () => {
     const status = screen.getByRole('region', { name: 'In development' });
     expect(
       within(status).getByText(
-        /does not collect photos, create accounts or save wardrobe data/,
+        /Visitor selections are saved in this browser only/,
       ),
     ).toBeVisible();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();

@@ -76,6 +76,8 @@ test('select, customize, edit and remove only owned clothing across visitor navi
   await expect(page.getByRole('article')).toHaveCount(1);
   await expect(item.getByRole('img')).toHaveAttribute('alt', /Navy T-shirt/);
   const id = await item.getAttribute('data-item-id');
+  await page.reload();
+  await expect(item).toHaveAttribute('data-item-id', id!);
   await item.getByRole('button', { name: 'Edit clothing' }).click();
   await editor.getByText('Customize the details', { exact: true }).click();
   await expect(
@@ -88,6 +90,7 @@ test('select, customize, edit and remove only owned clothing across visitor navi
     .getByRole('textbox', { name: 'Garment name' })
     .fill('Weekend tee');
   await editor.getByRole('button', { name: 'Save changes' }).click();
+  await page.reload();
   const renamed = page.getByRole('article', { name: 'Weekend tee' });
   await expect(renamed).toHaveAttribute('data-item-id', id!);
   await page.screenshot({
@@ -117,6 +120,7 @@ test('select, customize, edit and remove only owned clothing across visitor navi
     page.getByRole('heading', { name: 'Your wardrobe', exact: true }),
   ).toBeFocused();
   await expect(page.getByRole('article')).toHaveCount(0);
+  await page.reload();
   await page.getByRole('link', { name: 'Choose your first pieces' }).click();
   await expect(page.getByRole('article')).toHaveCount(8);
   expect(errors).toEqual([]);
@@ -289,6 +293,15 @@ test('duplicate choices keep or replace existing clothing and separate garments 
       items.map((item) => item.getAttribute('data-item-id')),
     );
   expect(new Set(ids).size).toBe(2);
+  await page.reload();
+  await expect(page.getByRole('article')).toHaveCount(2);
+  expect(
+    await page
+      .getByRole('article')
+      .evaluateAll((items) =>
+        items.map((item) => item.getAttribute('data-item-id')),
+      ),
+  ).toEqual(ids);
 });
 
 test('failed color previews preserve tags and retry without saving the wrong image', async ({
@@ -545,7 +558,7 @@ for (const mode of ['customize', 'edit'] as const) {
   });
 }
 
-test('visitor state resets on reload and catalog search recovers honestly', async ({
+test('visitor state persists on reload and catalog search recovers honestly', async ({
   page,
 }) => {
   await page.goto('/quick-add');
@@ -564,8 +577,22 @@ test('visitor state resets on reload and catalog search recovers honestly', asyn
   await page.getByRole('link', { name: 'Explore your wardrobe' }).click();
   await expect(page.getByRole('article')).toHaveCount(1);
   await page.reload();
+  await expect(page.getByRole('article')).toHaveCount(1);
+  await expect(page.getByText(/saved in this browser only/)).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Clear visitor wardrobe', exact: true })
+    .click();
+  await expect(
+    page.getByRole('button', { name: 'Cancel', exact: true }),
+  ).toBeFocused();
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(page.getByRole('article')).toHaveCount(1);
+  await page
+    .getByRole('button', { name: 'Clear visitor wardrobe', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Clear all selections' }).click();
+  await page.reload();
   await expect(page.getByRole('article')).toHaveCount(0);
-  await expect(page.getByText(/reset on refresh/)).toBeVisible();
   await expect(
     page.getByRole('link', { name: 'Statistics', exact: true }),
   ).toHaveCount(0);
