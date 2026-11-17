@@ -92,6 +92,17 @@ test('real visitor suggestions are capped at three, deterministic and filterable
     animations: 'disabled',
   });
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
+  const filterPanel = await page
+    .locator('.outfit-filter-options')
+    .boundingBox();
+  const suggestButton = await page
+    .getByRole('button', { name: 'Suggest outfits', exact: true })
+    .boundingBox();
+  expect(filterPanel).not.toBeNull();
+  expect(suggestButton).not.toBeNull();
+  expect(
+    suggestButton!.y - (filterPanel!.y + filterPanel!.height),
+  ).toBeGreaterThanOrEqual(24);
   await page
     .getByRole('group', { name: 'Formality', exact: true })
     .getByRole('radio', { name: 'Formal', exact: true })

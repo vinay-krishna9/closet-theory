@@ -31,6 +31,9 @@
 .outfit-filters .picture-grid {
   max-width: 42rem;
 }
+.outfit-filter-options {
+  margin-bottom: var(--space-6);
+}
 .outfit-announcement {
   min-height: var(--space-6);
   margin-block: var(--space-4);
