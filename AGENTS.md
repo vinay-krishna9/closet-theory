@@ -17,7 +17,7 @@ Build a real, published personal stylist app: users add wardrobe photos or sampl
 - For missing product decisions, present short options, a brief explanation and your best recommendation. Do not silently decide behavior the user has not approved.
 - Before adding a new dependency, present what it does, why it is needed and your recommendation, including using existing tools where reasonable. Approval in a feature plan covers dependencies explicitly included in that plan; do not ask twice.
 - Keep progress updates short. Explain important choices and results in plain language. Use option-based questions when available.
-- Do not commit, push, merge, publish or deploy unless the user explicitly asks. Permission for one action does not imply permission for the others.
+- Approved large implementations include authorization for local checkpoint commits and local integration between their task branches under the incremental delivery rules below. Other commits, pushes, merges into `main` or release branches, publishing and deployment require an explicit user request. Permission for one action does not imply permission for the others.
 - Preserve unrelated user changes. Do not revert or overwrite work to make your task easier.
 
 ## Branch and Git workflow
@@ -48,6 +48,14 @@ Build a real, published personal stylist app: users add wardrobe photos or sampl
 - When committing is authorized, use focused commits with clear messages and separate independent tasks. Before requesting review or an authorized merge, inspect the diff, verify the base/target and run relevant checks. Report actual results and remaining limitations.
 - Resolve routine conflicts within the approved task scope, preserving existing behavior and user changes, then rerun affected checks. Request explicit authorization before destructive resets, rewriting shared history or force-pushing.
 - Follow the approval rules above for commits, pushes, merges, publishing and deployment. Pull requests should identify the task/issue, intended target, resulting behavior, checks and limitations. After an authorized merge, confirm the result and clean up task branches when authorized.
+
+### Incremental delivery for large changes
+
+- Break substantial implementations into coherent subtasks and identify useful commit boundaries in the approved plan. Prefer completed behavior or a clear technical boundary, such as the generation runner, result UI or recovery flow. Keep each subtask's implementation, relevant tests and supporting documentation together.
+- Default to one issue branch with focused local commits as subtasks are completed and checked. Make these checkpoints during implementation, before beginning the next substantial subtask. Run checks appropriate to the changed behavior before each checkpoint and the complete relevant verification before final review.
+- Use separate subtask branches when work benefits from independent review, experimentation or isolation. Name them using the existing type/issue conventions, document their base and dependencies, and integrate completed work into the issue branch in dependency order. Local integration merges within the approved task are authorized. Follow the existing approval requirements for shared branches and remote actions.
+- Choose boundaries by reviewability and behavior. Avoid arbitrary line-count thresholds, a branch per file or commits that split necessary code from its tests. Keep unrelated cleanup separate, and use focused follow-up commits for fixes discovered during later checks.
+- Preserve existing commits and user work. Record completed subtasks, their commits and remaining checks in progress updates and the final handoff. Rewriting history or squashing commits follows the existing authorization rules.
 
 ## Approved tools
 
