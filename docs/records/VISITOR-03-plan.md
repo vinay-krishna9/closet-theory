@@ -89,8 +89,8 @@ Build the shared Spinner with full inline SVG outlines and CSS transform/opacity
 ## References
 
 - [Existing implementation and verification](VISITOR-01.md)
-- [Catalog assets and provenance](catalog-assets.md)
-- [Design system](../design.md), especially motion, accessibility and the item editor refinements
+- [Catalog assets and provenance](../assets/catalog-assets.md)
+- [Design system](../../design.md), especially motion, accessibility and the item editor refinements
 
 ## Completion evidence
 

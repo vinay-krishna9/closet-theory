@@ -6,21 +6,24 @@ This document records agreed architecture decisions and proposes implementation 
 
 ## 1. Document ownership and placement
 
-Place this file at `docs/architecture.md` in the application repository.
+Place this file at `docs/technical/architecture.md` in the application repository.
 
-Recommended documentation layout:
+Documentation layout:
 
 ```text
 AGENTS.md
 design.md
 docs/
-  MVP.md
-  user-flows.md
-  architecture.md
-  development-plan.md   # create after milestones are agreed
+  README.md
+  product/       MVP scope, user flows and product decisions
+  technical/     Architecture and implementation boundaries
+  plans/         Delivery and pending execution plans
+  records/       Delivered features and verification evidence
+  assets/        Catalog provenance and preparation
+  reviews/       Visual review pages and supporting media
 ```
 
-`MVP.md` defines release scope; `user-flows.md` defines journeys; `design.md` defines visual and interaction rules; `AGENTS.md` defines the development workflow. Update references when moving documents. If an older document conflicts with a later agreed product decision, identify and reconcile the conflict rather than silently implementing the older behavior.
+[MVP requirements](../product/MVP.md) define release scope. [User flows](../product/user-flows.md) define journeys, [design.md](../../design.md) defines visual and interaction rules, and [AGENTS.md](../../AGENTS.md) defines the development workflow. Update references when moving documents. If an older document conflicts with a later agreed product decision, identify and reconcile the conflict rather than silently implementing the older behavior.
 
 ## 2. Confirmed direction
 
@@ -73,7 +76,7 @@ Use elevated server credentials only for narrowly defined maintenance/cleanup op
 
 ### Visitor
 
-Current VISITOR-01 implementation: static typed catalog data in `src/features/onboarding/`, pure selection rules and context/reducer in `src/features/wardrobe/`, and a client provider in the server root layout so Home/Quick-add/Wardrobe navigation retains selections. VISITOR-02 restores selections after client hydration and saves completed item changes to the versioned `closet-theory.visitor-wardrobe` localStorage key. The first shipped envelope is `{ version: 1, items }`; its decoder validates unknown JSON and reconstructs only allowed fields before use. Stable IDs, order and intentional duplicates are preserved. Unsupported versions or corrupt data remain untouched until explicit confirmed reset, with in-memory browsing available. Read/write/quota failures are contained and disclosed. Write failure offers retry with the current items; failed clearing warns that old saved items may return. External changes pause automatic writes and offer reload or explicit keep/save. Before each automatic save, the stored value is compared with the last read/written value to catch a pending storage event. This is conflict detection, not transactional cross-tab merging. Search/filter state remains in memory. See the [VISITOR-02 execution record](VISITOR-02-plan.md) for verification. The user-approved v2 catalog uses public AI-generated studio sources with locally prepared cutouts, protected-detail masks and color derivatives. Preparation runs before shipping; see [catalog assets](catalog-assets.md) for provenance and earlier photographic credits. No database or private-media integration has been introduced.
+Current VISITOR-01 implementation: static typed catalog data in `src/features/onboarding/`, pure selection rules and context/reducer in `src/features/wardrobe/`, and a client provider in the server root layout so Home/Quick-add/Wardrobe navigation retains selections. VISITOR-02 restores selections after client hydration and saves completed item changes to the versioned `closet-theory.visitor-wardrobe` localStorage key. The first shipped envelope is `{ version: 1, items }`; its decoder validates unknown JSON and reconstructs only allowed fields before use. Stable IDs, order and intentional duplicates are preserved. Unsupported versions or corrupt data remain untouched until explicit confirmed reset, with in-memory browsing available. Read/write/quota failures are contained and disclosed. Write failure offers retry with the current items; failed clearing warns that old saved items may return. External changes pause automatic writes and offer reload or explicit keep/save. Before each automatic save, the stored value is compared with the last read/written value to catch a pending storage event. This is conflict detection, not transactional cross-tab merging. Search/filter state remains in memory. See the [VISITOR-02 execution record](../records/VISITOR-02-plan.md) for verification. The user-approved v2 catalog uses public AI-generated studio sources with locally prepared cutouts, protected-detail masks and color derivatives. Preparation runs before shipping; see [catalog assets](../assets/catalog-assets.md) for provenance and earlier photographic credits. No database or private-media integration has been introduced.
 
 - No separate demo account, prefilled wardrobe or personal-photo upload.
 - Visitors select catalog garments and named color variants they actually own, then request suggestions.
@@ -211,13 +214,13 @@ Use Vitest for pure rules/integration checks, React Testing Library for meaningf
 
 1. Resolve the explicitly flagged product edge cases; finalize the logical model into schema constraints and authorization policies.
 2. Review the local document reconciliation: Clerk, the real visitor catalog, expanded clothing types and removal/history behavior now supersede older proposals. Validate the diff before closing PLAN-01.
-3. Create `docs/development-plan.md` with end-to-end milestones, dependencies, feasibility work and release gates.
+3. Create `docs/plans/development-plan.md` with end-to-end milestones, dependencies, feasibility work and release gates.
 4. Turn milestones into issues with behavior, scope, acceptance checks and dependencies. The repository is vinay-krishna9/closet-theory and the existing board is https://github.com/users/vinay-krishna9/projects/1; 21 issues have been created.
 
 No paid services, repository commits or deployments are authorized by this document. Follow the user's approval workflow in `AGENTS.md` before implementation.
 
 ## Resolved PLAN-02 decisions
 
-Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+Follow [agreed product decisions](../product/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
 
 Normalize customizations and defaults for exact matching. Store selections/customizations on personal or visitor items, not combinatorial shared catalog copies. Account writes require verified Clerk identity. Version catalog asset references so later template changes do not silently rewrite historical meaning; concrete versioning mechanics remain an implementation task.

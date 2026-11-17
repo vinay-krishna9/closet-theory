@@ -15,7 +15,7 @@ Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.
 
 Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Catalog group/type stay fixed in Customize and wardrobe editing. The editor keeps the garment visible, with name/color on the left and garment details and other options on the right on desktop. Phones use a compact pinned preview. Garment images show a skeleton that preserves their space during loading, color changes and retry. A shared carousel shows one larger shirt, dress or sneaker at a time inside Add to wardrobe/Save changes while the selected preview loads. The centered animation replaces the button text while loading and restores it afterward, keeping button dimensions steady. Reduced motion shows one still shirt.
 
-For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
+For BUILD-02, open http://127.0.0.1:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/records/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
 No environment variables, Clerk application, Supabase project, database, storage bucket or paid service is required for this foundation. Do not add real service credentials to source control. Future adapter work must document exact environment variable names with placeholders and separate development/test services before use. No provisioning, database migrations or deployment is configured here.
 
@@ -49,7 +49,7 @@ npm.cmd run test:e2e
 
 The browser suite requires a successful production build. Leave port **4174** free; Playwright starts and stops its own server and deliberately refuses to reuse an existing process. Tests use a fixed loopback URL, cannot be redirected to production via an environment override, and need no accounts or private photos. Pixel-device emulation checks responsive behavior, not physical Android performance. Chromium is the initial smoke-test browser; real Safari/Firefox/device verification remains later work.
 
-Vitest handles synchronous components and pure logic; use browser/integration coverage for async Server Components. Co-located tests cover catalog validation, selection identity/duplicates, editable forms and recoloring invariants. Browser checks cover actual catalog → customization → wardrobe → edit/remove, similarity choices, image failure/retry, stale image results and reload persistence, explicit reset and storage recovery, plus foundation and design-review regressions. All user selections in product tests come from explicit actions; no visitor wardrobe is seeded from review data. Photo provenance and preparation details are in [the asset record](docs/catalog-assets.md).
+Vitest handles synchronous components and pure logic; use browser/integration coverage for async Server Components. Co-located tests cover catalog validation, selection identity/duplicates, editable forms and recoloring invariants. Browser checks cover actual catalog → customization → wardrobe → edit/remove, similarity choices, image failure/retry, stale image results and reload persistence, explicit reset and storage recovery, plus foundation and design-review regressions. All user selections in product tests come from explicit actions; no visitor wardrobe is seeded from review data. Photo provenance and preparation details are in [the asset record](docs/assets/catalog-assets.md).
 
 ## Repository map
 
@@ -69,7 +69,13 @@ scripts/                  Reproducible local catalog asset preparation
 tests/setup.ts            Component-test setup and cleanup
 tests/e2e/                Playwright journeys
 .github/workflows/        Branch/PR checks, without deployment
-docs/                     Requirements, decisions, architecture and delivery plan
+docs/README.md            Documentation index and folder guide
+docs/product/             MVP scope, user flows and agreed decisions
+docs/technical/           Architecture and implementation boundaries
+docs/plans/               Delivery sequence and pending execution plans
+docs/records/             Delivered feature records and verification
+docs/assets/              Catalog provenance and preparation
+docs/reviews/             Visual review pages and supporting media
 ```
 
 No empty feature or persistence folders are created. The root layout self-hosts Space Grotesk/Manrope for all routes; shared colors, spacing and controls follow the approved charcoal design. `components.json` records the shadcn/ui setup with Radix as the only primitive family. `src/features/design-review/` retains review-specific garment layouts and illustrative assets in `public/design-review/`, while consuming shared tokens, buttons, fields and editor foundations. Pages remain noindex while the product is incomplete.
@@ -90,10 +96,11 @@ Use the [documentation index](docs/README.md) for document ownership, current de
 
 - [Repository instructions](AGENTS.md)
 - [Design specification](design.md)
-- [MVP requirements](docs/MVP.md), [user flows](docs/user-flows.md) and [resolved decisions](docs/product-decisions.md)
-- [Architecture](docs/architecture.md) and [development plan](docs/development-plan.md)
-- [BUILD-01 verification and limitations](docs/BUILD-01.md)
-- [VISITOR-01 implementation and verification](docs/VISITOR-01.md), [VISITOR-03 execution plan](docs/VISITOR-03-plan.md) and [catalog photo credits](docs/catalog-assets.md)
+- [MVP requirements](docs/product/MVP.md), [user flows](docs/product/user-flows.md) and [resolved decisions](docs/product/product-decisions.md)
+- [Architecture](docs/technical/architecture.md) and [development plan](docs/plans/development-plan.md)
+- [ENGINE-01 execution plan for issue #9](docs/plans/ENGINE-01-plan.md)
+- [BUILD-01 verification and limitations](docs/records/BUILD-01.md)
+- [VISITOR-01 implementation and verification](docs/records/VISITOR-01.md), [VISITOR-03 execution plan](docs/records/VISITOR-03-plan.md) and [catalog photo credits](docs/assets/catalog-assets.md)
 - Background-removal experiment: [prototype branch](https://github.com/vinay-krishna9/closet-theory/tree/spike/01-browser-background-removal), [recorded findings](https://github.com/vinay-krishna9/closet-theory/blob/70eec67e429787632a893405c0992c8a06f487a5/docs/spikes/SPIKE-01.md). Its code is not merged into the application; local photos and downloaded artifacts remain ignored.
 
 SPIKE-02 will validate Clerk/Supabase owner isolation after visitor features and before account/private-data features. Outstanding physical-mobile image-processing checks remain a gate for personal-photo work. Neither integration is verified by this scaffold.

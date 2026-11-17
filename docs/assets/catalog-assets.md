@@ -14,7 +14,7 @@ The current output is 64 transparent 512×640 color variants in `public/catalog/
 
 The built-in image tool created the sources and the T-shirt edit. Deterministic preparation and named-color variants use the approved local asset pipeline. Sources contain synthetic garments with approximate material/color representation. They have no photographer attribution and are labelled by their actual creation method. The existing photographic licenses below apply to the retained v1 assets.
 
-The initial comparison board and prompts are retained in [the review folder](reviews/catalog-studio-01/index.html). The [prepared studio gallery](reviews/catalog-studio-01/studio-v2.html) shows all 64 current variants. See the [feature record](VISITOR-01.md) for final checks and review limitations.
+The initial comparison board and prompts are retained in [the review folder](../reviews/catalog-studio-01/index.html). The [prepared studio gallery](../reviews/catalog-studio-01/studio-v2.html) shows all 64 current variants. See the [feature record](../records/VISITOR-01.md) for final checks and review limitations.
 
 ## Earlier photographic catalog · v1
 

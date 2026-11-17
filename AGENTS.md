@@ -4,7 +4,7 @@
 
 Build a real, published personal stylist app: users add wardrobe photos or sample staples, receive deterministic outfit suggestions, express preferences and track wears.
 
-- Read `docs/MVP.md` for scope, `docs/user-flows.md` for journeys, `docs/architecture.md` for technical boundaries, and `docs/development-plan.md` for delivery.
+- Read `docs/product/MVP.md` for scope, `docs/product/user-flows.md` for journeys, `docs/technical/architecture.md` for technical boundaries, and `docs/plans/development-plan.md` for delivery.
 - Read `design.md` before UI work. It defines visual tokens, components, responsive behavior, accessibility and interactions. Do not duplicate its specifications here.
 - Read the existing README, package scripts and relevant code before making changes. Follow established project conventions unless a change is approved.
 - The MVP includes wardrobe management, automatic background removal with original-photo fallback, staples, rule-based outfit suggestions, outfit preferences and wear statistics. Shopping/affiliate suggestions are deferred.
@@ -103,7 +103,7 @@ The BUILD-01 scaffold uses `src/app/` for App Router routes and `src/styles/glob
 
 BUILD-02 adds `src/app/(workspace)/` for the shared visitor layout, `src/components/app-shell.tsx`, Radix/shadcn controls in `src/components/ui/`, and shared styling in `src/styles/tokens.css` and `src/styles/components.css`. Fonts load globally in the root layout. Keep illustrative wardrobes/outfits confined to `src/features/design-review/`; production visitor wardrobes start empty and only explicit user selections add clothing.
 
-VISITOR-01 uses `src/features/onboarding/` for the real public catalog and `src/features/wardrobe/` for selections/editor state. The root layout hosts the in-memory visitor provider; reload persistence belongs to VISITOR-02. `npm.cmd run catalog:prepare` reproduces the approved studio catalog color variants from local sources/masks using existing Playwright tooling. Keep provenance, generation prompts and retained photographic credits in `docs/catalog-assets.md` and the shipped `/catalog-credits` page current when assets change.
+VISITOR-01 uses `src/features/onboarding/` for the real public catalog and `src/features/wardrobe/` for selections/editor state. The root layout hosts the in-memory visitor provider; reload persistence belongs to VISITOR-02. `npm.cmd run catalog:prepare` reproduces the approved studio catalog color variants from local sources/masks using existing Playwright tooling. Keep provenance, generation prompts and retained photographic credits in `docs/assets/catalog-assets.md` and the shipped `/catalog-credits` page current when assets change.
 
 See `README.md` and `package.json` for installation, development, formatting, linting, type checking, tests and production commands. Use Node 22.18+ within the 22.x line and npm 10+. On restricted PowerShell installations, use `npm.cmd`/`npx.cmd` rather than changing execution policy.
 
@@ -131,8 +131,8 @@ Keep this file concise and accurate as the repository evolves. Update concrete p
 - Upload one garment at a time, confirm Group → Type, color, formality and seasons, review automatic background removal, then save or explicitly use the original. Offer Add another after success.
 - Complete outfits need top, bottom and shoes; jacket optional. Season/formality filters include Any. No extra occasion requirement.
 - Statistics are all-time. Removing a garment preserves historical wears, excludes it and dependent outfits from future suggestions, deletes its private photos and uses existing catalog imagery or a placeholder in history. Never add personal garments/photos to the shared catalog. Lifetime totals retain valid history; current most/least/never-worn lists include active items only. Account deletion is a separate privacy operation.
-- Follow docs/product-decisions.md for resolved merge, jacket, timezone and Undo rules. Exact scoring weights/performance limits remain technical defaults to validate; do not reopen settled product choices.
+- Follow docs/product/product-decisions.md for resolved merge, jacket, timezone and Undo rules. Exact scoring weights/performance limits remain technical defaults to validate; do not reopen settled product choices.
 
 ## Resolved PLAN-02 decisions
 
-Follow [agreed product decisions](docs/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+Follow [agreed product decisions](docs/product/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.

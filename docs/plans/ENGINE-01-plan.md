@@ -4,7 +4,7 @@ Status awaiting implementation approval, 17 November 2026.
 
 Tracked in [issue #9](https://github.com/vinay-krishna9/closet-theory/issues/9), M2 — Visitor wardrobe and suggestions. Its dependencies PLAN-02 (#2) and BUILD-01 (#5) are closed. The current repository supplies the catalog, stable visitor item IDs, editable tags and browser persistence. The production Outfits route currently shows an unavailable state.
 
-Follow [product decisions](product-decisions.md), [MVP requirements](MVP.md), [user flows](user-flows.md), [architecture](architecture.md), [development plan](development-plan.md) and [design.md](../design.md). The numeric defaults below are proposals for this feature's approval and validation.
+Follow [product decisions](../product/product-decisions.md), [MVP requirements](../product/MVP.md), [user flows](../product/user-flows.md), [architecture](../technical/architecture.md), [development plan](development-plan.md) and [design.md](../../design.md). The numeric defaults below are proposals for this feature's approval and validation.
 
 ## Change
 

@@ -15,7 +15,7 @@ Status: completed and merged through [PR #24](https://github.com/vinay-krishna9/
 
 Selections last across in-app navigation and **reset on refresh**. Both screens explain this. Versioned browser storage, blocked/corrupt-storage recovery and import preparation are VISITOR-02. No local/session storage, authentication, personal photos, database or remote image processor was added.
 
-The [asset record](catalog-assets.md) identifies current studio sources, prompts, transformations, reproducible commands and visual limitations, alongside retained photographic licenses. Representative details are labelled; recoloring does not render a requested sleeve/neckline/pattern. Earlier photographic derivatives retain their source license terms and required notices.
+The [asset record](../assets/catalog-assets.md) identifies current studio sources, prompts, transformations, reproducible commands and visual limitations, alongside retained photographic licenses. Representative details are labelled; recoloring does not render a requested sleeve/neckline/pattern. Earlier photographic derivatives retain their source license terms and required notices.
 
 ## Verification
 
@@ -33,7 +33,7 @@ The following initial-feature results preceded the studio revision.
 - `npm.cmd run check` passed formatting, ESLint, TypeScript and all **23 unit/component tests across seven files**. Two new preparation regressions cover detached specks/fringe, retained openings, source immutability and transparent-source handling.
 - `npm.cmd run build` passed. `npm.cmd run test:e2e` passed **all 32 desktop/mobile Chromium checks**, including v2 source/provenance mapping, all eight prompts, actual 64-image color/alpha/protected-pixel checks and the existing visitor/foundation journeys.
 - The select/customize/edit/remove journey was rerun on both projects after improving review captures to wait for all eight catalog images and the editor preview. Both passed. The updated screenshots show the loaded studio imagery in the actual desktop/mobile catalog and editor.
-- Visual inspection covered the [complete color gallery](reviews/catalog-studio-01/studio-v2.html), its 64-image contact sheet, white/dark denim, protected sneaker details and loaded app screenshots. The prepared images have consistent contain framing, clean silhouettes and readable color differences. Dark sneakers retain a contrasting white tongue/eyelet panel, laces, lining and sole.
+- Visual inspection covered the [complete color gallery](../reviews/catalog-studio-01/studio-v2.html), its 64-image contact sheet, white/dark denim, protected sneaker details and loaded app screenshots. The prepared images have consistent contain framing, clean silhouettes and readable color differences. Dark sneakers retain a contrasting white tongue/eyelet panel, laces, lining and sole.
 
 These checks use local isolated visitor data. Physical-device testing, Safari/Firefox, a full screen-reader audit and manual browser-zoom review were not performed. Text-size/reflow checks do not substitute for that review. Remote CI has not run for these uncommitted changes. Generated details and approximate recoloring retain the limitations described in the asset record.
 
