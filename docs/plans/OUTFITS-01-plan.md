@@ -101,4 +101,6 @@ On this Windows x64 machine, a focused Chromium measurement with 50 tops, 50 bot
 
 The first narrow browser smoke run reported both cases passing but required cleanup of a restricted local server process. Completed full runs used elevated local process permissions for reliable shutdown. No dependency, service credential, database change or private image was introduced.
 
+Before merge, the user identified insufficient spacing between expanded filter choices and Suggest outfits. A follow-up fix adds the shared 24px spacing token below the expanded options panel. The production build, formatting and lint checks passed, and the focused visitor journey passed in desktop and mobile Chromium with an explicit assertion for a gap of at least 24px.
+
 Account authentication/import, actual six-result account paging and account writes follow their own features. Physical phones, Safari/Firefox, native high-contrast settings and a full screen-reader session remain unverified. Reduced-motion/forced-colors emulation and desktop keyboard checks were performed. The approved flat composition stays in place while the separate mannequin feasibility issue is pending.

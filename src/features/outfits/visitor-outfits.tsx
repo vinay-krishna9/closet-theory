@@ -85,7 +85,7 @@ export function VisitorOutfits() {
             {filters.formality === 'Any' ? 'Any formality' : filters.formality}
           </p>
         </div>
-        <div id={panel} hidden={!expanded}>
+        <div id={panel} className="outfit-filter-options" hidden={!expanded}>
           <PictorialOptions
             legend="Season"
             choices={[anyChoice, ...seasonChoices]}
