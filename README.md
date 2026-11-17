@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. The product is still in development: recommendations, accounts and personal uploads are later features.
+A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies the pure deterministic matching engine and wardrobe adapter. OUTFITS-01 will connect that engine to visitor result cards. Accounts and personal uploads follow later.
 
 ## Local setup
 
@@ -51,6 +51,14 @@ The browser suite requires a successful production build. Leave port **4174** fr
 
 Vitest handles synchronous components and pure logic; use browser/integration coverage for async Server Components. Co-located tests cover catalog validation, selection identity/duplicates, editable forms and recoloring invariants. Browser checks cover actual catalog → customization → wardrobe → edit/remove, similarity choices, image failure/retry, stale image results and reload persistence, explicit reset and storage recovery, plus foundation and design-review regressions. All user selections in product tests come from explicit actions; no visitor wardrobe is seeded from review data. Photo provenance and preparation details are in [the asset record](docs/assets/catalog-assets.md).
 
+To verify ENGINE-01 directly, run its rule/generation tests and the restored-wardrobe adapter tests. The verbose output names the filter, jacket, preference, freshness, diversity, paging and budget cases being checked.
+
+```powershell
+npm.cmd test -- src/lib/outfits src/features/wardrobe/outfit-items.test.ts --reporter=verbose
+```
+
+The [ENGINE-01 execution record](docs/plans/ENGINE-01-plan.md) documents its API, generation limits, measured examples and repeatable testing steps. The visitor Outfits screen is connected during OUTFITS-01 (#10).
+
 ## Repository map
 
 ```text
@@ -62,6 +70,7 @@ src/features/design-review/  Isolated sample screens; no real wardrobe data
 src/features/onboarding/   Public catalog configuration and quick-add UI
 src/features/wardrobe/     Visitor state, selection rules, garment cards and editor
 src/lib/images/            Deterministic catalog recoloring, separate from outfit rules
+src/lib/outfits/           Pure matching, ranking, reasons, stable identity and paging
 src/lib/utils.ts          Shared class merging for UI controls
 src/styles/               Global fonts/base styles, tokens and shared component styles
 public/catalog/           Studio sources, masks, color variants, provenance and earlier photo credits
@@ -72,7 +81,7 @@ tests/e2e/                Playwright journeys
 docs/README.md            Documentation index and folder guide
 docs/product/             MVP scope, user flows and agreed decisions
 docs/technical/           Architecture and implementation boundaries
-docs/plans/               Delivery sequence and pending execution plans
+docs/plans/               Delivery sequence and feature execution plans
 docs/records/             Delivered feature records and verification
 docs/assets/              Catalog provenance and preparation
 docs/reviews/             Visual review pages and supporting media

@@ -17,7 +17,7 @@ docs/
   README.md
   product/       MVP scope, user flows and product decisions
   technical/     Architecture and implementation boundaries
-  plans/         Delivery and pending execution plans
+  plans/         Delivery and feature execution plans
   records/       Delivered features and verification evidence
   assets/        Catalog provenance and preparation
   reviews/       Visual review pages and supporting media
@@ -136,7 +136,11 @@ Use a pure TypeScript module that accepts normalized items, filters, preferences
 
 Use the same engine for visitor and account flows; visitors have empty persistent preference/history inputs. Rankings and IDs remain internal. Garment-derived decorative canvas colors must not change matching scores.
 
-Product rules for seasons, Any, patterns, jackets and diversity are settled in product-decisions.md. Remaining technical defaults: exact scoring weights, compatibility thresholds, closeness/diversity tuning and maximum candidate count/performance strategy. Benchmark the proposed approach before adopting unbounded enumeration for large wardrobes. Recommendation pagination should be consistent against a defined wardrobe/filter snapshot.
+ENGINE-01 is implemented locally in `src/lib/outfits/`. `generateOutfits` validates normalized input, applies eligibility, streams combinations and returns ordered candidates with structured reasons and generation diagnostics. `toOutfitItems` in `src/features/wardrobe/outfit-items.ts` adapts the current wardrobe model, including restored version-1 selections. All catalog imports in the engine are type-only. Its matching rules use named metadata independently of image processing and UI tint.
+
+The current defaults allow 50,000 base/jacket evaluations and retain 240 generated candidates, with eligible supplied favorites evaluated separately and preserved outside that pool. Diagonal traversal and bounded retention spread consideration across tops and bottoms. Diagnostics distinguish incomplete searches, incomplete jacket evaluation, pool truncation, missing groups and hidden disliked results. `getOutfitPage` returns stable slices of up to six results from one request snapshot. The caller must use a fresh snapshot after wardrobe/filter/preference/history changes.
+
+Style combines color/formality/pattern components with maxima 40/40/20. Freshness averages known item/combination recency, saturates after seven days and adds at most three points. Diversity can reorder within a three-style-point window inside each preference group. Technical constants remain tunable against representative examples. See the [execution record](../plans/ENGINE-01-plan.md) for API details, measured behavior and verification limits. Visitor screen integration follows in OUTFITS-01.
 
 ## 7. Retry-safe visitor import
 

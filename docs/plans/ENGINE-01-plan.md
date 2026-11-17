@@ -1,6 +1,6 @@
 # ENGINE-01 — Deterministic matching and reasons execution plan
 
-Status awaiting implementation approval, 17 November 2026.
+Status implemented locally following user approval, 17 November 2026. Verification results and integration guidance are recorded below.
 
 Tracked in [issue #9](https://github.com/vinay-krishna9/closet-theory/issues/9), M2 — Visitor wardrobe and suggestions. Its dependencies PLAN-02 (#2) and BUILD-01 (#5) are closed. The current repository supplies the catalog, stable visitor item IDs, editable tags and browser persistence. The production Outfits route currently shows an unavailable state.
 
@@ -95,4 +95,80 @@ Follow [product decisions](../product/product-decisions.md), [MVP requirements](
 
 Review this plan before implementation under the repository's AGENTS.md workflow. Scoring weights, freshness window, diversity window and generation limits above are proposed technical defaults. Implementation approval covers their measurement-driven tuning while preserving the settled product rules.
 
-Completion requires the engine, adapter, meaningful tests, integration contract and updated implementation evidence. The current document records planning only. Implementation checks and performance measurements are pending.
+The user approved implementation on 17 November 2026. The following record describes the delivered engine, adapter and verification.
+
+## Integration contract
+
+Use `generateOutfits` and `getOutfitPage` from `src/lib/outfits/engine.ts`, `outfitIdentity` from `src/lib/outfits/identity.ts`, and request/result types from `src/lib/outfits/types.ts`. The pure wardrobe adapter is `toOutfitItems` in `src/features/wardrobe/outfit-items.ts`.
+
+```typescript
+const result = generateOutfits({
+  items: toOutfitItems(wardrobeItems),
+  filters: { season: 'Winter', formality: 'Any' },
+  now: Date.now(),
+});
+
+if (result.ok) {
+  const firstPage = getOutfitPage(result.candidates);
+  const nextPage = getOutfitPage(result.candidates, firstPage.nextOffset);
+}
+```
+
+The caller supplies the current timestamp in UTC milliseconds. Optional `history.items` and `history.outfits` contain last-worn timestamps in the same unit, keyed by item ID or canonical outfit identity. Account adapters must derive those timestamps from valid, non-undone events belonging to the current account. Missing history has zero effect. Future timestamps contribute zero elapsed time. Unknown valid history references are ignored. Malformed timestamps produce `ok: false` with `error.code` equal to `invalid-input` and a list of invalid fields.
+
+Optional `preferences` maps canonical identity to favorite, neutral or disliked. Missing entries mean neutral. `showDisliked` defaults to false. Valid favorite combinations are evaluated directly before generated candidates. This preserves compatible favorite jacket choices even when ordinary generation selects a different jacket. Jacket-free Autumn/Winter favorites require the absence of an eligible compatible owned jacket. Caller identity scoping and persistence belong at the account boundary.
+
+Successful results include slot IDs, identity, preference, up to two rule-derived reasons and an optional jacket hint. Public results omit scores. `outcome` distinguishes results, missing groups, filter-eliminated groups, incompatible combinations, hidden disliked results and budget-limited emptiness. Reasons reference owned item IDs. Patterned outfits can receive a pattern explanation, and known wear history can supply a freshness explanation.
+
+`diagnostics.searchExhaustive` reports whether all base/jacket combinations in this request were considered. `poolTruncated` reports retention beyond the generated pool capacity. `evaluations` counts ordinary base/jacket work, while `favoriteEvaluations` reports direct favorite checks separately. Eligible favorites can increase the final result count beyond the 240-generated-candidate cap. `incompleteJacketSearches` reports a budget interruption without making a missing-jacket claim. `hiddenDisliked` counts generated suggestions suppressed by preference.
+
+`getOutfitPage` returns `candidates`, `nextOffset` and `hasMore`, with at most six candidates per page. `hasMore` covers retained results. Read the diagnostics separately to understand search/retention limits. Preserve the generated sequence while appending pages. Regenerate on wardrobe, filter, preference or wear-history changes. Visitor integration must wait for wardrobe restoration before treating its items as a completed input snapshot.
+
+## Delivered defaults and representative results
+
+- Color rules explicitly cover all 15 current named colors. Neutral palettes receive 40 color points. One accent family with neutral pieces receives 38, an all-accent related family receives 36, and mixed accent families receive 22. Color affects ranking while eligibility enforces the documented season/formality rules.
+- Formality contributes up to 40 points. With Any, matching levels receive 40 and an adjacent mixture receives 32. An explicit formality uses 30 plus up to 10 for the fraction of exact matches, less four for an adjacent mixture. Casual/Formal combinations remain ineligible.
+- Patterns contribute 20 points for zero/one patterned garment, then 12, four and zero for two, three and four patterned garments. This includes jackets.
+- Freshness averages known item/outfit elapsed times, capped at seven days, and adds zero to three points. Close-score diversity uses a three-style-point window and prefers less-repeated tops, then bottoms, within each preference group. Canonical identity resolves remaining ties.
+- Under Any filters, solid casual navy/beige/white scores 100 internally, white/indigo/white scores 98, and burgundy/indigo/white scores 82. These examples use metadata only. Adding a second patterned piece reduces style by eight points. Public candidates expose the matching explanations.
+- Default work is capped at 50,000 base/jacket evaluations and retention at 240 generated candidates. Requests may set smaller positive integer limits through `limits.maxEvaluations` and `limits.maxCandidates`. Values above the defaults or malformed limits are rejected.
+
+Measured on Windows x64 with Node 22.18.0, using in-memory CommonJS transpilation of the production TypeScript modules in one Node context. These are single-run local observations. Heap growth is the change in `heapUsed` during the call, including temporary allocations, rather than a peak-memory measurement.
+
+| Synthetic wardrobe                          | Filter | Elapsed | Evaluations | Retained | Search exhaustive | Heap growth |
+| ------------------------------------------- | ------ | ------- | ----------- | -------- | ----------------- | ----------- |
+| 10 tops, 10 bottoms, 10 shoes, four jackets | Any    | 25 ms   | 1,000       | 240      | Yes               | 4.0 MiB     |
+| Same wardrobe                               | Winter | 27 ms   | 5,000       | 240      | Yes               | 6.6 MiB     |
+| 50 tops, 50 bottoms, 50 shoes, four jackets | Any    | 521 ms  | 50,000      | 240      | No                | 7.3 MiB     |
+| Same larger wardrobe                        | Winter | 132 ms  | 50,000      | 240      | No                | 6.1 MiB     |
+
+All examples use compatible solid garments to exercise generation and pool retention. The larger wardrobe has 125,000 possible base combinations. The product is streamed up to the work budget. Browser/mobile execution speed and interactive scheduling require validation during OUTFITS-01.
+
+## Repeatable user verification
+
+1. From the repository root, run `npm.cmd test -- src/lib/outfits src/features/wardrobe/outfit-items.test.ts --reporter=verbose`. The output names each rule and recovery case. All engine/adapter tests should pass.
+2. Run `npm.cmd test -- src/lib/outfits/engine.test.ts -t "optional seasonal jackets" --reporter=verbose`. Verify the named Autumn/Winter attachment, Spring/Summer/Any exclusion and incomplete-search cases pass.
+3. Run `npm.cmd test -- src/lib/outfits/engine.test.ts -t "preferences, bounds and paging" --reporter=verbose`. Verify preference grouping, retained favorites, distinct pages and budget behavior pass.
+4. Run `npm.cmd test -- src/lib/outfits/rules.test.ts --reporter=verbose` to inspect color, pattern, freshness and diversity checks. Run `npm.cmd test -- src/features/wardrobe/outfit-items.test.ts --reporter=verbose` to verify version-1 restored selections feed the engine with their original IDs.
+5. Run `npm.cmd run build`, then `npm.cmd run test:e2e -- --workers=2` with port 4174 free to verify the existing desktop/mobile visitor journeys. OUTFITS-01 (#10) supplies the visitor filter/result-card integration and its interactive acceptance steps.
+
+## Completion evidence
+
+Implemented locally on 17 November 2026 in eight engine/rule/test modules and the wardrobe adapter with its co-located test. The approved 50,000-evaluation, 240-generated-candidate, seven-day freshness and three-point freshness/diversity defaults were retained after the representative checks above.
+
+| Verification                                                 | Actual result                                                                                                                                |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm.cmd test`                                               | Passed 130 tests in 12 files, including 76 engine/adapter tests                                                                              |
+| Final public pattern-reason assertion                        | Rules suite rerun passed all 11 tests after adding this assertion                                                                            |
+| `npm.cmd run lint`                                           | Passed                                                                                                                                       |
+| `npm.cmd run typecheck`                                      | Passed                                                                                                                                       |
+| `npm.cmd run build`                                          | Passed production compilation, TypeScript and all static routes                                                                              |
+| `npm.cmd run test:e2e -- --workers=2`                        | Passed all 48 desktop/mobile Chromium checks in 36.8 seconds on the completed rerun                                                          |
+| Formatting of new source and changed formatted documentation | Passed                                                                                                                                       |
+| `npm.cmd run check`                                          | Stopped at the existing formatting issues in 14 application/test files. Lint, types and all tests were run successfully as separate commands |
+| Local documentation links                                    | All 165 checked Markdown/HTML references resolve                                                                                             |
+| `git diff --check`                                           | Passed                                                                                                                                       |
+
+The initial engine test run exposed insufficient bottom diversity in the retained pool. Retention now removes overrepresented tops/bottoms among similarly scored candidates, and the regression passes. The first browser run reported success for all cases but stalled during restricted-process cleanup. Its specific runner/server processes were stopped, then the suite was rerun with elevated local process permissions and exited successfully. Port 4174 was free before that rerun.
+
+The tests cover exhaustive small fixtures, sparse compatibility, default large-wardrobe work/retention limits, stable identities and ties, both Any filters, direct favorite eligibility, hidden disliked results, seasonal jackets, incomplete searches, truthful explanations and version-1 storage adaptation. Existing browser coverage exercises mobile/desktop layouts, focus, reduced motion and visitor recovery. The feature adds pure logic and its adapter. Interactive engine integration, physical-mobile engine performance, Safari/Firefox and live account inputs remain unverified until their respective features.

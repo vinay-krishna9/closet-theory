@@ -105,7 +105,7 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### ENGINE-01 — Deterministic matching and reasons
 
-- Follow the [execution plan](ENGINE-01-plan.md) for issue #9, including proposed scoring defaults, generation limits and verification. Implementation approval is pending.
+- Implemented locally after user approval on 17 November 2026. The [execution record](ENGINE-01-plan.md) documents the pure engine, wardrobe adapter, scoring defaults, bounded generation, integration contract and verification. Visitor result-screen integration follows in OUTFITS-01.
 - Implement eligibility, top/bottom/shoe completeness, approved optional-jacket policy, compatibility and freshness inputs in pure TypeScript.
 - Inject time and keep decorative canvas tint independent of matching.
 - **Acceptance:** unit tests cover expected matches, rejected combinations, missing groups, Any filters, deterministic ties and realistic candidate bounds. Reasons describe actual rules; ranking scores stay internal.
