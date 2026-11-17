@@ -124,6 +124,8 @@ Successful results include slot IDs, identity, preference, up to two rule-derive
 
 `getOutfitPage` returns `candidates`, `nextOffset` and `hasMore`, with at most six candidates per page. `hasMore` covers retained results. Read the diagnostics separately to understand search/retention limits. Preserve the generated sequence while appending pages. Regenerate on wardrobe, filter, preference or wear-history changes. Visitor integration must wait for wardrobe restoration before treating its items as a completed input snapshot.
 
+The later visitor allowance decision on 17 November 2026 caps the OUTFITS-01 visitor view at three results with an account prompt for further matches. Apply that policy in the visitor adapter after engine generation. The six-result helper documented here supports the account journey. See the [OUTFITS-01 plan](OUTFITS-01-plan.md).
+
 ## Delivered defaults and representative results
 
 - Color rules explicitly cover all 15 current named colors. Neutral palettes receive 40 color points. One accent family with neutral pieces receives 38, an all-accent related family receives 36, and mixed accent families receive 22. Color affects ranking while eligibility enforces the documented season/formality rules.

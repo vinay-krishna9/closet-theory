@@ -380,7 +380,7 @@ Drawer/full-screen header → image upload/processing preview → item name → 
 
 ### Outfit suggestions
 
-Page title → season and formality controls (Casual, Smart-casual, Formal, with Any) → Suggest outfits → up to six compatible compositions → Show more for additional distinct matches. Complete outfits require top, bottom and shoes; jacket is optional. No extra occasion step. Explain missing groups with a quick-add/upload link; offer filter relaxation explicitly when no compatible result exists. Never fabricate six matches or silently change filters. Visitors get suggestions but no saved feedback or wear logging. Account holders get optional Heart/CircleSlash feedback and I wore this. Reasons reflect actual rules; scores stay internal.
+Page title → season and formality controls (Casual, Smart-casual, Formal, with Any) → Suggest outfits → up to three visitor compositions and an account prompt for further matches. Account holders receive up to six compositions with Show more for additional distinct matches. Complete outfits require top, bottom and shoes; jacket is optional. No extra occasion step. Explain missing groups with a quick-add/upload link; offer filter relaxation explicitly when no compatible result exists. Show the actual number of compatible matches within the user's allowance and preserve active filters. Visitors get suggestions but no saved feedback or wear logging. Account holders get optional Heart/CircleSlash feedback and I wore this. Reasons reflect actual rules; scores stay internal.
 
 ### Statistics
 
@@ -550,7 +550,7 @@ styles/tokens.css    semantic tokens and shared type roles
 
 ## 16. Confirmed visitor and account boundaries
 
-Visitors start with an empty quick-add wardrobe, persist catalog selections in the same browser, and receive real filtered suggestions without authentication. No separate demo, prefilled sample history, personal uploads, favorites or wear logging. React context/reducer plus browser storage is the starting approach. Clearly explain account benefits without blocking suggestions.
+Visitors start with an empty quick-add wardrobe, persist catalog selections in the same browser, and receive up to three real filtered suggestions without authentication. Offer account access for further matching results. No separate demo, prefilled sample history, personal uploads, favorites or wear logging. React context/reducer plus browser storage is the starting approach. Clearly explain account benefits without blocking the visitor allowance.
 
 Clerk provides Google/email-password signup and sign-in. Import visitor selections automatically once after either flow; only clear the source after successful account persistence. Sign-out clears private caches and starts a fresh visitor wardrobe. Supabase stores owner-scoped account data/private photos; Vercel hosts the app. Browser background removal is the approved approach, subject to early mobile feasibility checks.
 
@@ -624,3 +624,11 @@ Use the selected broad palette of about 8–10 named colors per type. Show visib
 Recolor only intended garment regions, retaining material texture, shading, transparency and protected details such as soles or trim. A blanket whole-image CSS filter is insufficient. Preview and saved metadata must agree; failed or stale results must not be presented as successful recoloring. Preserve the selection on failure and give useful recovery. Source photography must permit the actual modifications and redistribution, with provenance and required notices retained.
 
 The approved catalog recoloring implementation and reviewed rendering quality are recorded in the [VISITOR-01 completion record](docs/records/VISITOR-01.md). Provenance and visual limitations are maintained in [catalog assets](docs/assets/catalog-assets.md).
+
+## 21. Visitor outfit allowance — approved 17 November 2026
+
+Show at most three compatible outfits for the visitor's current wardrobe and filters. Retain the approved composition grid and charcoal tokens. Place a concise account-benefit panel after the visible results when further matches exist. Keep additional outfit previews outside the rendered visitor results.
+
+When account access is live, use “Create an account or sign in to see more outfit suggestions” with Create account and Sign in actions. Until then, use “More outfits with an account” with a visible “Account access is coming soon” explanation and an account-details action opening the shared availability notice. Keep visitor selections available when that notice closes. For three or fewer compatible matches, describe general account benefits without promising additional outfits from that wardrobe.
+
+Visitor filters remain usable, with Any options and deterministic repeated requests. Account users retain six-result pages and Show more. This section supersedes earlier six-result visitor wording. It adds no favorite, dislike, wear or Statistics actions for visitors.

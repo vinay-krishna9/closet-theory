@@ -4,7 +4,7 @@ Status: consolidated planning draft for review, 7 November 2026. Read with `MVP.
 
 ## 1. Visitor gets a first outfit
 
-Landing → Try with quick-add clothes → select garment types and named colors → visitor wardrobe → choose season/formality or Any → Suggest outfits → up to six results → Show more when available.
+Landing → Try with quick-add clothes → select garment types and named colors → visitor wardrobe → choose season/formality or Any → Suggest outfits → up to three results → account prompt when further matches exist.
 
 - Start with no garments selected. Do not preload a demo wardrobe.
 - Explain: select clothes you already own; sample photos are illustrative.
@@ -12,6 +12,7 @@ Landing → Try with quick-add clothes → select garment types and named colors
 - If a required group is absent, identify it and link directly to its catalog choices. Complete outfits require top, bottom and shoes.
 - If the wardrobe is sufficient but filters eliminate all matches, explain the result and offer relaxed filters. Never silently change filters.
 - Keep account benefits visible: save/sync the wardrobe, upload photos, favorite outfits and log wears. Visitors do not receive functioning favorite/wear controls.
+- Visitors can continue adjusting their wardrobe and filters. Repeating the same request returns the same suggestions. Additional results for that request require an account. When account flows are live, offer Create account and Sign in with visitor carryover explained. During OUTFITS-01, account actions open an accurate account-availability notice and preserve selections.
 - If browser persistence is unavailable, preserve in-memory use and clearly explain the limitation rather than blocking suggestions.
 
 ## 2. Signup preserves selected clothes

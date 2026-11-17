@@ -132,13 +132,15 @@ Use a pure TypeScript module that accepts normalized items, filters, preferences
 3. Calculate style compatibility and freshness using separately testable rules.
 4. Group eligible favorites first, neutral next, and disliked last only when revealed.
 5. Use deterministic ranking and a stable combination-identity tie-breaker within groups.
-6. Return up to six initially and additional distinct results through Show more. Do not manufacture matches or silently relax filters.
+6. Apply the caller's access policy to the ranked candidates. Visitors receive up to three results and an account prompt when further matches exist. Account users receive six-result pages with distinct Show more results. Preserve filters and the actual number of available matches.
 
 Use the same engine for visitor and account flows; visitors have empty persistent preference/history inputs. Rankings and IDs remain internal. Garment-derived decorative canvas colors must not change matching scores.
 
 ENGINE-01 is implemented locally in `src/lib/outfits/`. `generateOutfits` validates normalized input, applies eligibility, streams combinations and returns ordered candidates with structured reasons and generation diagnostics. `toOutfitItems` in `src/features/wardrobe/outfit-items.ts` adapts the current wardrobe model, including restored version-1 selections. All catalog imports in the engine are type-only. Its matching rules use named metadata independently of image processing and UI tint.
 
 The current defaults allow 50,000 base/jacket evaluations and retain 240 generated candidates, with eligible supplied favorites evaluated separately and preserved outside that pool. Diagonal traversal and bounded retention spread consideration across tops and bottoms. Diagnostics distinguish incomplete searches, incomplete jacket evaluation, pool truncation, missing groups and hidden disliked results. `getOutfitPage` returns stable slices of up to six results from one request snapshot. The caller must use a fresh snapshot after wardrobe/filter/preference/history changes.
+
+Visitor allowance revision, approved 17 November 2026. OUTFITS-01 will apply a three-result presentation limit after generation, with an account prompt only when further retained matches exist. The generic engine paging helper supports the account journey. Visitor allowance does not add preference/history persistence or change the browser storage schema. Account availability comes from the actual authentication integration. Until it is available, the shared account notice accurately describes its upcoming status.
 
 Style combines color/formality/pattern components with maxima 40/40/20. Freshness averages known item/combination recency, saturates after seven days and adds at most three points. Diversity can reorder within a three-style-point window inside each preference group. Technical constants remain tunable against representative examples. See the [execution record](../plans/ENGINE-01-plan.md) for API details, measured behavior and verification limits. Visitor screen integration follows in OUTFITS-01.
 

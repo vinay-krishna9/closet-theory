@@ -32,6 +32,7 @@ The [VISITOR-03 execution plan and results](records/VISITOR-03-plan.md), tracked
 | [Architecture](technical/architecture.md)                 | Technical boundaries, persistence, authentication and privacy design                                                         |
 | [Development plan](plans/development-plan.md)             | Task sequence, dependencies and acceptance criteria                                                                          |
 | [ENGINE-01 execution plan](plans/ENGINE-01-plan.md)       | Issue #9 matching rules, proposed technical defaults, implementation steps and verification                                  |
+| [OUTFITS-01 execution plan](plans/OUTFITS-01-plan.md)     | Issue #10 visitor filters, up to three compositions, account prompt, recovery and browser acceptance steps                   |
 | [BUILD-01 record](records/BUILD-01.md)                    | Foundation implementation, verification and limitations                                                                      |
 | [BUILD-02 record](records/BUILD-02.md)                    | Design approval, completed shared foundation, assets, checks and limitations                                                 |
 | [VISITOR-01 record](records/VISITOR-01.md)                | Quick-add catalog, wardrobe editing and verification                                                                         |

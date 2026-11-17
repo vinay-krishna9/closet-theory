@@ -112,9 +112,9 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### OUTFITS-01 — Visitor result journey
 
-- Wire season/formality filters, up to six results and distinct Show more pagination to the shared engine.
+- Follow the [execution plan](OUTFITS-01-plan.md), reflecting the approved 17 November 2026 visitor limit. Wire season/formality filters and up to three visitor results to the shared engine. Offer signup/sign-in for further matches, with accurate messaging while accounts are unavailable. Six-result pages and Show more belong to the account journey.
 - Implement neutral composition cards, missing-category guidance, no-compatible-results recovery and account-benefit messaging.
-- **Acceptance:** complete browser journey from catalog selection to suggestions; fewer than six matches remain honest; filters are not silently changed; no functioning favorite/wear controls for visitors. Mobile, keyboard and empty states work.
+- **Acceptance:** complete browser journey from catalog selection to suggestions, capped at three visitor results. Fewer matches remain honest, and the account prompt describes actual available benefits. Filters are not silently changed. Mobile, keyboard, empty/error recovery and visitor account-only boundaries work.
 
 **Milestone gate:** a new visitor can select sufficient owned basics, refresh the page and obtain understandable compatible suggestions without authentication.
 

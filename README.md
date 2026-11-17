@@ -59,6 +59,8 @@ npm.cmd test -- src/lib/outfits src/features/wardrobe/outfit-items.test.ts --rep
 
 The [ENGINE-01 execution record](docs/plans/ENGINE-01-plan.md) documents its API, generation limits, measured examples and repeatable testing steps. The visitor Outfits screen is connected during OUTFITS-01 (#10).
 
+The [OUTFITS-01 execution plan](docs/plans/OUTFITS-01-plan.md) applies the approved visitor allowance of up to three outfits, with an account prompt for further matches. Account users retain six-result pages and Show more. The current Outfits route remains at its documented development state until that plan is implemented.
+
 ## Repository map
 
 ```text
