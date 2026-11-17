@@ -79,9 +79,13 @@ function CatalogCard({
   );
 }
 
-export function QuickAdd() {
+export function QuickAdd({
+  initialGroup = 'All clothing',
+}: {
+  initialGroup?: string;
+}) {
   const { items, notice, persistence } = useVisitorWardrobe();
-  const [group, setGroup] = useState('All clothing');
+  const [group, setGroup] = useState(initialGroup);
   const [search, setSearch] = useState('');
   const [editor, setEditor] = useState<{
     garment: Garment;

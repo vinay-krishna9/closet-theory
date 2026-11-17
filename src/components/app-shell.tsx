@@ -2,14 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  useState,
-  useEffect,
-  useRef,
-  type CSSProperties,
-  type ReactNode,
-  type MouseEvent,
-} from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 import {
   ArrowRight,
   ChartNoAxesColumn,
@@ -17,14 +10,8 @@ import {
   Shirt,
   UserRound,
 } from 'lucide-react';
-import { Button } from './ui/button';
 import { Icon } from './ui/icon';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from './ui/dialog';
+import { AccountAccess } from './account-access';
 
 const visitorLinks = [
   { href: '/wardrobe', label: 'Wardrobe', icon: Shirt },
@@ -86,13 +73,7 @@ export function AppShell({
       else root.style.removeProperty('--mobile-tabs-height');
     };
   }, []);
-  const [accountNotice, setAccountNotice] = useState(false);
-  const [opener, setOpener] = useState<HTMLElement | null>(null);
   const links = mode === 'account' ? accountLinks : visitorLinks;
-  function signIn(event: MouseEvent<HTMLButtonElement>) {
-    setOpener(event.currentTarget);
-    setAccountNotice(true);
-  }
   function navigation(mobile: boolean) {
     return links.map(({ href, label, icon }) => (
       <Link
@@ -127,9 +108,9 @@ export function AppShell({
             {navigation(false)}
           </nav>
           {mode === 'visitor' && (
-            <Button variant="ghost" onClick={signIn}>
+            <AccountAccess>
               Sign in <Icon icon={ArrowRight} />
-            </Button>
+            </AccountAccess>
           )}
         </div>
       </header>
@@ -146,34 +127,12 @@ export function AppShell({
       >
         {navigation(true)}
         {mode === 'visitor' && (
-          <Button variant="ghost" onClick={signIn}>
+          <AccountAccess>
             <Icon icon={ArrowRight} navigation />
             Sign in
-          </Button>
+          </AccountAccess>
         )}
       </nav>
-      <Dialog open={accountNotice} onOpenChange={setAccountNotice}>
-        <DialogContent
-          onCloseAutoFocus={(event) => {
-            event.preventDefault();
-            opener?.focus();
-          }}
-        >
-          <DialogTitle asChild>
-            <h2 tabIndex={-1} data-dialog-heading>
-              Your wardrobe, everywhere.
-            </h2>
-          </DialogTitle>
-          <DialogDescription>
-            Accounts are not available yet. Sign-in will let you sync your
-            wardrobe, upload personal photos, save outfit preferences and log
-            wears. No account is created here.
-          </DialogDescription>
-          <Button onClick={() => setAccountNotice(false)}>
-            Back to browsing
-          </Button>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

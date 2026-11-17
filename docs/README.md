@@ -13,7 +13,7 @@
 
 ## Current delivery status
 
-BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](records/BUILD-02.md) and [VISITOR-01](records/VISITOR-01.md) own their results and limitations. VISITOR-03 merged through PR #25 after CI passed. VISITOR-02 browser persistence is implemented locally on `visitor/02-local-persistence`; its [execution record](records/VISITOR-02-plan.md) owns the behavior, checks and limitations. ENGINE-01 is implemented locally with its [engine contract and verification](plans/ENGINE-01-plan.md). Visitor result-screen integration and accounts follow later.
+BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](records/BUILD-02.md) and [VISITOR-01](records/VISITOR-01.md) own their results and limitations. VISITOR-03 merged through PR #25 after CI passed. VISITOR-02 browser persistence is implemented locally on `visitor/02-local-persistence`; its [execution record](records/VISITOR-02-plan.md) owns the behavior, checks and limitations. ENGINE-01 is implemented locally with its [engine contract and verification](plans/ENGINE-01-plan.md). OUTFITS-01 is implemented locally with [three visitor suggestions, recovery and browser verification](plans/OUTFITS-01-plan.md). Account integration follows later.
 
 ## Where information belongs
 

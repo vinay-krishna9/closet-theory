@@ -1,0 +1,171 @@
+.outfit-filters {
+  margin-block: var(--space-8);
+}
+.outfit-submit {
+  position: relative;
+}
+.outfit-submit-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.outfit-submit[aria-busy='true'] .outfit-submit-label {
+  visibility: hidden;
+}
+.outfit-filter-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.outfit-filter-summary p {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+.outfit-filter-chevron-open {
+  transform: rotate(180deg);
+}
+.outfit-filters .picture-grid {
+  max-width: 42rem;
+}
+.outfit-announcement {
+  min-height: var(--space-6);
+  margin-block: var(--space-4);
+  color: var(--muted-foreground);
+}
+.outfit-grid {
+  display: grid;
+  gap: var(--space-6);
+  margin-block: var(--space-6);
+}
+.outfit-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.outfit-canvas {
+  aspect-ratio: 4 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--canvas);
+}
+.outfit-slot {
+  min-width: 0;
+  min-height: 0;
+}
+.outfit-slot-top {
+  grid-column: 1;
+  grid-row: 1;
+}
+.outfit-slot-bottom {
+  grid-column: 1;
+  grid-row: 2 / 4;
+}
+.outfit-slot-jacket {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.outfit-slot-shoes {
+  grid-column: 2;
+  grid-row: 3;
+}
+.outfit-slot .garment-photo {
+  height: 100%;
+  aspect-ratio: auto;
+  background: transparent;
+}
+.outfit-slot .garment-photo img {
+  padding: var(--space-1);
+}
+.outfit-slot .garment-photo-error {
+  padding: 0;
+  gap: 0;
+}
+.outfit-slot .garment-photo-error .ui-button {
+  min-height: var(--target-min);
+  height: auto;
+  padding: var(--space-1);
+  font-size: var(--text-label);
+  line-height: 1.3;
+}
+.outfit-slot .garment-photo-error p {
+  margin: 0;
+  font-size: var(--text-label);
+}
+.outfit-slot .garment-photo-error > .ui-icon {
+  display: none;
+}
+.outfit-card-copy {
+  padding: var(--space-6);
+}
+.outfit-card h2 {
+  font-family: var(--font-ui);
+  font-size: var(--text-card);
+  line-height: 1.35;
+  margin: 0 0 var(--space-3);
+}
+.outfit-reasons,
+.outfit-jacket-hint {
+  font-size: var(--text-meta);
+  color: var(--muted-foreground);
+}
+.outfit-reasons p {
+  margin-block: var(--space-2);
+}
+.outfit-card details {
+  margin-block: var(--space-4);
+}
+.outfit-card summary {
+  cursor: pointer;
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  font-size: var(--text-meta);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.outfit-card ul {
+  padding-left: var(--space-4);
+}
+.outfit-card li {
+  margin-block: var(--space-3);
+  font-size: var(--text-meta);
+}
+.outfit-card li span {
+  display: block;
+  color: var(--muted-foreground);
+}
+.outfit-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  margin-block: var(--space-8);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+}
+.outfit-account h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-section);
+}
+.outfit-account p {
+  max-width: 65ch;
+  font-size: var(--text-meta);
+  color: var(--muted-foreground);
+}
+@media (min-width: 768px) {
+  .outfit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

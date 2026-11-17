@@ -66,7 +66,7 @@ test('workspace stays empty and account actions explain their availability', asy
     .click();
   await page.getByRole('link', { name: 'Outfits', exact: true }).last().click();
   await expect(
-    page.getByText('No recommendations have been generated.', { exact: false }),
+    page.getByRole('heading', { name: 'Your own clothes come first.' }),
   ).toBeVisible();
   expect(errors).toEqual([]);
 });

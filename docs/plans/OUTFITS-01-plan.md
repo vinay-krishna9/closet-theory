@@ -1,8 +1,8 @@
 # OUTFITS-01 — Visitor result journey execution plan
 
-Status approved for implementation, 17 November 2026. The user approved up to three visitor outfits and an account prompt for more suggestions before this plan was written.
+Status implemented and verified locally, 17 November 2026. The user approved up to three visitor outfits and an account prompt for more suggestions before this plan was written.
 
-Tracked in [issue #10](https://github.com/vinay-krishna9/closet-theory/issues/10). BUILD-02 (#6), VISITOR-02 (#8) and ENGINE-01 (#9) are closed. The shared visitor provider, validated browser persistence, public catalog images, pictorial filter controls and matching engine are available. `/outfits` currently displays its development placeholder. Authentication is scheduled after this visitor journey and SPIKE-02.
+Tracked in [issue #10](https://github.com/vinay-krishna9/closet-theory/issues/10). BUILD-02 (#6), VISITOR-02 (#8) and ENGINE-01 (#9) are closed. The shared visitor provider, validated browser persistence, public catalog images, pictorial filter controls and matching engine are available. The implementation replaces the earlier `/outfits` development placeholder. Authentication is scheduled after this visitor journey and SPIKE-02.
 
 Follow [product decisions](../product/product-decisions.md), [MVP requirements](../product/MVP.md), [user flows](../product/user-flows.md), [architecture](../technical/architecture.md), the [ENGINE-01 contract](ENGINE-01-plan.md) and [design.md](../../design.md), especially sections 17–21.
 
@@ -78,4 +78,27 @@ Update README's actual Outfits behavior, the architecture's integration status, 
 
 This plan adds no dependency or service provisioning. The public catalog and local visitor wardrobe supply the data. SPIKE-02 and account flows follow the established delivery sequence. Implementation approval covers the route, worker runner, result policy/cards, shared account notice, targeted Quick-add navigation, tests and related documentation described here.
 
-Current verification covers this planning/documentation change only. Feature implementation, responsive browser review and the user's browser acceptance steps are pending approval and execution.
+The user approved implementation on 17 November 2026. Completion evidence is recorded below.
+
+## Completion evidence
+
+Implemented on `feat/10-visitor-outfits` after the approved plan was committed as `eb5ab39`. The feature supplies real browser-worker suggestions, a three-result visitor policy, the approved composition layout, shared account access notice, targeted Quick-add navigation and recovery. Generated results belong to the current wardrobe/filter snapshot. Obsolete requests are terminated and mismatched responses ignored. A stalled or failed worker offers Retry after a 15-second technical timeout. The worker returns only the allowed candidates plus diagnostics and whether further matches exist.
+
+The shared garment-photo component retains its default wardrobe/editor behavior while supporting canvas sizing and compact photo-error recovery. The account panel offers more suggestions only when further compatible candidates are known. Account entry accurately explains its upcoming availability. Visitors retain no preference or wear controls. The existing shell browser assertion now checks the real empty Outfits state, replacing the obsolete development-placeholder expectation.
+
+| Check                                 | Result                                                                                                                                  |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm.cmd run check`                   | Passed formatting, lint, type checking and all 145 unit/component tests in 15 files                                                     |
+| `npm.cmd run build`                   | Passed production compilation, type checking and route generation, including the bundled worker and validated Quick-add query           |
+| `npm.cmd run test:e2e -- --workers=2` | Passed all 62 desktop/mobile Chromium checks in 50.3 seconds after the final accessibility changes                                      |
+| Focused browser performance check     | Passed both desktop and mobile-emulated Chromium with 50,000 evaluations, three returned candidates and an active main-thread heartbeat |
+| Visual review                         | Desktop/mobile result screenshots and 320px photo-error, reduced-motion and forced-colors filter screenshots inspected                  |
+| `git diff --check`                    | Passed                                                                                                                                  |
+
+Browser coverage includes explicit catalog selection, missing shoes and targeted catalog navigation, one available outfit, four compatible combinations capped at three, deterministic repeats/reload, accurate account messaging and dialog focus, Formal-filter recovery, seasonal jackets, garment edits/removal, worker startup retry, pending-request cancellation, photo retry, blocked storage, 320px reflow and native radio keyboard use. New unit/hook checks cover allowance boundaries, worker message matching/cancellation/error/timeout, duplicate submissions, changed snapshots and stale completions. Failure/no-result announcements are exposed through a status region. The explicit Any-filter recovery keeps focus on the persistent Filters button.
+
+On this Windows x64 machine, a focused Chromium measurement with 50 tops, 50 bottoms and 50 shoes completed the capped worker request in 486 ms for the desktop project and 489 ms for Pixel 7 emulation. A one-millisecond main-thread timer ran 125 and 126 times respectively during those calls. These observations include worker startup and transport, use synthetic public metadata, and demonstrate responsiveness rather than a physical-device speed guarantee.
+
+The first narrow browser smoke run reported both cases passing but required cleanup of a restricted local server process. Completed full runs used elevated local process permissions for reliable shutdown. No dependency, service credential, database change or private image was introduced.
+
+Account authentication/import, actual six-result account paging and account writes follow their own features. Physical phones, Safari/Firefox, native high-contrast settings and a full screen-reader session remain unverified. Reduced-motion/forced-colors emulation and desktop keyboard checks were performed. The approved flat composition stays in place while the separate mannequin feasibility issue is pending.

@@ -3,6 +3,7 @@
 @import './components.css';
 @import './selection-tiles.css';
 @import './wardrobe.css';
+@import './outfits.css';
 
 @theme inline {
   --color-background: var(--background);
