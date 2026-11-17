@@ -1,8 +1,8 @@
 # Personal Stylist — MVP Development Plan
 
-Status: delivery plan with recorded sequencing and design updates through 13 November 2026. Per-feature approval and verification still apply; see [documentation index](README.md) for current implementation status.
+Status: delivery plan with recorded sequencing and design updates through 13 November 2026. Per-feature approval and verification still apply; see [documentation index](../README.md) for current implementation status.
 
-Save at `docs/development-plan.md`. Read alongside `MVP.md`, `user-flows.md`, `architecture.md`, root `design.md` and root `AGENTS.md`. This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
+Save at `docs/plans/development-plan.md`. Read alongside [MVP requirements](../product/MVP.md), [user flows](../product/user-flows.md), [architecture](../technical/architecture.md), root [design.md](../../design.md) and root [AGENTS.md](../../AGENTS.md). This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
 
 ## 1. Delivery approach
 
@@ -72,7 +72,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### BUILD-02 — Tokens and shared app shell
 
-- Mobile/desktop Wardrobe, Quick-add and Outfits mockups are designed and user-approved, with visual review signed off on 13 November 2026. See [BUILD-02 status and evidence](BUILD-02.md). Design remaining screens before their respective features.
+- Mobile/desktop Wardrobe, Quick-add and Outfits mockups are designed and user-approved, with visual review signed off on 13 November 2026. See [BUILD-02 status and evidence](../records/BUILD-02.md). Design remaining screens before their respective features.
 - Completed locally on 13 November 2026: shared cool charcoal/graphite tokens (authoritative `design.md` section 17), global Space Grotesk/Manrope typography, Lucide icon wrapper, Radix/shadcn controls, dialog/editor foundations and route layouts. Production visitor routes show honest unavailable states; illustrative data stays in review routes. See BUILD-02 for check results and limits.
 - Desktop/tablet account shell uses top navigation; mobile account shell uses bottom links. Public/visitor shell follows the approved flow decision.
 - **Acceptance:** responsive shell, keyboard focus and reduced motion reviewed; no pure-white UI defaults or theme toggle; controls match `design.md`. Keep authentication-dependent destinations honest while backend features are incomplete.
@@ -81,30 +81,31 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### VISITOR-01 — Quick-add catalog
 
-The later user-approved studio image revision supersedes this task's initial real-photograph sourcing requirement. All eight types now use AI-generated studio samples with labelled provenance and locally prepared color variants; see [catalog assets](catalog-assets.md).
+The later user-approved studio image revision supersedes this task's initial real-photograph sourcing requirement. All eight types now use AI-generated studio samples with labelled provenance and locally prepared color variants; see [catalog assets](../assets/catalog-assets.md).
 
 - Model the eight launch types and their named color variants/default tags. Source appropriately licensed realistic photos and record provenance.
-- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and studio imagery; see [completion record](VISITOR-01.md) and `design.md` section 20.
+- Include the 13 November 2026 catalog recoloring decision: validate garment-only recoloring early, show selected-color previews before Add, and reuse reviewed image/color references in Wardrobe and later Outfits. Use the approved broad color direction and studio imagery; see [completion record](../records/VISITOR-01.md) and `design.md` section 20.
 - Let visitors select only clothes they own, inspect/edit tags and remove selections. No prefilling or uploads.
 - **Acceptance:** group/type relationships are valid; sample photos are identified; color names are accessible; unselected garments are never added. Catalog ownership does not change when a user selects an item.
-- **Local result:** the approved plan is implemented with eight types/64 color variants, editable selections, duplicate/similarity handling and public photo attribution. See [VISITOR-01 completion record](VISITOR-01.md) for actual verification and limits. Reload persistence remains VISITOR-02.
+- **Local result:** the approved plan is implemented with eight types/64 color variants, editable selections, duplicate/similarity handling and public photo attribution. See [VISITOR-01 completion record](../records/VISITOR-01.md) for actual verification and limits. Reload persistence remains VISITOR-02.
 
 ### VISITOR-02 — Local wardrobe persistence
 
 - Build on VISITOR-01's stable selection IDs and shared React context/reducer; add versioned browser storage and schema validation/migration.
 - Recover after reload; handle blocked/corrupt storage gracefully with in-memory use and an explanatory notice.
 - **Acceptance:** selections survive the intended lifecycle; no personal photos/session tokens are stored; visitors cannot perform account-only operations. Test reset and schema migration behavior.
-- **Local result:** implemented on `visitor/02-local-persistence` with versioned schema validation, reload restoration, confirmed clearing, honest storage-failure recovery and cross-tab conflict detection. See [execution record](VISITOR-02-plan.md) for actual verification and limits.
+- **Local result:** implemented on `visitor/02-local-persistence` with versioned schema validation, reload restoration, confirmed clearing, honest storage-failure recovery and cross-tab conflict detection. See [execution record](../records/VISITOR-02-plan.md) for actual verification and limits.
 
 ### VISITOR-03 — Stable editor actions and custom loading spinner
 
 - Keep Add to wardrobe/Save changes and Cancel stationary while the selected color preview loads. Switch between a centered spinner during loading and the visible action text afterward, preserving button dimensions and accessible names.
-- Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
+- Build on VISITOR-01's preview readiness, error/retry and stale-result protection. Follow the [implementation plan](../records/VISITOR-03-plan.md), tracked in [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23).
 - **Acceptance:** action positions and dimensions stay stable across loading, success and failure; saving requires the current preview; failure preserves edits and retry recovers. Verify desktop/mobile, keyboard focus, reduced motion and forced colors.
 - **Status:** merged through PR #25 with passing CI from `visitor/03-loading-spinner` with the user-approved larger single-garment carousel. The shirt, dress and sneaker appear in sequence. Completion verification for the final revision is recorded in the execution plan. Depends on completed VISITOR-01 (#7).
 
 ### ENGINE-01 — Deterministic matching and reasons
 
+- Implemented locally after user approval on 17 November 2026. The [execution record](ENGINE-01-plan.md) documents the pure engine, wardrobe adapter, scoring defaults, bounded generation, integration contract and verification. Visitor result-screen integration follows in OUTFITS-01.
 - Implement eligibility, top/bottom/shoe completeness, approved optional-jacket policy, compatibility and freshness inputs in pure TypeScript.
 - Inject time and keep decorative canvas tint independent of matching.
 - **Acceptance:** unit tests cover expected matches, rejected combinations, missing groups, Any filters, deterministic ties and realistic candidate bounds. Reasons describe actual rules; ranking scores stay internal.
@@ -239,4 +240,4 @@ VISITOR-01 and VISITOR-03 are merged. VISITOR-02 is implemented locally with its
 
 ## Resolved PLAN-02 decisions
 
-Follow [agreed product decisions](product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+Follow [agreed product decisions](../product/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.

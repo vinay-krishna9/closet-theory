@@ -9,8 +9,8 @@ next-env.d.ts
 spikes/
 # Existing product specifications are not reformatted as part of scaffold work.
 design.md
-docs/MVP.md
-docs/user-flows.md
-docs/product-decisions.md
-docs/architecture.md
-docs/development-plan.md
+docs/product/MVP.md
+docs/product/user-flows.md
+docs/product/product-decisions.md
+docs/technical/architecture.md
+docs/plans/development-plan.md

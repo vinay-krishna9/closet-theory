@@ -2,7 +2,7 @@
 
 Status: implementation specification · Cool charcoal revision approved 12 November 2026 · Comfortable density
 
-Wardrobe, Quick-add and Outfits browser designs and user visual review approved 13 November 2026. See [BUILD-02](docs/BUILD-02.md) for the production completion checklist and verification limits.
+Wardrobe, Quick-add and Outfits browser designs and user visual review approved 13 November 2026. See [BUILD-02](docs/records/BUILD-02.md) for the production completion checklist and verification limits.
 
 Original specification finalized: 6 November 2026. The explicit darker, sleeker direction approved on 12 November 2026 supersedes the warm palette and light-workspace wording below; section 17 is authoritative for color roles and section 18 for the newly approved font pairing. Other layout, interaction and product rules remain in effect.
 
@@ -554,11 +554,11 @@ Visitors start with an empty quick-add wardrobe, persist catalog selections in t
 
 Clerk provides Google/email-password signup and sign-in. Import visitor selections automatically once after either flow; only clear the source after successful account persistence. Sign-out clears private caches and starts a fresh visitor wardrobe. Supabase stores owner-scoped account data/private photos; Vercel hosts the app. Browser background removal is the approved approach, subject to early mobile feasibility checks.
 
-Read docs/MVP.md for release scope and docs/architecture.md for technical decisions. One garment is uploaded at a time, with Add another after successful saving. Quick-add tags have editable defaults; uploaded garments require group/type, formality and season confirmation, with editable detected color. Account deletion must remove personal account history according to the approved privacy policy; it is distinct from preserving history after removing one garment.
+Read docs/product/MVP.md for release scope and docs/technical/architecture.md for technical decisions. One garment is uploaded at a time, with Add another after successful saving. Quick-add tags have editable defaults; uploaded garments require group/type, formality and season confirmation, with editable detected color. Account deletion must remove personal account history according to the approved privacy policy; it is distinct from preserving history after removing one garment.
 
 ## Resolved PLAN-02 decisions
 
-Follow [agreed product decisions](docs/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
+Follow [agreed product decisions](docs/product/product-decisions.md) for optional quick-add customization, exact matching versus similarity warnings, upload/catalog photo choice, season/formality/jacket rules, style-first diverse ranking, patterns, verification, timezone, Undo and visitor navigation. These decisions supersede older provisional wording; only technical defaults and implementation checks remain open.
 
 ### Quick-add customization and similar-item UI
 
@@ -623,4 +623,4 @@ Use the selected broad palette of about 8–10 named colors per type. Show visib
 
 Recolor only intended garment regions, retaining material texture, shading, transparency and protected details such as soles or trim. A blanket whole-image CSS filter is insufficient. Preview and saved metadata must agree; failed or stale results must not be presented as successful recoloring. Preserve the selection on failure and give useful recovery. Source photography must permit the actual modifications and redistribution, with provenance and required notices retained.
 
-The approved catalog recoloring implementation and reviewed rendering quality are recorded in the [VISITOR-01 completion record](docs/VISITOR-01.md). Provenance and visual limitations are maintained in [catalog assets](docs/catalog-assets.md).
+The approved catalog recoloring implementation and reviewed rendering quality are recorded in the [VISITOR-01 completion record](docs/records/VISITOR-01.md). Provenance and visual limitations are maintained in [catalog assets](docs/assets/catalog-assets.md).

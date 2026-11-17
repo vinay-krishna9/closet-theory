@@ -2,7 +2,7 @@
 
 Status: approved and implemented locally, 16 November 2026. Branch `visitor/02-local-persistence`, created from main at `b22f2c9`. The user approved execution after reviewing this plan.
 
-Tracked in [issue #8](https://github.com/vinay-krishna9/closet-theory/issues/8) under M2 — Visitor wardrobe and suggestions. VISITOR-01 and VISITOR-03 are merged. Follow [architecture](architecture.md), [product decisions](product-decisions.md) and [design.md](../design.md).
+Tracked in [issue #8](https://github.com/vinay-krishna9/closet-theory/issues/8) under M2 — Visitor wardrobe and suggestions. VISITOR-01 and VISITOR-03 are merged. Follow [architecture](../technical/architecture.md), [product decisions](../product/product-decisions.md) and [design.md](../../design.md).
 
 ## Change
 
