@@ -99,6 +99,8 @@ Tailwind 4 uses `@tailwindcss/postcss` and a CSS import, not a Tailwind 3 config
 
 GitHub Actions runs installation, formatting, lint, types, component tests, production build and Chromium checks on branch pushes and pull requests. It uses read-only repository permissions, no service secrets and no deployment action. Failure reports/traces are retained for seven days; keep fixtures free of private data. Workflow execution can only be verified after an authorized push. `NEXT_TELEMETRY_DISABLED=1` is set for CI and the browser-test server; it can also be set locally if desired.
 
+Git checks text files out with LF line endings through `.gitattributes`, matching Prettier and EditorConfig on every platform. This keeps Windows checkouts compatible with `npm.cmd run format:check`.
+
 ## Product references and prototype
 
 Use the [documentation index](docs/README.md) for document ownership, current delivery status and verification records.
