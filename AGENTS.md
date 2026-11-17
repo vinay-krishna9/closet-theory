@@ -20,6 +20,35 @@ Build a real, published personal stylist app: users add wardrobe photos or sampl
 - Do not commit, push, merge, publish or deploy unless the user explicitly asks. Permission for one action does not imply permission for the others.
 - Preserve unrelated user changes. Do not revert or overwrite work to make your task easier.
 
+## Branch and Git workflow
+
+- Before editing for a task, inspect the current branch, working tree and existing task branches. Create or continue a dedicated branch for the same coherent task. This applies to issue work and requests without an issue. Work directly on `main` only when the user explicitly requests it.
+- Name branches `<type>/<issue-number>-<short-description>` using lowercase words separated by hyphens. Omit the issue number when none exists. Choose a type matching the task's main purpose, using the following conventions as a guide.
+
+| Type        | Use                                                   |
+| ----------- | ----------------------------------------------------- |
+| `feat/`     | New features or changes to product behavior           |
+| `fix/`      | Bug fixes and regressions                             |
+| `docs/`     | Documentation and repository instructions             |
+| `refactor/` | Restructuring code while preserving behavior          |
+| `perf/`     | Performance improvements                              |
+| `test/`     | Adding or improving tests                             |
+| `style/`    | Formatting and code-style cleanup                     |
+| `build/`    | Dependencies, package management and build tooling    |
+| `ci/`       | CI workflows and automation                           |
+| `chore/`    | Repository maintenance and housekeeping               |
+| `spike/`    | Exploratory prototypes and feasibility investigations |
+| `hotfix/`   | Urgent fixes to a released version                    |
+| `release/`  | Preparing a release                                   |
+| `revert/`   | Reverting an earlier change                           |
+
+- Start from the appropriate base, normally `main`. Dependent work may start from its prerequisite branch; record that dependency and the intended PR target. A hotfix should use the relevant released base when one exists.
+- Preserve uncommitted and unrelated work when switching branches. Use a separate worktree when switching would mix or disturb that work. If changes have already started on `main`, move the current task onto a suitable branch before continuing. Carry existing commits only through an authorized history change.
+- Keep independent tasks on separate branches. Include a feature's supporting tests and documentation with that feature. Continue the same branch for review fixes; start a new branch for unrelated follow-up work.
+- When committing is authorized, use focused commits with clear messages and separate independent tasks. Before requesting review or an authorized merge, inspect the diff, verify the base/target and run relevant checks. Report actual results and remaining limitations.
+- Resolve routine conflicts within the approved task scope, preserving existing behavior and user changes, then rerun affected checks. Request explicit authorization before destructive resets, rewriting shared history or force-pushing.
+- Follow the approval rules above for commits, pushes, merges, publishing and deployment. Pull requests should identify the task/issue, intended target, resulting behavior, checks and limitations. After an authorized merge, confirm the result and clean up task branches when authorized.
+
 ## Approved tools
 
 - Next.js, TypeScript and Tailwind CSS.
