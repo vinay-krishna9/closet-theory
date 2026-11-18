@@ -1,12 +1,22 @@
 # SPIKE-02 — Clerk and private Supabase access execution plan
 
-Status Clerk harness, Supabase read probe and initial test table set up, 18 November 2026. The user reported successful migration execution and a signed-in Supabase read. Cross-account, expired-token and private-media verification remain pending.
+Status Clerk/Supabase test setup and two-account database isolation verified, 18 November 2026. Both live desktop/mobile journeys passed and their disposable fixtures were cleaned up. Expired/altered-token and private-media/cache verification remain pending.
 
 Tracked in [issue #4](https://github.com/vinay-krishna9/closet-theory/issues/4). The development plan schedules this spike after OUTFITS-01 (#10) and before ACCOUNT-01 (#11). The visitor journey is merged. This spike establishes the identity/data access boundary needed for private account features. The user requested one service at a time, supplied the selected Clerk application's setup prompt and completed CLI authentication. The current implementation covers Clerk and a Supabase read probe in [the isolated harness](../../spikes/clerk-supabase/README.md).
 
 Follow [architecture](../technical/architecture.md), [product decisions](../product/product-decisions.md), [development plan](development-plan.md) and [AGENTS.md](../../AGENTS.md). Initial inspection found no installed Clerk/Supabase SDK. Clerk is now linked to the user-selected Closet Theory development application, with SDK 7.10.2 in an npm workspace and ignored local keys. The user created Supabase project `aghsipccmufzdtqwzxey`, added Clerk as its third-party provider and configured its URL/publishable key locally. Code/SQL preparation is approved; running SQL remains subject to approval and confirmation that this is the isolated development target.
 
 ## Change
+
+### Two-account isolation checkpoint — 18 November 2026
+
+- Approved scope: install `@clerk/testing`, add isolation controls and server operations, create two disposable accounts in the existing Clerk development instance and labelled sample rows in the approved Supabase test project, verify both access paths and clean up those fixtures. No additional migration or storage bucket is part of this subtask.
+- Added owner-derived server CRUD restricted to the two sample labels, with request validation, explicit owner filters, cross-origin write checks and private/no-store responses. Signed-in controls expose sample create/load/update/delete and record-ID access checks. Account switching remounts the panel to clear prior records and input.
+- Added a separate live Playwright configuration that verifies the expected development instance and project. Unique test-email accounts are tagged with a run ID. The fixture journal contains only identifiers, is ignored by Git and protects cleanup after interruption. Tokens stay in memory; no passwords are created. The normal browser suite remains free of fixture creation.
+- The live suite uses real Clerk sessions and the publishable Supabase key, with both A-to-B and B-to-A probes. It checks own-row CRUD, cross-account reads/updates/deletes, forged-owner inserts, ownership-transfer attempts and unchanged owner records after denied writes through the server and directly through Supabase. Anonymous direct access and server access after sign-out are also checked.
+- Final verification: both live desktop/mobile journeys passed, including visible create/load/change/delete controls and inaccessible-ID recovery. All ten existing harness browser checks and 29 unit/component tests passed. Explicit harness lint, type checks, formatting and production build passed; root checks passed all 145 existing tests plus formatting/lint/types, and the visitor production build passed. The root visitor browser suite was not rerun for this isolated harness change.
+- Reviewed sample-only panel screenshots from desktop Chrome and Pixel 7 emulation with reduced motion. Cleanup verified no labelled fixture rows remained under either new account and confirmed deletion of both accounts. The local fixture journal was removed. Physical devices, non-Chromium browsers and full screen-reader review were not performed.
+- Backend-assisted test sign-in does not verify Google or email/password credential-entry flows. Expired/altered tokens, private storage/media and full same-browser account-switch cache/navigation checks remain pending; issue #4 is still incomplete.
 
 ### Migration execution record — 18 November 2026
 
@@ -105,4 +115,4 @@ Recommend the verified Clerk-session → Next.js server → token-scoped Supabas
 
 Implementation approval covers the proposed SDK additions and isolated harness work. The repository's service rules separately require explicit authorization for provisioning and changes to a live development project. Once the target and permitted setup/cleanup operations are approved, execute that scope without repeated approval requests.
 
-Clerk and the Supabase URL/publishable key are configured locally. The user confirmed `aghsipccmufzdtqwzxey` as the isolated test project, approved and manually ran the initial migration, and reported a successful signed-in read. Keep actual keys local. Before the next implementation, present the two-account test plan with its exact fixture creation/cleanup scope for approval. Two-user access denial, expired-token behavior and private-media/cache checks remain outstanding; the spike is not complete.
+Clerk and the Supabase URL/publishable key are configured locally. The user confirmed `aghsipccmufzdtqwzxey` as the isolated test project, approved and manually ran the initial migration, and reported a successful signed-in read. The two-account implementation and its fixture creation/cleanup were subsequently approved. Keep actual keys local. Expired/altered-token behavior and private-media/cache checks remain outstanding; present the next concrete subtask plan before implementing it. The spike is not complete.

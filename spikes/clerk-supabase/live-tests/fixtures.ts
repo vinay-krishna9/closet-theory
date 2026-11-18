@@ -1,0 +1,131 @@
+import { createRequire } from 'node:module';
+import { readFile, writeFile, unlink } from 'node:fs/promises';
+import path from 'node:path';
+import { createClient } from '@supabase/supabase-js';
+
+const root = path.resolve(process.cwd(), 'spikes/clerk-supabase');
+const nextEnv = createRequire(path.resolve(process.cwd(), 'package.json'))(
+  '@next/env',
+) as typeof import('@next/env');
+export const journalPath = path.join(root, '.fixtures.json');
+export type Fixture = {
+  id: string;
+  email: string;
+  rowId: string;
+  label: string;
+};
+export type Journal = { runId: string; users: Fixture[] };
+
+export function loadConfiguration() {
+  nextEnv.loadEnvConfig(root, false, { info() {}, error() {} });
+  if (
+    process.env.NEXT_PUBLIC_SUPABASE_URL !==
+      'https://aghsipccmufzdtqwzxey.supabase.co' ||
+    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.startsWith(
+      'sb_publishable_',
+    ) ||
+    !process.env.CLERK_SECRET_KEY?.startsWith('sk_test_') ||
+    !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_test_')
+  )
+    throw new Error('Isolated development configuration required.');
+  process.env.CLERK_PUBLISHABLE_KEY =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+}
+
+export async function clerkApi(
+  endpoint: string,
+  method = 'GET',
+  body?: unknown,
+) {
+  const response = await fetch(`https://api.clerk.com/v1/${endpoint}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok)
+    throw new Error(
+      `Development fixture operation failed (HTTP ${response.status}).`,
+    );
+  return response.status === 204 ? null : response.json();
+}
+
+export function directClient(token: string | null) {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      accessToken: async () => token,
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+      global: {
+        fetch: (input, init) =>
+          fetch(input, {
+            ...init,
+            signal: AbortSignal.timeout(10000),
+            cache: 'no-store',
+          }),
+      },
+    },
+  );
+}
+export async function readJournal(): Promise<Journal> {
+  return JSON.parse(await readFile(journalPath, 'utf8'));
+}
+export async function saveJournal(journal: Journal) {
+  await writeFile(journalPath, JSON.stringify(journal), { mode: 0o600 });
+}
+
+export async function cleanupFixtures() {
+  let journal: Journal;
+  try {
+    journal = await readJournal();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return;
+    throw new Error('Cannot read fixture cleanup journal.');
+  }
+  for (const fixture of [...journal.users]) {
+    const user = await clerkApi(`users/${fixture.id}`);
+    if (
+      user.private_metadata?.spike_run !== journal.runId ||
+      !fixture.email.endsWith('+clerk_test@example.com')
+    )
+      throw new Error('Fixture ownership guard refused cleanup.');
+    const session = await clerkApi('sessions', 'POST', { user_id: fixture.id });
+    const token = await clerkApi(`sessions/${session.id}/tokens`, 'POST');
+    const client = directClient(token.jwt);
+    const { error } = await client
+      .from('spike_access_items')
+      .delete()
+      .eq('owner_id', fixture.id)
+      .in('label', ['SPIKE-02 A', 'SPIKE-02 B'])
+      .retry(false);
+    if (error)
+      throw new Error(
+        'Fixture row cleanup failed; account retained for retry.',
+      );
+    const remaining = await client
+      .from('spike_access_items')
+      .select('id')
+      .eq('owner_id', fixture.id)
+      .in('label', ['SPIKE-02 A', 'SPIKE-02 B'])
+      .retry(false);
+    if (remaining.error || remaining.data?.length)
+      throw new Error('Fixture rows remain; account retained for retry.');
+    const deleted = await clerkApi(`users/${fixture.id}`, 'DELETE');
+    if (deleted?.deleted !== true)
+      throw new Error('Development account deletion could not be verified.');
+    journal.users = journal.users.filter((item) => item.id !== fixture.id);
+    await saveJournal(journal);
+  }
+  await unlink(journalPath);
+  console.log(
+    'Approved test rows and two dedicated development accounts cleaned up.',
+  );
+}

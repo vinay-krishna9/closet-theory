@@ -14,6 +14,8 @@
     "spike:auth:build": "npm run build --workspace @closet-theory/clerk-supabase-spike",
     "spike:auth:test": "playwright test --config spikes/clerk-supabase/playwright.config.ts",
     "spike:auth:test:unit": "vitest run --config spikes/clerk-supabase/vitest.config.mts",
+    "spike:auth:test:live": "playwright test --config spikes/clerk-supabase/playwright.live.config.ts",
+    "spike:auth:cleanup": "node --experimental-strip-types spikes/clerk-supabase/live-tests/cleanup.mts",
     "catalog:prepare": "node --experimental-strip-types scripts/prepare-catalog.mjs",
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",

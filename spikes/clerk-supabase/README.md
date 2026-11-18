@@ -59,8 +59,33 @@ Before applying the migration in a fresh test project, the signed-in result can 
 
 The [versioned migration](migrations/202611180001_access_probe.sql) was **approved and manually applied by the user on 18 November 2026**, with a reported SQL Editor result of **Success. No rows returned**. It creates only `public.spike_access_items` with a UUID ID, Clerk text owner, short sample label and creation timestamp, plus an owner index. It enables/forces RLS, revokes anonymous table access, and grants authenticated CRUD subject to owner-only policies. The update policy checks the old and new owner so a caller cannot transfer a row to another user. It creates no fixtures or storage bucket and does not alter existing tables or rows. It intentionally fails if the table already exists rather than silently accepting a different schema. Do not rerun it on this project. Preserve the applied SQL; its review-only comment records its original preparation state.
 
-The user designated `aghsipccmufzdtqwzxey` (`closet-theory-dev`) as a new test project. The migration result and subsequent read are user-reported evidence; the agent has not independently inspected the database catalog or CLI migration history. Two-account fixtures/cleanup and private-media work require the next concrete plan and scoped approval.
+The user designated `aghsipccmufzdtqwzxey` (`closet-theory-dev`) as a new test project. The migration result and initial read were user-reported evidence. The later approved two-account suite independently exercises the database rules through real requests. The agent has not inspected the database catalog or CLI migration history. Private-media work remains a separate planned step.
+
+## Two-account isolation checks
+
+The user approved two disposable Clerk development accounts and their `SPIKE-02 A`/`SPIKE-02 B` rows, including cleanup. `@clerk/testing` 2.3.1 supports the existing Playwright 1.x runner. Run these commands **from the repository root**, with port 4184 free:
+
+```powershell
+npm.cmd run spike:auth:build
+npm.cmd run spike:auth:test:live
+```
+
+This is a separate, explicitly mutating live-service suite. Normal visitor tests and `spike:auth:test` do not create users or database fixtures. The live suite verifies the exact Clerk development instance and Supabase test project before creating unique test-email accounts tagged with a run ID. Clerk test helpers sign in through the Backend API; these tests prove session/authorization behavior, not the manual Google or email/password form journey. Passwords are not created. Session tokens stay in process memory and are not logged or saved.
+
+For each desktop/mobile Chromium journey, both accounts create/read/update/delete their own sample rows through `/api/items` and Supabase directly. Requests against the other account's ID must reveal no row, make no update/delete and leave the original intact. Forged owner insertion and transferring a row to another owner must fail. The suite also checks anonymous direct database denial, sign-out denial, visible controls and responsive overflow. Server operations derive ownership from verified Clerk identity, reject submitted ownership fields and add owner filters independently of RLS. Responses use private/no-store caching. Signed-in UI state is reset when the identity changes.
+
+The test runner saves only a local ignored `.fixtures.json` journal of run/fixture identifiers for cleanup recovery. Teardown deletes only labelled sample rows owned by its newly created, run-tagged users, verifies no such rows remain and deletes those accounts. It keeps the journal on failure and refuses to create another run over an unfinished journal. To resume only the approved fixture cleanup after an interrupted run:
+
+```powershell
+npm.cmd run spike:auth:cleanup
+```
+
+No production credentials or elevated Supabase key are used. The live suite disables traces, videos and automatic screenshots. Explicit screenshots contain only the sample test-record panel and are saved to ignored `artifacts/` for visual review.
+
+To check manually at <http://localhost:4184>, sign in to a designated development account. Create a sample record, load your records, change its label and delete it. For two-account verification, create a row in each account and copy their IDs. When signed in as A, entering B's ID should show **No accessible test record found**; repeat B against A. Delete the manual rows afterward. Automated cleanup deliberately does not remove records owned by an existing user.
 
 ## Actual check results
 
-Clerk CLI diagnostics confirmed the selected development application and local development keys. After the Supabase probe addition, harness build/type checking and explicit lint passed, with ten desktop/mobile browser checks and seventeen unit/component tests. The root check passed all 145 existing tests, formatting, lint and types; the root production build passed. Public home/sign-in screens and the new connection panel were visually reviewed at desktop/mobile sizes, with keyboard skip-link focus and reduced motion checked. The user subsequently reported successful SQL execution and the signed-in Supabase read. Complete sign-out, two-account boundaries, expired-token and private-media checks remain pending. See the [execution record](../../docs/plans/SPIKE-02-plan.md) for evidence and limitations.
+Clerk CLI diagnostics confirmed the selected development application and local development keys. The user reported successful initial SQL execution and the signed-in read. After adding the two-account suite, both live desktop/mobile journeys passed with real sessions and direct database requests, including visible CRUD controls, cross-account denial, ownership forgery/transfer denial, anonymous direct denial and server denial after sign-out. Cleanup verified the sample rows were gone and confirmed deletion of both temporary accounts; no fixture journal remains.
+
+All ten existing harness browser checks and 29 unit/component tests passed. Harness build/type checking, explicit lint and formatting passed. The root check passed all 145 existing tests, formatting, lint and types, and the visitor production build passed. The root visitor browser suite was not rerun for this isolated change. Sample-only isolation panel screenshots were reviewed on desktop and Pixel 7 emulation with reduced motion. Physical devices, non-Chromium browsers and full screen-reader review remain unverified. Expired/altered-token and private-media/cache tests are still pending. See the [execution record](../../docs/plans/SPIKE-02-plan.md) for details.
