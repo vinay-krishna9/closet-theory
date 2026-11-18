@@ -1,6 +1,6 @@
 # Clerk / Supabase access spike
 
-Issue #4 uses an isolated Next.js npm workspace. Its Clerk development application is **Closet Theory**, selected in the user's Dashboard. Supabase setup is still pending. This harness does not enable accounts, import wardrobes or change the root visitor application.
+Issue #4 uses an isolated Next.js npm workspace. Its Clerk development application is **Closet Theory**, selected in the user's Dashboard. The user added Clerk as a Supabase third-party provider and configured the development project URL/publishable key locally. Database setup is still pending. This harness does not enable accounts, import wardrobes or change the root visitor application.
 
 ## Clerk setup
 
@@ -49,6 +49,18 @@ The Playwright suite starts its own production server and refuses reuse. It chec
 
 `/api/session` verifies Clerk on the server and returns only an authenticated boolean, never a user identifier or token. Responses are private and not stored in HTTP caches. This is an identity probe, not proof of Supabase row/storage authorization. Issue #4 stays open until the remaining matrix in [the execution plan](../../docs/plans/SPIKE-02-plan.md) is verified.
 
-## Verification record
+## Supabase connection check and proposed SQL
 
-Clerk CLI diagnostics confirmed the selected development application and local development keys. Harness build/type checking and explicit lint passed. Six desktop/mobile browser checks and three focused component tests passed. The root check passed all 145 existing tests, formatting, lint and types; the root production build passed. Public home/sign-in screens were visually reviewed at desktop/mobile sizes, with keyboard skip-link focus and reduced motion checked. Successful user sign-in/sign-out, two-account boundaries and expired-token checks remain pending until exercised with designated development accounts.
+`@supabase/supabase-js` 2.119.0 requires Node 22+ and is pinned in this workspace. The probe targets only development project `aghsipccmufzdtqwzxey` and requires a Clerk development publishable key. The URL and publishable key use the `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` names from the Dashboard. Actual values remain in the ignored local environment file. No elevated Supabase credential is used.
+
+After signing in at <http://localhost:4184>, click **Check Supabase connection**. The server obtains the current Clerk session token and creates a fresh token-scoped Supabase client. It performs one read of at most one ID from `spike_access_items`, returns no row contents and disables caching/session persistence. Failed requests have a 10-second network timeout and no automatic SDK retries. Configuration, missing schema, rejected credentials and connection failure have separate sanitized messages. Account switching resets the displayed probe result.
+
+Until the migration is applied, the expected signed-in result is **Supabase needs the test-table migration**, if Supabase accepts the token and reports that table as missing. Signed-out requests return HTTP 401. A successful read later proves only this request succeeded, not cross-account isolation.
+
+The proposed [versioned migration](migrations/202611180001_access_probe.sql) is **unapplied and requires approval before execution**. It creates only `public.spike_access_items` with a UUID ID, Clerk text owner, short sample label and creation timestamp, plus an owner index. It enables/forces RLS, revokes anonymous table access, and grants authenticated CRUD subject to owner-only policies. The update policy checks the old and new owner so a caller cannot transfer a row to another user. It creates no fixtures or storage bucket and does not alter existing tables or rows. It intentionally fails if the table already exists rather than silently accepting a different schema.
+
+Review and confirm this is an isolated development project before running it. The schema has not yet been checked against a live Postgres instance. Applying SQL, adding fixtures, testing both accounts and private media are subsequent steps with their own scoped approval.
+
+## Actual check results
+
+Clerk CLI diagnostics confirmed the selected development application and local development keys. After the Supabase probe addition, harness build/type checking and explicit lint passed, with ten desktop/mobile browser checks and seventeen unit/component tests. The root check passed all 145 existing tests, formatting, lint and types; the root production build passed. Public home/sign-in screens and the new connection panel were visually reviewed at desktop/mobile sizes, with keyboard skip-link focus and reduced motion checked. Successful user sign-in/sign-out, live signed-in Supabase acceptance, SQL execution, two-account boundaries and expired-token checks remain pending until exercised with designated development accounts.

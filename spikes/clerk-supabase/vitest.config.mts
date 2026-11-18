@@ -8,6 +8,6 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
-    include: ['spikes/clerk-supabase/app/**/*.test.tsx'],
+    include: ['spikes/clerk-supabase/app/**/*.test.{ts,tsx}'],
   },
 });

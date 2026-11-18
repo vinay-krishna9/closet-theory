@@ -1,10 +1,10 @@
 # SPIKE-02 — Clerk and private Supabase access execution plan
 
-Status Clerk-only harness implemented and automated checks passed, 18 November 2026. App-user authentication, Supabase setup and live data checks remain pending.
+Status Clerk harness and Supabase read probe implemented, 18 November 2026. Test-table SQL prepared but unapplied. App-user authentication and live database/storage isolation checks remain pending.
 
 Tracked in [issue #4](https://github.com/vinay-krishna9/closet-theory/issues/4). The development plan schedules this spike after OUTFITS-01 (#10) and before ACCOUNT-01 (#11). The visitor journey is merged. This spike establishes the identity/data access boundary needed for private account features. The user requested one service at a time, supplied the selected Clerk application's setup prompt and completed CLI authentication. The current implementation covers Clerk only in [the isolated harness](../../spikes/clerk-supabase/README.md).
 
-Follow [architecture](../technical/architecture.md), [product decisions](../product/product-decisions.md), [development plan](development-plan.md) and [AGENTS.md](../../AGENTS.md). Initial inspection found no installed Clerk/Supabase SDK. Clerk is now linked to the user-selected Closet Theory development application, with SDK 7.10.2 in an npm workspace and ignored local keys. Supabase still needs to be identified and authorized.
+Follow [architecture](../technical/architecture.md), [product decisions](../product/product-decisions.md), [development plan](development-plan.md) and [AGENTS.md](../../AGENTS.md). Initial inspection found no installed Clerk/Supabase SDK. Clerk is now linked to the user-selected Closet Theory development application, with SDK 7.10.2 in an npm workspace and ignored local keys. The user created Supabase project `aghsipccmufzdtqwzxey`, added Clerk as its third-party provider and configured its URL/publishable key locally. Code/SQL preparation is approved; running SQL remains subject to approval and confirmation that this is the isolated development target.
 
 ## Change
 
@@ -15,7 +15,15 @@ Follow [architecture](../technical/architecture.md), [product decisions](../prod
 - CLI diagnostics passed. Harness build/type checking and explicit source lint passed. Six desktop/mobile Chromium checks and three focused component tests passed. The root check passed all 145 existing tests, formatting, lint and type checks; the root production build also passed.
 - Reviewed signed-out home and sign-in screenshots at 1280px and 390px. Checked keyboard skip-link focus with reduced motion enabled. A Next.js loopback rewrite failure was resolved by binding and navigating consistently through `localhost:4184`.
 - The local harness is ready for the user to sign in, verify the server session, refresh, sign out and verify denial. CLI login alone does not prove app-user authentication. No test users were created. Real successful sign-in/sign-out, expired-token denial and cross-account/data/media checks remain unverified.
-- Supabase and `@clerk/testing` remain uninstalled. Issue #4 is still incomplete. This checkpoint has not been committed, pushed or merged.
+- Clerk checkpoint committed as `465c05a`. No push or merge has occurred. Issue #4 remains incomplete.
+
+### Supabase connection checkpoint — 18 November 2026
+
+- Approved scope: install the official SDK, add a read-only connection probe and prepare SQL for review. Installed `@supabase/supabase-js` 2.119.0, compatible with the project's Node 22 runtime. No `@clerk/testing` or new test users were added.
+- Added `/api/supabase` with server-verified Clerk identity, a per-request token-scoped client, pinned development project, development/publishable key checks, sanitized statuses, no-store responses and a bounded read. The browser displays separate sign-in/configuration/schema/denial/failure states and resets the result on account switching.
+- Prepared `spikes/clerk-supabase/migrations/202611180001_access_probe.sql`: one probe table and owner index, forced RLS, authenticated owner-only CRUD and revoked anonymous table access. No fixtures, existing-table modifications or private bucket are included. SQL remains unapplied; its live Postgres behavior has not been verified.
+- Seventeen unit/component tests passed using the real SDK with a fake transport. These verify token separation, read-only requests, configuration refusal, sanitized errors and UI recovery. They do not establish real token acceptance, expiry or database policy enforcement.
+- All ten desktop/mobile Chromium checks passed, including anonymous probe denial and the visible sign-in prompt. Harness build/type checks, explicit source lint and formatting passed. Root checks passed all 145 existing tests, lint, types and formatting; the root production build passed. Reviewed the new signed-out panel at 1280px and 390px with reduced motion. Live signed-in Supabase acceptance remains unverified until the user runs the check.
 
 - Build a small isolated Next.js harness that signs in two designated development users and exercises protected server operations against test rows and a private storage bucket.
 - Prove each user can access their own records/media, with anonymous, expired-token, forged-owner and cross-account requests denied at the server and Supabase boundaries.
@@ -88,4 +96,4 @@ Recommend the verified Clerk-session → Next.js server → token-scoped Supabas
 
 Implementation approval covers the proposed SDK additions and isolated harness work. The repository's service rules separately require explicit authorization for provisioning and changes to a live development project. Once the target and permitted setup/cleanup operations are approved, execute that scope without repeated approval requests.
 
-The next setup input is whether the user already has an isolated Clerk development instance and Supabase development/test project, or wants a concrete proposal for creating them. Actual keys should be configured locally rather than pasted into chat. This document is the planning deliverable. No service setup, dependency installation or live access tests have run yet.
+Clerk and the Supabase URL/publishable key are configured locally. Before SQL execution, confirm that `aghsipccmufzdtqwzxey` is the isolated development project and approve the reviewed probe migration. Keep actual keys local. Successful real app-user authentication, two-user access denial, expired-token behavior and private-media/cache checks remain outstanding; the spike is not complete.

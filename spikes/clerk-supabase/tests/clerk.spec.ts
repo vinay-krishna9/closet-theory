@@ -16,7 +16,7 @@ test('signed-out controls and recovery work at this viewport', async ({
   await expect(page.getByText('Signed out.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Check server session' }).click();
   await expect(
-    page.getByRole('status'),
+    page.getByRole('region', { name: 'Account check' }).getByRole('status'),
   ).toHaveText('Access denied. Sign in to verify your session.');
   expect(
     await page.evaluate(

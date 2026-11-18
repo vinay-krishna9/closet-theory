@@ -1,4 +1,5 @@
 import { SessionCheck } from './session-check';
+import { SupabaseCheck } from './supabase-check';
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       </p>
       <p>This test does not import your visitor wardrobe or save clothing.</p>
       <SessionCheck />
+      <SupabaseCheck />
     </main>
   );
 }
