@@ -1,12 +1,21 @@
 # SPIKE-02 — Clerk and private Supabase access execution plan
 
-Status Clerk harness and Supabase read probe implemented, 18 November 2026. Test-table SQL prepared but unapplied. App-user authentication and live database/storage isolation checks remain pending.
+Status Clerk harness, Supabase read probe and initial test table set up, 18 November 2026. The user reported successful migration execution and a signed-in Supabase read. Cross-account, expired-token and private-media verification remain pending.
 
-Tracked in [issue #4](https://github.com/vinay-krishna9/closet-theory/issues/4). The development plan schedules this spike after OUTFITS-01 (#10) and before ACCOUNT-01 (#11). The visitor journey is merged. This spike establishes the identity/data access boundary needed for private account features. The user requested one service at a time, supplied the selected Clerk application's setup prompt and completed CLI authentication. The current implementation covers Clerk only in [the isolated harness](../../spikes/clerk-supabase/README.md).
+Tracked in [issue #4](https://github.com/vinay-krishna9/closet-theory/issues/4). The development plan schedules this spike after OUTFITS-01 (#10) and before ACCOUNT-01 (#11). The visitor journey is merged. This spike establishes the identity/data access boundary needed for private account features. The user requested one service at a time, supplied the selected Clerk application's setup prompt and completed CLI authentication. The current implementation covers Clerk and a Supabase read probe in [the isolated harness](../../spikes/clerk-supabase/README.md).
 
 Follow [architecture](../technical/architecture.md), [product decisions](../product/product-decisions.md), [development plan](development-plan.md) and [AGENTS.md](../../AGENTS.md). Initial inspection found no installed Clerk/Supabase SDK. Clerk is now linked to the user-selected Closet Theory development application, with SDK 7.10.2 in an npm workspace and ignored local keys. The user created Supabase project `aghsipccmufzdtqwzxey`, added Clerk as its third-party provider and configured its URL/publishable key locally. Code/SQL preparation is approved; running SQL remains subject to approval and confirmation that this is the isolated development target.
 
 ## Change
+
+### Migration execution record — 18 November 2026
+
+- The user explicitly confirmed project `aghsipccmufzdtqwzxey` is a new test project and authorized the prepared migration. The dashboard project name was observed as `closet-theory-dev`. Its default `main / Production` label does not change the user's designation of this isolated project for testing.
+- Computer Use could read the dashboard but stopped before SQL execution because it could not reliably determine the browser URL. No SQL was submitted by the agent.
+- The user ran `spikes/clerk-supabase/migrations/202611180001_access_probe.sql` manually in the project SQL Editor and reported **Success. No rows returned**. Record this as user-reported application of the migration, not an independently inspected database catalog or CLI migration-history entry. Keep the applied SQL unchanged; its opening review-only comment describes its preparation state.
+- The user then signed in to the harness, clicked **Check Supabase connection** and reported **Supabase accepted the read request. Cross-account isolation still needs testing.** This establishes a user-observed successful signed-in probe. No row contents or credentials were collected.
+- This check does not prove owner CRUD, both directions of cross-account denial, anonymous access at the direct database boundary, expired/altered tokens, sign-out/cache behavior or private-media protection. Those checks remain pending, and issue #4 stays incomplete.
+- Completed implementation checkpoints: `465c05a` for Clerk and `24d2f02` for the Supabase read probe and prepared SQL. This execution record is a separate documentation checkpoint before the next implementation subtask. No push or merge is authorized by this update.
 
 ### Clerk checkpoint — 18 November 2026
 
@@ -96,4 +105,4 @@ Recommend the verified Clerk-session → Next.js server → token-scoped Supabas
 
 Implementation approval covers the proposed SDK additions and isolated harness work. The repository's service rules separately require explicit authorization for provisioning and changes to a live development project. Once the target and permitted setup/cleanup operations are approved, execute that scope without repeated approval requests.
 
-Clerk and the Supabase URL/publishable key are configured locally. Before SQL execution, confirm that `aghsipccmufzdtqwzxey` is the isolated development project and approve the reviewed probe migration. Keep actual keys local. Successful real app-user authentication, two-user access denial, expired-token behavior and private-media/cache checks remain outstanding; the spike is not complete.
+Clerk and the Supabase URL/publishable key are configured locally. The user confirmed `aghsipccmufzdtqwzxey` as the isolated test project, approved and manually ran the initial migration, and reported a successful signed-in read. Keep actual keys local. Before the next implementation, present the two-account test plan with its exact fixture creation/cleanup scope for approval. Two-user access denial, expired-token behavior and private-media/cache checks remain outstanding; the spike is not complete.
