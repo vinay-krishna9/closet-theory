@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies the pure deterministic matching engine and wardrobe adapter. OUTFITS-01 will connect that engine to visitor result cards. Accounts and personal uploads follow later.
+A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies the pure deterministic matching engine and wardrobe adapter. OUTFITS-01 connects that engine to real visitor result cards with a three-outfit allowance. Accounts and personal uploads follow later.
 
 ## Local setup
 
@@ -11,7 +11,7 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive navigation, refresh and reopening the same browser. A new visitor wardrobe starts empty. Browser saving is local to this browser and is not synced; clearing browser data can remove it. Use Clear visitor wardrobe to reset selections after confirmation. Storage failures preserve in-memory use and show recovery controls. `/outfits` still explains that recommendations are unavailable. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
+Open http://127.0.0.1:3000 and follow Explore your wardrobe, or open http://127.0.0.1:3000/wardrobe. Use `/quick-add` to select clothes you own, preview colors, customize details and add them. Selections survive navigation, refresh and reopening the same browser. A new visitor wardrobe starts empty. Browser saving is local to this browser and is not synced; clearing browser data can remove it. Use Clear visitor wardrobe to reset selections after confirmation. Storage failures preserve in-memory use and show recovery controls. On `/outfits`, use Suggest outfits to generate up to three combinations from your current clothes. Filters start collapsed with Any/Any selected. Open Filters to choose a season/formality, then suggest again. Add a top, bottoms and sneakers to get a complete outfit. Missing-group links open the relevant Quick-add group. When more matches exist, the account panel explains future access. Stop the server with Ctrl+C. On restricted PowerShell, use `npm.cmd`/`npx.cmd`; no execution-policy change is needed.
 
 Catalog cards add their default configuration. Choose Customize to change color and select individual seasons. Catalog group/type stay fixed in Customize and wardrobe editing. The editor keeps the garment visible, with name/color on the left and garment details and other options on the right on desktop. Phones use a compact pinned preview. Garment images show a skeleton that preserves their space during loading, color changes and retry. A shared carousel shows one larger shirt, dress or sneaker at a time inside Add to wardrobe/Save changes while the selected preview loads. The centered animation replaces the button text while loading and restores it afterward, keeping button dimensions steady. Reduced motion shows one still shirt.
 
@@ -57,7 +57,9 @@ To verify ENGINE-01 directly, run its rule/generation tests and the restored-war
 npm.cmd test -- src/lib/outfits src/features/wardrobe/outfit-items.test.ts --reporter=verbose
 ```
 
-The [ENGINE-01 execution record](docs/plans/ENGINE-01-plan.md) documents its API, generation limits, measured examples and repeatable testing steps. The visitor Outfits screen is connected during OUTFITS-01 (#10).
+The [ENGINE-01 execution record](docs/plans/ENGINE-01-plan.md) documents its API, generation limits, measured examples and repeatable testing steps. The visitor Outfits screen uses this engine through a production-bundled browser worker.
+
+The [OUTFITS-01 execution plan](docs/plans/OUTFITS-01-plan.md) applies the approved visitor allowance of up to three outfits, with an account prompt for further matches. Account users retain six-result pages and Show more. The implemented route includes matching reasons, item details, optional seasonal jackets, photo retry, generation recovery and browser-storage notices. Account access currently opens an availability notice.
 
 ## Repository map
 
@@ -69,6 +71,7 @@ src/components/ui/        Token-styled Radix/shadcn controls and editor foundati
 src/features/design-review/  Isolated sample screens; no real wardrobe data
 src/features/onboarding/   Public catalog configuration and quick-add UI
 src/features/wardrobe/     Visitor state, selection rules, garment cards and editor
+src/features/outfits/      Visitor allowance, worker lifecycle, composition cards and filters
 src/lib/images/            Deterministic catalog recoloring, separate from outfit rules
 src/lib/outfits/           Pure matching, ranking, reasons, stable identity and paging
 src/lib/utils.ts          Shared class merging for UI controls

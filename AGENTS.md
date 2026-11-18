@@ -154,7 +154,7 @@ Keep this file concise and accurate as the repository evolves. Update concrete p
 
 ## Settled product scope
 
-- Visitors select owned clothes from the real quick-add catalog, use season/formality filters and get up to six suggestions with Show more. No separate demo or prefilled wardrobe. React context/reducer plus browser storage remembers selections; Redux is deferred.
+- Visitors select owned clothes from the real quick-add catalog, use season/formality filters and get up to three suggestions. Further results require an account, with accurate signup/sign-in messaging. Account users retain six-result pages and Show more. No separate demo or prefilled wardrobe. React context/reducer plus browser storage remembers selections; Redux is deferred.
 - Visitors cannot upload personal photos, save preferences or log wears. Google/email-password signup or existing-account sign-in automatically imports selections once; retain local source until persistence succeeds. Sign-out clears account caches and starts a fresh visitor wardrobe.
 - Catalog groups/types: Tops → T-shirt, shirt, sweater; Bottoms → jeans, chinos, shorts; Shoes → sneakers; Outerwear → simple jacket. Named common-color swatches and editable defaults. The user approved AI-generated studio product samples for all eight types on 13 November 2026, superseding the earlier real-photograph requirement; label generated imagery and retain provenance.
 - Upload one garment at a time, confirm Group → Type, color, formality and seasons, review automatic background removal, then save or explicitly use the original. Offer Add another after success.

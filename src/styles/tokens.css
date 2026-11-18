@@ -33,6 +33,7 @@
   --text-page: 2rem;
   --text-section: 1.625rem;
   --text-body: 1rem;
+  --text-card: 1rem;
   --text-meta: 0.875rem;
   --text-label: 0.75rem;
   --space-1: 4px;
@@ -56,5 +57,6 @@
     --page-gutter: 48px;
     --text-page: 3rem;
     --text-section: 2rem;
+    --text-card: 1.125rem;
   }
 }

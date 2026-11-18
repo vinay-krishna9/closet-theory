@@ -41,6 +41,12 @@ Eligible favorites remain the first group, neutral next, disliked hidden unless 
 
 Prefer at most one patterned garment; multiple patterned garments are allowed but receive a lower compatibility ranking, not an automatic exclusion. Pattern tags are user-confirmed/catalog metadata; no automatic image pattern recognition is required. Exact scoring weights, closeness thresholds, color-rule thresholds and performance bounds are tunable implementation defaults requiring tests and representative examples.
 
+## Visitor outfit allowance — approved 17 November 2026
+
+The user selected up to three visitor outfits, superseding the earlier six-result visitor flow. Apply this allowance to the current wardrobe and season/formality request. Visitors can edit clothes and change filters, while repeated identical requests remain deterministic. Further results for that request require an account. Account users retain six-result pages and Show more when further matches exist.
+
+Show fewer results when fewer compatible outfits exist. Offer a more-outfits account prompt only when additional compatible candidates are known. With working account flows, use copy such as “Create an account or sign in to see more outfit suggestions.” Explain that selected clothes carry over. During OUTFITS-01, account access is still upcoming, so the prompt must disclose that availability and open the shared account notice while preserving the visitor wardrobe. General account-benefit copy can remain when the current wardrobe has three or fewer matches.
+
 ## Wear logging and timezone
 
 Log complete outfits only in the MVP; update constituent item wear counts automatically. No standalone garment wear action on wardrobe cards.

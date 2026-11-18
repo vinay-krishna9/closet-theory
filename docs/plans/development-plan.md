@@ -112,9 +112,10 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### OUTFITS-01 — Visitor result journey
 
-- Wire season/formality filters, up to six results and distinct Show more pagination to the shared engine.
+- Follow the [execution plan](OUTFITS-01-plan.md), reflecting the approved 17 November 2026 visitor limit. Wire season/formality filters and up to three visitor results to the shared engine. Offer signup/sign-in for further matches, with accurate messaging while accounts are unavailable. Six-result pages and Show more belong to the account journey.
 - Implement neutral composition cards, missing-category guidance, no-compatible-results recovery and account-benefit messaging.
-- **Acceptance:** complete browser journey from catalog selection to suggestions; fewer than six matches remain honest; filters are not silently changed; no functioning favorite/wear controls for visitors. Mobile, keyboard and empty states work.
+- **Acceptance:** complete browser journey from catalog selection to suggestions, capped at three visitor results. Fewer matches remain honest, and the account prompt describes actual available benefits. Filters are not silently changed. Mobile, keyboard, empty/error recovery and visitor account-only boundaries work.
+- **Local result:** implemented on `feat/10-visitor-outfits`. Production-bundled worker generation, the three-result policy, compositions, shared account notice, targeted catalog links and recovery are verified. See the [execution record](OUTFITS-01-plan.md) for actual checks and browser steps.
 
 **Milestone gate:** a new visitor can select sufficient owned basics, refresh the page and obtain understandable compatible suggestions without authentication.
 
@@ -236,7 +237,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-VISITOR-01 and VISITOR-03 are merged. VISITOR-02 is implemented locally with its execution record. Next, prepare ENGINE-01's concrete deterministic matching plan under the repository's brief-plan/approval workflow, then OUTFITS-01 and SPIKE-02 before account/private-data features. Use the existing repository and MVP board rather than recreating issues. This plan does not authorize commits, pushes, provisioning or deployment.
+ENGINE-01 is merged, and OUTFITS-01 is implemented locally with its execution record and three-result visitor allowance. Review the visitor journey, then prepare SPIKE-02's isolated identity/data access plan before account/private-data features. Use the existing repository and MVP board. Provisioning and deployment follow their separate approval steps.
 
 ## Resolved PLAN-02 decisions
 

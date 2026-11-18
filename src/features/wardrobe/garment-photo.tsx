@@ -22,12 +22,16 @@ export function GarmentPhoto({
   onReady,
   onStatusChange,
   priority = false,
+  compact = false,
+  sizes = '(max-width: 359px) calc(100vw - 32px), (max-width: 767px) calc((100vw - 48px) / 2), (max-width: 1279px) 30vw, 300px',
 }: {
   typeId: TypeId;
   color: ColorId;
   onReady?: (ready: boolean) => void;
   onStatusChange?: (status: PhotoStatus) => void;
   priority?: boolean;
+  compact?: boolean;
+  sizes?: string;
 }) {
   const [status, setStatus] = useState<PhotoStatus>('loading');
   const [attempt, setAttempt] = useState(0);
@@ -43,8 +47,8 @@ export function GarmentPhoto({
     <div className="garment-photo" aria-busy={status === 'loading'}>
       {status === 'error' ? (
         <div className="garment-photo-error">
-          <Icon icon={ImageOff} />
-          <p>Photo unavailable</p>
+          {!compact && <Icon icon={ImageOff} />}
+          {!compact && <p>Photo unavailable</p>}
           <Button
             variant="outline"
             onClick={() => {
@@ -54,7 +58,15 @@ export function GarmentPhoto({
               onStatusChange?.('loading');
             }}
           >
-            Retry photo
+            {compact ? (
+              <span>
+                Photo unavailable
+                <br />
+                Retry photo
+              </span>
+            ) : (
+              'Retry photo'
+            )}
           </Button>
         </div>
       ) : (
@@ -64,7 +76,7 @@ export function GarmentPhoto({
             src={catalogImage(typeId, color)}
             alt={label}
             fill
-            sizes="(max-width: 359px) calc(100vw - 32px), (max-width: 767px) calc((100vw - 48px) / 2), (max-width: 1279px) 30vw, 300px"
+            sizes={sizes}
             priority={priority}
             onLoad={() => {
               if (!live.current) return;

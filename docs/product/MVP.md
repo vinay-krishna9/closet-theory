@@ -14,7 +14,7 @@ Core promise: select or upload clothes you own, then receive understandable, rul
 
 - Use the actual quick-add catalog without an account; there is no separate sample demo mode or prefilled wardrobe.
 - Select garments they own, choose named common-color swatches, edit/remove selections and request outfits.
-- Use season and formality filters.
+- Use season and formality filters and receive up to three compatible outfits. Additional results require signup/sign-in, with accurate account-availability messaging.
 - Retain selected catalog clothes in the same browser until cleared. Clearly state that browser data is not synced or guaranteed against browser storage clearing.
 - No personal photo uploads, favorites, wear logging or wear statistics before authentication. Explain account benefits without interrupting browsing.
 
@@ -52,7 +52,7 @@ Quick-add items have editable category/type, color, formality and season default
 
 - A complete outfit has one top, one bottom and shoes; a jacket is optional.
 - Filters: season and casual/smart-casual/formal, each with Any available.
-- Show up to six compatible suggestions initially. Show more only when additional matches exist. Never fabricate results to reach six.
+- Visitors see up to three compatible suggestions for the current wardrobe and filters. When additional matches exist, offer account access for more suggestions. Account users see up to six initially and Show more only when additional matches exist. Show the actual number available within each allowance.
 - Compose garment images on one restrained neutral/tinted canvas per outfit and provide a short reason based on actual matching rules.
 - Matching is deterministic: compatibility, freshness and personal preference are independently testable. Internal ranking scores are not displayed.
 - Eligible favorites appear first, neutral suggestions next. Disliked outfits are hidden by default; Show disliked reveals them last. Availability and active filters still apply to favorites.
