@@ -21,6 +21,8 @@ No environment variables, Clerk application, Supabase project, database, storage
 
 ## Commands
 
+Issue #4 has a separate [Clerk development harness](spikes/clerk-supabase/README.md) on loopback port 4184. Run `npm.cmd run spike:auth:dev` for its sign-in/session check. It uses ignored local development credentials; normal visitor commands remain credential-free. Supabase and account wardrobe integration are pending.
+
 | Command                       | Purpose                                                                    |
 | ----------------------------- | -------------------------------------------------------------------------- |
 | `npm.cmd ci`                  | Install exact versions from the root npm lockfile                          |

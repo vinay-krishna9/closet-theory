@@ -56,6 +56,7 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 - Scheduled after the M2 visitor journey (OUTFITS-01, #10), before ACCOUNT-01 (#11). Its M0 classification describes feasibility work, not a prerequisite for M1/M2. No live authentication or private data is required for visitor pages.
 - Prepare an approved sandbox setup plan; use only isolated test accounts/assets. No service provisioning without explicit authorization.
+- The [SPIKE-02 execution plan](SPIKE-02-plan.md) describes the isolated harness, proposed SDKs, two-user authorization matrix, media/cache checks and setup approvals. Implementation and sandbox setup approval are pending.
 - Prove verified Clerk identity can access only its own Postgres rows and private media through the proposed server boundary.
 - Verify anonymous denial, user A versus user B, expired session and private-image cache behavior.
 - **Acceptance:** automated or reproducible checks demonstrate owner isolation. Record actual setup and access requirements, without secrets. This is the gate for personal-data features.

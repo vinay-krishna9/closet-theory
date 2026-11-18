@@ -1,0 +1,17 @@
+{
+  "name": "@closet-theory/clerk-supabase-spike",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname localhost --port 4184",
+    "build": "next build",
+    "start": "next start --hostname localhost --port 4184",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "7.10.2",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

@@ -2,11 +2,18 @@
   "name": "closet-theory",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "spikes/clerk-supabase"
+  ],
   "engines": {
     "node": ">=22.18.0 <23",
     "npm": ">=10"
   },
   "scripts": {
+    "spike:auth:dev": "npm run dev --workspace @closet-theory/clerk-supabase-spike",
+    "spike:auth:build": "npm run build --workspace @closet-theory/clerk-supabase-spike",
+    "spike:auth:test": "playwright test --config spikes/clerk-supabase/playwright.config.ts",
+    "spike:auth:test:unit": "vitest run --config spikes/clerk-supabase/vitest.config.mts",
     "catalog:prepare": "node --experimental-strip-types scripts/prepare-catalog.mjs",
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",

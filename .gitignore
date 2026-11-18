@@ -19,3 +19,4 @@
 !.env.example
 *.log
 .DS_Store
+/.clerk/
