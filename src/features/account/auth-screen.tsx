@@ -2,6 +2,8 @@
 
 import { SignIn, SignUp } from '@clerk/nextjs';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAccount } from './runtime';
 import {
   VisitorImportNotice,
@@ -14,6 +16,16 @@ export function AuthScreen({ signup = false }: { signup?: boolean }) {
   const account = useAccount();
   const wardrobe = useVisitorWardrobe();
   const prepared = useVisitorImportReady();
+  const router = useRouter();
+  useEffect(() => {
+    if (account.loaded && account.userId) router.replace('/profile');
+  }, [account.loaded, account.userId, router]);
+  if (account.loaded && account.userId)
+    return (
+      <main id="main-content" className="account-page">
+        <p role="status">Opening your profile…</p>
+      </main>
+    );
   return (
     <main id="main-content" className="account-page" tabIndex={-1}>
       <Link href="/wardrobe">Back to your wardrobe</Link>
