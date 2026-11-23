@@ -83,3 +83,7 @@ Implementation approval will cover preparing the root-app code, dependency place
 - A complete account journey needs #11, #12, #13 and OUTFITS-02 verified together. #4 remains open until the real account and later PHOTO-02 evidence covers all outstanding security cases; #20 prevents release before that gate is met.
 
 Issue #11 is authorized to begin after this documentation checkpoint. No new account schema, real-app auth change, deployment or issue closure is claimed by this planning deliverable.
+
+## ACCOUNT-01 delivery update ? 23 November 2026
+
+The user approved the account migration, development session claim and named temporary fixtures, applied the dashboard changes and reported the manual checks working. ACCOUNT-01 now has verified development profile persistence and owner/token/session boundaries; see [actual results and limitations](../technical/account-development.md). This supersedes the original planning-only status for #11. The broader journey remains incomplete: #12 automatic import is next, followed by #13 and #31. No production or deployment authorization is implied.

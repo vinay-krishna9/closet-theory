@@ -124,7 +124,7 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### ACCOUNT-01 — Auth lifecycle and private data schema
 
-- Local implementation checkpoint, 23 November: real main-app Clerk entry/profile routes and server adapters are present on `feat/11-account-auth`, with a prepared schema and real-service tests. [Setup and verification](../technical/account-development.md) lists the remaining hosted claim/migration approval and unrun security cases. Do not close #11 from local-only checks.
+- Verified implementation, 23 November: real Clerk entry/profile routes, verified server adapters and owner-safe schema are configured in the approved development services. Unit/component, visitor and desktop/mobile live account checks passed; see [setup and evidence](../technical/account-development.md). Automatic import and synced clothing remain #12/#13.
 
 - Start the real journey using the [account implementation plan](ACCOUNT-journey-plan.md). #4's row-isolation baseline is established; full #4 closure is not a prerequisite to begin. Real-account anonymous/cross-account/expired/altered-token checks remain mandatory before completing #11.
 
@@ -250,7 +250,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-ENGINE-01 and OUTFITS-01 are merged. SPIKE-02's local harness has verified the development integration and both directions of row isolation; its remaining security checks now belong on real feature paths. Review and approve the [real account journey plan](ACCOUNT-journey-plan.md), then implement #11 → #12 → #13 → #31 with checked commits between subtasks. Keep #4 open for the full verification matrix, completed through #11/#15 before #20 release review. The spike branch is preserved remotely and stays separate from main; the account documentation is on a main-based branch. provisioning, hosted migrations and deployment follow their separate approval steps.
+ACCOUNT-01 (#11) is implemented and verified against the approved development services. Next, present the concrete plan for ACCOUNT-02 (#12), retry-safe automatic visitor import; wait for implementation approval. Follow with #13 synced wardrobe and #31 account outfit paging. Keep #4 open for the private-media and release verification matrix through #15/#20. The spike harness remains on its preserved remote branch outside main. New hosted changes and deployment require their applicable authorization.
 
 ## Resolved PLAN-02 decisions
 

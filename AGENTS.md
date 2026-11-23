@@ -146,7 +146,7 @@ See `README.md` and `package.json` for installation, development, formatting, li
 
 `npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.
 
-The foundation needs no service credentials and connects to no database. Use only isolated data when service adapters are introduced; never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
+Visitor-only use and CI need no service credentials. Account development uses the existing Clerk development instance and isolated Supabase test project described in `docs/technical/account-development.md`; keep actual credentials in ignored `.env.local` and never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
 
 ## Definition of done
 

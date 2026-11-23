@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies deterministic matching, and OUTFITS-01 shows three visitor outfits. ACCOUNT-01 adds real Clerk entry points and a protected profile foundation; its hosted schema/verification setup is awaiting approval. Automatic clothing import, synced wardrobe and account paging follow in #12/#13/#31.
+A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies deterministic matching, and OUTFITS-01 shows three visitor outfits. ACCOUNT-01 adds real Clerk entry points and a protected profile foundation; its schema and session-claim setup are configured in the approved development services. Automatic clothing import, synced wardrobe and account paging follow in #12/#13/#31.
 
 ## Local setup
 
@@ -17,7 +17,7 @@ Catalog cards add their default configuration. Choose Customize to change color 
 
 For BUILD-02, open http://localhost:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/records/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
-Visitor-only use and CI require no service credentials. With the approved development keys in ignored `.env.local`, use <http://localhost:3000> for real sign-in and `/profile`; `npm.cmd run dev` now binds to `localhost`. See [account development setup](docs/technical/account-development.md) for placeholders, trusted origin, the unapplied migration/claim settings, separate account test commands and manual browser checks. Set `APP_AUTH_MODE=visitor` for explicit visitor-only behavior; private APIs still deny access. The spike is preserved remotely and stays out of main. No production provisioning or deployment has run.
+Visitor-only use and CI require no service credentials. With the approved development keys in ignored `.env.local`, use <http://localhost:3000> for real sign-in and `/profile`; `npm.cmd run dev` now binds to `localhost`. See [account development setup](docs/technical/account-development.md) for placeholders, trusted origin, the versioned migration and session-claim settings, separate account test commands and manual browser checks. Set `APP_AUTH_MODE=visitor` for explicit visitor-only behavior; private APIs still deny access. The spike is preserved remotely and stays out of main. No production provisioning or deployment has run.
 
 ## Commands
 
