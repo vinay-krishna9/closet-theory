@@ -2,6 +2,8 @@
 
 Status: implementation approved on 23 November 2026, starting with #11. The user approved preserving the spike separately and moving this plan onto a main-based documentation branch. This document does not authorize running new migrations, production changes or deployment.
 
+The real #11 foundation is now implemented locally: main-app Clerk entry points, verified profile APIs, owner-scoped draft/session recovery and a prepared four-table schema. [Account development setup](../technical/account-development.md) records the exact unapplied migration/claim/fixture authorization scope and actual checks. #11 remains incomplete until the hosted setup and live security journeys pass; #12/#13/#31 are not implemented by this checkpoint.
+
 ## Outcome and issue ownership
 
 Connect the main application's Sign in/Create account actions to Clerk, carry visitor selections into a private Supabase wardrobe, restore that wardrobe after reload/sign-in, and generate account outfits from persisted clothing. Sign-out clears account state and starts a fresh empty visitor wardrobe.

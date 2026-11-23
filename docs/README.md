@@ -17,6 +17,8 @@ BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add
 
 ## Where information belongs
 
+[Account development setup](technical/account-development.md) records the real app's configuration, prepared migration, hosted approval boundary and browser/security verification commands. Its #11 implementation is in progress; wardrobe import/sync and account outfit paging follow separately.
+
 The [VISITOR-01 completion record](records/VISITOR-01.md) owns delivered behavior and checks. [Catalog assets](assets/catalog-assets.md) owns studio provenance, earlier photographic terms and recoloring. Browser persistence and recovery are recorded in [VISITOR-02](records/VISITOR-02-plan.md).
 
 The [VISITOR-03 execution plan and results](records/VISITOR-03-plan.md), tracked in completed [issue #23](https://github.com/vinay-krishna9/closet-theory/issues/23), records the shared single-garment carousel and stable editor actions during color-preview loading. The larger shirt, dress and sneaker appear one at a time. Local checks and remote CI passed before merge.

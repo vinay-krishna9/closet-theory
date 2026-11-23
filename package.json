@@ -8,9 +8,9 @@
   },
   "scripts": {
     "catalog:prepare": "node --experimental-strip-types scripts/prepare-catalog.mjs",
-    "dev": "next dev --hostname 127.0.0.1",
+    "dev": "next dev --hostname localhost",
     "build": "next build",
-    "start": "next start --hostname 127.0.0.1",
+    "start": "next start --hostname localhost",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "npm run lint -- --fix",
@@ -19,11 +19,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:account:entry": "playwright test --config playwright.account.config.ts",
+    "test:account:live": "playwright test --config playwright.account-live.config.ts",
+    "test:account:cleanup": "node --experimental-strip-types tests/account-live/cleanup.mts",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test"
   },
   "dependencies": {
+    "@clerk/nextjs": "7.10.2",
     "@fontsource-variable/manrope": "5.3.0",
     "@fontsource-variable/space-grotesk": "5.3.0",
+    "@supabase/supabase-js": "2.119.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "1.72.0",
@@ -34,6 +39,7 @@
     "tailwind-merge": "3.7.0"
   },
   "devDependencies": {
+    "@clerk/testing": "2.3.1",
     "@playwright/test": "1.65.0",
     "@tailwindcss/postcss": "4.3.5",
     "@testing-library/dom": "10.4.2",

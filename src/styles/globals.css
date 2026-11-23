@@ -4,6 +4,7 @@
 @import './selection-tiles.css';
 @import './wardrobe.css';
 @import './outfits.css';
+@import './account.css';
 
 @theme inline {
   --color-background: var(--background);

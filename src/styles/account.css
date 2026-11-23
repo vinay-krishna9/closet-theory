@@ -1,0 +1,42 @@
+.account-page {
+  max-width: 800px;
+  margin: var(--space-8) auto;
+  padding: var(--space-6);
+}
+.account-page > h1 {
+  font-size: var(--text-page);
+  line-height: 1.2;
+  margin-block: var(--space-6);
+}
+.account-page > p {
+  margin-block: var(--space-4);
+}
+.account-page > a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-flex;
+  min-height: var(--target-min);
+  align-items: center;
+}
+.account-auth-form {
+  margin-top: var(--space-8);
+  display: flex;
+  justify-content: center;
+}
+.account-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.account-profile-form input {
+  display: block;
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--space-3);
+  margin-block: var(--space-3) var(--space-6);
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+  border-radius: var(--radius-control);
+}

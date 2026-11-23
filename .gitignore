@@ -19,3 +19,8 @@
 !.env.example
 *.log
 .DS_Store
+/.clerk/
+/spikes/clerk-supabase/
+/account-test-results/
+/account-live-results/
+/tests/account-live/.fixtures.json

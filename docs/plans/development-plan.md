@@ -124,6 +124,8 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### ACCOUNT-01 — Auth lifecycle and private data schema
 
+- Local implementation checkpoint, 23 November: real main-app Clerk entry/profile routes and server adapters are present on `feat/11-account-auth`, with a prepared schema and real-service tests. [Setup and verification](../technical/account-development.md) lists the remaining hosted claim/migration approval and unrun security cases. Do not close #11 from local-only checks.
+
 - Start the real journey using the [account implementation plan](ACCOUNT-journey-plan.md). #4's row-isolation baseline is established; full #4 closure is not a prerequisite to begin. Real-account anonymous/cross-account/expired/altered-token checks remain mandatory before completing #11.
 
 - Implement Clerk Google/email-password flows, approved verification/recovery behavior and minimal owner-scoped schema through migrations.

@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { Icon } from './ui/icon';
 import { AccountAccess } from './account-access';
+import { useAccount } from '@/features/account/runtime';
+import { AccountControls } from '@/features/account/workspace-gate';
 
 const visitorLinks = [
   { href: '/wardrobe', label: 'Wardrobe', icon: Shirt },
@@ -23,15 +25,19 @@ const accountLinks = [
   { href: '/profile', label: 'Profile', icon: UserRound },
 ];
 
-// Account mode is for a future verified server session, never inferred from local storage.
+// Real account mode comes from Clerk; explicit mode also supports isolated design review.
 export function AppShell({
   children,
-  mode = 'visitor',
+  mode: requestedMode,
 }: {
   children: ReactNode;
   mode?: 'visitor' | 'account';
 }) {
   const pathname = usePathname();
+  const account = useAccount();
+  const mode =
+    requestedMode ??
+    (account.userId && account.verified ? 'account' : 'visitor');
   const mobileTabs = useRef<HTMLElement>(null);
   useEffect(() => {
     const tabs = mobileTabs.current;
@@ -73,7 +79,12 @@ export function AppShell({
       else root.style.removeProperty('--mobile-tabs-height');
     };
   }, []);
-  const links = mode === 'account' ? accountLinks : visitorLinks;
+  const links =
+    mode === 'account'
+      ? accountLinks.filter(
+          (link) => !account.enabled || link.href !== '/statistics',
+        )
+      : visitorLinks;
   function navigation(mobile: boolean) {
     return links.map(({ href, label, icon }) => (
       <Link
@@ -107,7 +118,8 @@ export function AppShell({
           >
             {navigation(false)}
           </nav>
-          {mode === 'visitor' && (
+          {account.userId && <AccountControls />}
+          {mode === 'visitor' && !account.userId && (
             <AccountAccess>
               Sign in <Icon icon={ArrowRight} />
             </AccountAccess>
@@ -118,7 +130,11 @@ export function AppShell({
       <nav
         ref={mobileTabs}
         className="app-mobile-tabs"
-        style={{ '--tab-count': mode === 'account' ? 4 : 3 } as CSSProperties}
+        style={
+          {
+            '--tab-count': links.length + (mode === 'visitor' ? 1 : 0),
+          } as CSSProperties
+        }
         aria-label={
           mode === 'account'
             ? 'Mobile account navigation'
@@ -129,7 +145,7 @@ export function AppShell({
         {mode === 'visitor' && (
           <AccountAccess>
             <Icon icon={ArrowRight} navigation />
-            Sign in
+            {account.userId ? 'Your account' : 'Sign in'}
           </AccountAccess>
         )}
       </nav>
