@@ -39,7 +39,8 @@ function Runtime({ children }: { children: ReactNode }) {
         verified: user?.primaryEmailAddress?.verification.status === 'verified',
         email: user?.primaryEmailAddress?.emailAddress ?? '',
         logout: async () => {
-          await clerk.signOut();
+          // Clerk may navigate before its promise settles. Clear private drafts
+          // and notify other tabs before handing control to the provider.
           clearProfileDraft();
           try {
             localStorage.setItem(
@@ -49,6 +50,7 @@ function Runtime({ children }: { children: ReactNode }) {
           } catch {
             /* Current-tab state is still cleared when storage is unavailable. */
           }
+          await clerk.signOut();
           router.replace('/wardrobe');
           router.refresh();
         },
