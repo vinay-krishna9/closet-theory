@@ -164,69 +164,96 @@ test('same-origin tabs share an operation and cannot duplicate a concurrent tran
 test('real API and direct RLS enforce replay, exact-match multiplicity and owner boundaries', async ({
   request,
   baseURL,
+  browser,
 }) => {
   const { users } = await readJournal();
-  const tokens = await Promise.all(users.map((user) => tokenFor(user.id)));
-  const db = directClient(tokens[0]);
-  const operationId = randomUUID();
-  const payload = {
-    expectedOwner: users[0].id,
-    operationId,
-    timezone: 'UTC',
-    items: [clothes[0]],
-  };
-  const post = (body: unknown, index = 0) =>
-    request.post(`${baseURL}/api/account/import`, {
-      headers: { Authorization: `Bearer ${tokens[index]}` },
-      data: body,
-    });
-  const first = await post(payload);
-  expect(first.status()).toBe(200);
-  const receipt = await first.json();
-  expect((await post(payload)).status()).toBe(200);
-  expect(await (await post(payload)).json()).toEqual(receipt);
-  expect(
-    (
-      await post({
-        ...payload,
-        items: [{ ...clothes[0], name: 'Changed payload' }],
-      })
-    ).status(),
-  ).toBe(409);
-  expect((await post(payload, 1)).status()).toBe(409);
-  const duplicates = await post({
-    ...payload,
-    operationId: randomUUID(),
-    items: [clothes[0], { ...clothes[0], id: 'distinct-second-shirt' }],
-  });
-  expect(duplicates.status()).toBe(200);
-  const result = await duplicates.json();
-  expect(result.imported).toBe(1);
-  expect(result.matched).toBe(1);
-  expect(
-    new Set(
-      result.mappings.map((mapping: { itemId: string }) => mapping.itemId),
-    ).size,
-  ).toBe(2);
-  const foreign = directClient(tokens[1]);
-  expect(
-    (await foreign.from('visitor_import_items').select('item_id').retry(false))
-      .data,
-  ).toEqual([]);
-  expect(
-    (
-      await foreign
-        .from('visitor_import_items')
-        .insert({
-          owner_id: users[0].id,
-          import_id: operationId,
-          selection_id: 'forged',
-          item_id: receipt.mappings[0].itemId,
+  const contexts = await Promise.all(
+    users.map(() => browser.newContext({ baseURL })),
+  );
+  try {
+    // The app accepts tokens issued for its trusted browser origin, not generic
+    // backend fixture tokens. Keep the HTTP requests themselves cookie-free.
+    const tokens = await Promise.all(
+      contexts.map(async (context, index) => {
+        const page = await context.newPage();
+        await signIn(page, users[index].email);
+        await expect(page.getByLabel('Your timezone')).toBeEnabled();
+        return page.evaluate(async () =>
+          (
+            window as unknown as {
+              Clerk: { session: { getToken: () => Promise<string> } };
+            }
+          ).Clerk.session.getToken(),
+        );
+      }),
+    );
+    const db = directClient(tokens[0]);
+    const operationId = randomUUID();
+    const payload = {
+      expectedOwner: users[0].id,
+      operationId,
+      timezone: 'UTC',
+      items: [clothes[0]],
+    };
+    const post = (body: unknown, index = 0) =>
+      request.post(`${baseURL}/api/account/import`, {
+        headers: { Authorization: `Bearer ${tokens[index]}` },
+        data: body,
+      });
+    const first = await post(payload);
+    expect(first.status()).toBe(200);
+    const receipt = await first.json();
+    expect((await post(payload)).status()).toBe(200);
+    expect(await (await post(payload)).json()).toEqual(receipt);
+    expect(
+      (
+        await post({
+          ...payload,
+          items: [{ ...clothes[0], name: 'Changed payload' }],
         })
-        .retry(false)
-    ).error !== null,
-  ).toBe(true);
-  expect(
-    (await db.from('wardrobe_items').select('id').retry(false)).data?.length,
-  ).toBe(2);
+      ).status(),
+    ).toBe(409);
+    expect((await post(payload, 1)).status()).toBe(409);
+    const duplicates = await post({
+      ...payload,
+      operationId: randomUUID(),
+      items: [clothes[0], { ...clothes[0], id: 'distinct-second-shirt' }],
+    });
+    expect(duplicates.status()).toBe(200);
+    const result = await duplicates.json();
+    expect(result.imported).toBe(1);
+    expect(result.matched).toBe(1);
+    expect(
+      new Set(
+        result.mappings.map((mapping: { itemId: string }) => mapping.itemId),
+      ).size,
+    ).toBe(2);
+    const foreign = directClient(tokens[1]);
+    expect(
+      (
+        await foreign
+          .from('visitor_import_items')
+          .select('item_id')
+          .retry(false)
+      ).data,
+    ).toEqual([]);
+    expect(
+      (
+        await foreign
+          .from('visitor_import_items')
+          .insert({
+            owner_id: users[0].id,
+            import_id: operationId,
+            selection_id: 'forged',
+            item_id: receipt.mappings[0].itemId,
+          })
+          .retry(false)
+      ).error !== null,
+    ).toBe(true);
+    expect(
+      (await db.from('wardrobe_items').select('id').retry(false)).data?.length,
+    ).toBe(2);
+  } finally {
+    await Promise.all(contexts.map((context) => context.close()));
+  }
 });
