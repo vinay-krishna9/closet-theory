@@ -6,6 +6,7 @@ import { useState, type ReactNode } from 'react';
 import { useAccount } from './runtime';
 import { useVisitorWardrobe } from '@/features/wardrobe/visitor-provider';
 import { Button } from '@/components/ui/button';
+import { VisitorImportNotice, VisitorImportRecovery } from './visitor-import';
 
 export function AccountControls() {
   const account = useAccount();
@@ -23,7 +24,7 @@ export function AccountControls() {
           setBusy(true);
           setError('');
           try {
-            clearWardrobe();
+            await clearWardrobe();
             await account.logout();
           } catch {
             setError('Could not sign out. Try again.');
@@ -53,10 +54,12 @@ export function WorkspaceGate({ children }: { children: ReactNode }) {
     <main id="main-content" className="account-page" tabIndex={-1}>
       <h1>Your account is ready</h1>
       <p>
-        You are signed in. Synced clothing and automatic visitor transfer are
-        the next steps. Your visitor selections are still retained in this
-        browser; no account clothing has been saved yet.
+        You are signed in. Visitor clothing transfers automatically after
+        verification; its status appears below. Viewing and editing your synced
+        wardrobe is the next step.
       </p>
+      <VisitorImportNotice />
+      <VisitorImportRecovery />
       <Link href="/profile">Open your profile</Link>
     </main>
   );

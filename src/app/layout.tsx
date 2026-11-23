@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import { AccountProvider } from '@/features/account/runtime';
 import { authConfigured } from '@/features/account/config';
 import { SessionBoundary } from '@/features/account/session-boundary';
+import { VisitorImportProvider } from '@/features/account/visitor-import';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +41,9 @@ export default function RootLayout({
         </a>
         <AccountProvider enabled={authConfigured()}>
           <VisitorWardrobeProvider>
-            <SessionBoundary>{children}</SessionBoundary>
+            <VisitorImportProvider>
+              <SessionBoundary>{children}</SessionBoundary>
+            </VisitorImportProvider>
           </VisitorWardrobeProvider>
         </AccountProvider>
       </body>

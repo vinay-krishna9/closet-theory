@@ -45,7 +45,9 @@ test('real profile, owner-safe relationships and independently expired tokens', 
         page.getByRole('button', { name: 'Save timezone' }),
       ).toBeFocused();
       await page.keyboard.press('Enter');
-      await expect(page.getByRole('status')).toHaveText('Timezone saved.');
+      await expect(
+        page.getByRole('status', { name: 'Profile saving' }),
+      ).toHaveText('Timezone saved.');
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
