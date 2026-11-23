@@ -63,8 +63,8 @@ Live verification exposed and resolved a sign-out race: Clerk can navigate befor
 
 The expiry test first proves a valid cookie-free bearer request succeeds, then denies altered and genuinely expired tokens. It waits 45 seconds beyond `exp` to exceed PostgREST's documented [30-second clock-skew allowance](https://docs.postgrest.org/en/v14/references/auth.html), with margin. This records the provider tolerance; it does not promise instantaneous revocation at `exp` or on sign-out for already-issued direct database tokens.
 
-## ACCOUNT-02 local implementation
+## ACCOUNT-02 verified development implementation
 
-The account auth results above describe completed #11. The newer automatic-import implementation is on `feat/12-visitor-import` with its own [setup, approval scope and actual results](../plans/ACCOUNT-02-plan.md). Do not rerun the foundation migration. The new `202611230002_visitor_import.sql` has not been applied to Supabase. Before it is authorized/applied, an attempted clothing transfer reports setup required and retains local source; profile timezone persistence still works.
+The account auth results above describe completed #11. The automatic-import implementation is on `feat/12-visitor-import` with its own [setup, approval scope and actual results](../plans/ACCOUNT-02-plan.md). Do not rerun the foundation migration. The approved `202611230002_visitor_import.sql` was applied once to the named test project on 23 November 2026. All six hosted import journeys passed and dedicated fixtures were cleaned up. Other environments missing this migration report transfer unavailable and retain source; profile persistence remains independent.
 
 `npm.cmd run test:import:db` uses an existing `postgres:17-alpine` Docker image, creates an isolated network-free temporary database, applies both migrations and checks rollback, replay, multiplicity, concurrency and RLS. It pulls no image and does not use service credentials. `npm.cmd run test:import:live -- --list` discovers the six real-service journeys without creating fixtures. Run the actual live suite only after the new migration and #12 fixture scope are separately authorized.

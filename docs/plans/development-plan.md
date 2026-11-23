@@ -250,7 +250,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-ACCOUNT-01 (#11) is implemented and verified against the approved development services. ACCOUNT-02 (#12) is approved and locally implemented; complete its separately authorized hosted migration and real-service verification before closing it. Follow with #13 synced wardrobe and #31 account outfit paging. Keep #4 open for the private-media and release verification matrix through #15/#20. The spike harness remains on its preserved remote branch outside main. New hosted changes and deployment require their applicable authorization.
+ACCOUNT-01 (#11) is implemented and verified against the approved development services. ACCOUNT-02 (#12) is implemented and verified against the approved development services. The user approved #13's concrete synced-wardrobe plan; proceed on its own branch after #12 merges, retaining separate approval for any new hosted changes. Follow with #13 synced wardrobe and #31 account outfit paging. Keep #4 open for the private-media and release verification matrix through #15/#20. The spike harness remains on its preserved remote branch outside main. New hosted changes and deployment require their applicable authorization.
 
 ## Resolved PLAN-02 decisions
 

@@ -2,7 +2,7 @@
 
 Status: implementation approved on 23 November 2026, starting with #11. The user approved preserving the spike separately and moving this plan onto a main-based documentation branch. This document does not authorize running new migrations, production changes or deployment.
 
-ACCOUNT-01 (#11) is merged and verified against the approved development services; [account development setup](../technical/account-development.md) records its results. ACCOUNT-02 (#12) is approved and implemented locally with its new transaction migration and hosted import verification pending; see the [ACCOUNT-02 record](ACCOUNT-02-plan.md). #13/#31 remain unimplemented. The original planning statements below are superseded by these dated delivery records.
+ACCOUNT-01 (#11) is merged and verified against the approved development services; [account development setup](../technical/account-development.md) records its results. ACCOUNT-02 (#12) is implemented and verified against the approved development services, including its transaction migration and six hosted import journeys; see the [ACCOUNT-02 record](ACCOUNT-02-plan.md). #13/#31 remain unimplemented. The original planning statements below are superseded by these dated delivery records.
 
 ## Outcome and issue ownership
 
