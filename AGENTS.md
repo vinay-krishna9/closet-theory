@@ -146,6 +146,8 @@ See `README.md` and `package.json` for installation, development, formatting, li
 
 `npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.
 
+ACCOUNT-02 uses `npm.cmd run test:import:db` for a disposable local PostgreSQL transaction/RLS check with an existing `postgres:17-alpine` Docker image. It has no network, host volumes or hosted credentials. `npm.cmd run test:import:live` uses the separate configured server at `localhost:4175` and requires explicit approval of its migration and fixture scope; `-- --list` only discovers tests. See `docs/plans/ACCOUNT-02-plan.md` for current setup and actual verification status.
+
 Visitor-only use and CI need no service credentials. Account development uses the existing Clerk development instance and isolated Supabase test project described in `docs/technical/account-development.md`; keep actual credentials in ignored `.env.local` and never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
 
 ## Definition of done

@@ -54,3 +54,5 @@ The unreferenced `docs/design_system.png` warm-palette reference was removed dur
 The 15 November 2026 cleanup removes the completed VISITOR-01 plan from the active docs; its approved version remains linked from the completion record. Two byte-identical jeans/sneaker review images were removed, and the comparison page now references the canonical studio sources. The distinct T-shirt review sample, review screenshots, generation prompts, completion records and asset credits remain available.
 
 Background-removal prototype links and feasibility limitations are recorded in the [development plan](plans/development-plan.md) and root README; that prototype is separate from the app. Live auth, storage and private-data features remain subject to their respective feasibility and approval gates.
+
+[ACCOUNT-02 automatic import](plans/ACCOUNT-02-plan.md) records the approved #12 plan, local implementation/checkpoints, pending hosted migration/fixture scope and manual browser checks. No hosted import success is claimed until that verification runs.
