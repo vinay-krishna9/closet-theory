@@ -38,7 +38,7 @@ const Context = createContext({
 export const useVisitorImportReady = () => useContext(Context).prepared;
 const errors: Record<string, string> = {
   import_setup_required:
-    'Your account is ready, but clothing transfer needs its database update. Your selections remain in this browser.',
+    'Your account is ready, but clothing transfer is not available yet. Your selections remain in this browser.',
   verification_claim_required:
     'Account verification setup is incomplete. Your selections remain in this browser.',
   verify_email:

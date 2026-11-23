@@ -25,6 +25,10 @@ function SignOut() {
 
 it('clears the private draft and notifies other tabs even when provider sign-out navigates without resolving', () => {
   saveProfileDraft('user_a', 'America/New_York');
+  localStorage.setItem(
+    'closet-theory.visitor-import',
+    JSON.stringify({ ownerId: 'user_a', items: [] }),
+  );
   provider.signOut.mockImplementation(() => new Promise(() => {}));
   render(
     <AccountProvider enabled>
@@ -33,6 +37,7 @@ it('clears the private draft and notifies other tabs even when provider sign-out
   );
   fireEvent.click(screen.getByRole('button', { name: 'Sign out' }));
   expect(provider.signOut).toHaveBeenCalledOnce();
+  expect(localStorage.getItem('closet-theory.visitor-import')).toBeNull();
   expect(
     sessionStorage.getItem('closet-theory.account-profile-draft'),
   ).toBeNull();
