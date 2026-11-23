@@ -79,7 +79,9 @@ try {
   for (let attempt = 0; attempt < 40; attempt++) {
     try {
       // The entrypoint briefly starts a temporary initialization server first.
-      if (docker(['exec', container, 'cat', '/proc/1/comm']).trim() !== 'postgres')
+      if (
+        docker(['exec', container, 'cat', '/proc/1/comm']).trim() !== 'postgres'
+      )
         throw new Error('PostgreSQL entrypoint is still initializing');
       docker(['exec', container, 'pg_isready', '-U', 'postgres']);
       ready = true;
