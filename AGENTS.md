@@ -158,6 +158,14 @@ A feature is complete when:
 - Relevant setup, behavior and architecture documentation is updated within the approved scope.
 - The final report briefly states what changed, what was tested and any remaining limitations. If checks or review were blocked, say so and do not present the feature as fully verified.
 
+### Implementation handoff
+
+After every implementation, including fixes and partial deliveries:
+
+- List manual browser checks the user can perform, with the URL or route, steps and expected visible results. Include mobile and keyboard checks where relevant, and distinguish these from automated checks actually run. For changes without browser behavior, state that browser checks are not applicable.
+- List pending approvals and user setup actions separately, naming the target environment, proposed action and reason. Explicitly say when none are needed. Separate checks available now from those that require pending setup or approval.
+- State any blocked or unverified completion criteria; do not present partial or unverified work as complete.
+
 Keep this file concise and accurate as the repository evolves. Update concrete paths and commands after setup; request a decision before changing approved workflow or product rules.
 
 ## Settled product scope
