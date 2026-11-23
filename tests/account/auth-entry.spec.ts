@@ -58,6 +58,11 @@ test('signed-out and invalid-token main-app requests reveal no account data', as
     expect(altered.headers()['cache-control']).toContain('no-store');
   }
   await page.goto('/profile');
+  const transfer = await request.post('/api/account/import', {
+    data: { owner_id: 'user_other', items: [] },
+  });
+  expect(transfer.status()).toBe(401);
+  expect(transfer.headers()['cache-control']).toContain('no-store');
   await expect(
     page.getByRole('link', { name: 'Sign in to your account' }),
   ).toBeVisible();

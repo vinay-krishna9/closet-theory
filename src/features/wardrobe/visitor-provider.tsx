@@ -18,7 +18,9 @@ import {
   writeWardrobe,
   removeWardrobe,
   visitorStorageKey,
+  visitorImportStorageKey,
 } from './visitor-storage';
+import { withVisitorLock } from './visitor-lock';
 type Persistence =
   'loading' | 'saved' | 'unreadable' | 'failed' | 'external' | 'clear-failed';
 type VisitorContext = {
@@ -28,7 +30,8 @@ type VisitorContext = {
   announce: (message: string) => void;
   persistence: Persistence;
   retrySaving: () => void;
-  clearWardrobe: () => void;
+  clearWardrobe: () => Promise<void>;
+  reloadSavedWardrobe: () => void;
   filters: { search: string; group: string };
   setFilters: Dispatch<React.SetStateAction<{ search: string; group: string }>>;
 };
@@ -92,7 +95,7 @@ export function VisitorWardrobeProvider({ children }: { children: ReactNode }) {
     }
   }
   function retrySaving() {
-    save(true);
+    void withVisitorLock(() => save(true)).catch(() => status('failed'));
   }
   function dispatch(action: WardrobeAction) {
     if (mode.current === 'loading') return;
@@ -100,17 +103,32 @@ export function VisitorWardrobeProvider({ children }: { children: ReactNode }) {
     if (next === current.current) return;
     current.current = next;
     setItems(next);
-    if (mode.current === 'saved' || mode.current === 'failed') save(false);
+    if (mode.current === 'saved' || mode.current === 'failed')
+      void withVisitorLock(() => save(false)).catch(() => status('failed'));
   }
-  function clearWardrobe() {
+  function reloadSavedWardrobe() {
+    try {
+      const restored = readWardrobeSnapshot();
+      savedRaw.current = restored.raw;
+      current.current = restored.items;
+      setItems(restored.items);
+      status('saved');
+    } catch {
+      status('unreadable');
+    }
+  }
+  async function clearWardrobe() {
     current.current = [];
     setItems([]);
     setFilters({ search: '', group: 'All clothing' });
     try {
-      removeWardrobe();
-      savedRaw.current = null;
-      status('saved');
-      announce('Visitor wardrobe cleared.');
+      await withVisitorLock(() => {
+        removeWardrobe();
+        window.localStorage.removeItem(visitorImportStorageKey);
+        savedRaw.current = null;
+        status('saved');
+        announce('Visitor wardrobe cleared.');
+      });
     } catch {
       status('clear-failed');
       announce('Current visitor wardrobe cleared.');
@@ -128,6 +146,7 @@ export function VisitorWardrobeProvider({ children }: { children: ReactNode }) {
         persistence,
         retrySaving,
         clearWardrobe,
+        reloadSavedWardrobe,
       }}
     >
       {children}

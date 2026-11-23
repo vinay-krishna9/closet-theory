@@ -1,6 +1,6 @@
 # Closet Theory
 
-A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies deterministic matching, and OUTFITS-01 shows three visitor outfits. ACCOUNT-01 adds real Clerk entry points and a protected profile foundation; its schema and session-claim setup are configured in the approved development services. Automatic clothing import, synced wardrobe and account paging follow in #12/#13/#31.
+A personal stylist app for outfits from clothes you already own. BUILD-01/02 supply the shared foundation. **VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe**, with eight garment types and 64 color variants using the user-approved AI-generated studio imagery. VISITOR-02 adds browser-only wardrobe persistence and storage recovery. ENGINE-01 supplies deterministic matching, and OUTFITS-01 shows three visitor outfits. ACCOUNT-01 adds real Clerk entry points and a protected profile foundation; its schema and session-claim setup are configured in the approved development services. ACCOUNT-02 adds automatic clothing import with safe retries, verified against the approved development services; synced wardrobe display/editing and account paging follow in #13/#31. See the [ACCOUNT-02 record](docs/plans/ACCOUNT-02-plan.md).
 
 ## Local setup
 
@@ -17,7 +17,7 @@ Catalog cards add their default configuration. Choose Customize to change color 
 
 For BUILD-02, open http://localhost:3000/design-review/wardrobe. The three isolated review screens use labelled illustrative images and sample data, without persistence or real recommendations. Use the review toolbar for empty/loading/error states, Add clothing for Quick-add and the navigation for Outfits. See [BUILD-02 review notes](docs/records/BUILD-02.md). These mockups are not a separate product demo or a prefilled real visitor wardrobe.
 
-Visitor-only use and CI require no service credentials. With the approved development keys in ignored `.env.local`, use <http://localhost:3000> for real sign-in and `/profile`; `npm.cmd run dev` now binds to `localhost`. See [account development setup](docs/technical/account-development.md) for placeholders, trusted origin, the versioned migration and session-claim settings, separate account test commands and manual browser checks. Set `APP_AUTH_MODE=visitor` for explicit visitor-only behavior; private APIs still deny access. The spike is preserved remotely and stays out of main. No production provisioning or deployment has run.
+Visitor-only use and CI require no service credentials. With the approved development keys in ignored `.env.local`, use <http://localhost:3000> for real sign-in and `/profile`; `npm.cmd run dev` now binds to `localhost`. See [account development setup](docs/technical/account-development.md) for placeholders, trusted origin, the versioned migration and session-claim settings, separate account test commands and manual browser checks. For the new visitor-import transaction, see [ACCOUNT-02 setup and manual checks](docs/plans/ACCOUNT-02-plan.md); its migration is applied in the approved development project. Set `APP_AUTH_MODE=visitor` for explicit visitor-only behavior; private APIs still deny access. The spike is preserved remotely and stays out of main. No production provisioning or deployment has run.
 
 ## Commands
 
@@ -105,6 +105,8 @@ GitHub Actions runs installation, formatting, lint, types, component tests, prod
 Git checks text files out with LF line endings through `.gitattributes`, matching Prettier and EditorConfig on every platform. This keeps Windows checkouts compatible with `npm.cmd run format:check`.
 
 ## Product references and prototype
+
+Import-specific checks: `npm.cmd run test:import:db` uses an existing local `postgres:17-alpine` Docker image for isolated transaction/RLS checks. `npm.cmd run test:import:live` requires the separately authorized account-import migration and temporary fixture scope; see the [ACCOUNT-02 setup and results](docs/plans/ACCOUNT-02-plan.md). It is not part of credential-free CI.
 
 Use the [documentation index](docs/README.md) for document ownership, current delivery status and verification records.
 

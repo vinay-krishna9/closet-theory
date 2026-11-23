@@ -22,7 +22,9 @@
     "test:account:entry": "playwright test --config playwright.account.config.ts",
     "test:account:live": "playwright test --config playwright.account-live.config.ts",
     "test:account:cleanup": "node --experimental-strip-types tests/account-live/cleanup.mts",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test",
+    "test:import:db": "node scripts/test-import-db.mjs",
+    "test:import:live": "playwright test --config playwright.import-live.config.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "7.10.2",

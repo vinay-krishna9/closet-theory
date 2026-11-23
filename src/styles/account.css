@@ -40,3 +40,19 @@
   border: 1px solid var(--input);
   border-radius: var(--radius-control);
 }
+.account-import {
+  margin-block: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
+.account-import p {
+  margin-block: 0 var(--space-3);
+}
+.account-import a {
+  display: inline-flex;
+  min-height: var(--target-min);
+  align-items: center;
+  margin-inline-start: var(--space-3);
+  text-decoration: underline;
+}

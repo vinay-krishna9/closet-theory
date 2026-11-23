@@ -23,4 +23,5 @@
 /spikes/clerk-supabase/
 /account-test-results/
 /account-live-results/
+/import-live-results/
 /tests/account-live/.fixtures.json

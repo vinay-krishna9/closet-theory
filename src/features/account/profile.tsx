@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useAccount } from './runtime';
+import { VisitorImportNotice, VisitorImportRecovery } from './visitor-import';
 import {
   clearProfileDraft,
   readProfileDraft,
@@ -97,6 +98,8 @@ function ProfileForm() {
     <main id="main-content" className="account-page" tabIndex={-1}>
       <h1>Your profile</h1>
       <p>Signed in as {account.email}</p>
+      <VisitorImportNotice />
+      <VisitorImportRecovery />
       {!account.verified && (
         <p role="alert">
           Verify your email to enable private account saves. You can continue
@@ -155,9 +158,11 @@ function ProfileForm() {
           {busy ? (timezone ? 'Saving…' : 'Loading…') : 'Save timezone'}
         </Button>
       </form>
-      <p role="status">{message}</p>
+      <p role="status" aria-label="Profile saving">
+        {message}
+      </p>
       <p>
-        Synced wardrobe and automatic visitor transfer are coming next. Personal
+        Viewing and editing your synced wardrobe is coming next. Personal
         photos, preferences, wear statistics and account deletion are not
         enabled yet.
       </p>

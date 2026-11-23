@@ -1,6 +1,7 @@
 ﻿import { catalog } from '@/features/onboarding/catalog';
 import { validateGarment, type WardrobeItem } from './model';
 export const visitorStorageKey = 'closet-theory.visitor-wardrobe';
+export const visitorImportStorageKey = 'closet-theory.visitor-import';
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

@@ -12,6 +12,11 @@ test('visitor-only environment never permits private profile operations', async 
     data: { timezone: 'UTC', owner_id: 'user_other' },
   });
   expect(save.status()).toBe(401);
+  const transfer = await request.post('/api/account/import', {
+    data: { owner_id: 'user_other', items: [] },
+  });
+  expect(transfer.status()).toBe(401);
+  expect(transfer.headers()['cache-control']).toContain('no-store');
 });
 
 test('unconfigured account entry preserves visitor browsing and exposes no private form', async ({

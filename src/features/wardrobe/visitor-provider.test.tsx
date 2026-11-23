@@ -159,7 +159,11 @@ describe('visitor persistence lifecycle', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Clear all selections' }),
     );
-    expect(screen.getByText(/Older saved selections may return/)).toBeVisible();
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Older saved selections may return/),
+      ).toBeVisible(),
+    );
     remove.mockRestore();
     fireEvent.click(
       screen.getByRole('button', { name: 'Retry clearing saved wardrobe' }),

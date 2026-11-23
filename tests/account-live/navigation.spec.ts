@@ -13,7 +13,9 @@ test('back navigation cannot restore signed-out or previous-owner profile data',
   await expect(timezone).toBeEnabled();
   await timezone.fill('Europe/Berlin');
   await page.getByRole('button', { name: 'Save timezone' }).click();
-  await expect(page.getByRole('status')).toHaveText('Timezone saved.');
+  await expect(page.getByRole('status', { name: 'Profile saving' })).toHaveText(
+    'Timezone saved.',
+  );
   await page.goto('/wardrobe');
   await page.getByRole('link', { name: 'Open your profile' }).click();
   await expect(
@@ -38,7 +40,9 @@ test('back navigation cannot restore signed-out or previous-owner profile data',
   await expect(timezone).toBeEnabled();
   await timezone.fill('UTC');
   await page.getByRole('button', { name: 'Save timezone' }).click();
-  await expect(page.getByRole('status')).toHaveText('Timezone saved.');
+  await expect(page.getByRole('status', { name: 'Profile saving' })).toHaveText(
+    'Timezone saved.',
+  );
   await page.goBack();
   await expect(
     page.getByText(`Signed in as ${users[0].email}`, { exact: true }),

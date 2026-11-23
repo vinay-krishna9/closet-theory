@@ -4,6 +4,7 @@ import { ClerkProvider, useClerk, useUser } from '@clerk/nextjs';
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { clearProfileDraft, readProfileDraft } from './profile-draft';
+import { clearPendingImport } from './import-storage';
 
 type Account = {
   enabled: boolean;
@@ -42,6 +43,7 @@ function Runtime({ children }: { children: ReactNode }) {
           // Clerk may navigate before its promise settles. Clear private drafts
           // and notify other tabs before handing control to the provider.
           clearProfileDraft();
+          clearPendingImport();
           try {
             localStorage.setItem(
               'closet-theory.account-signout-event',
