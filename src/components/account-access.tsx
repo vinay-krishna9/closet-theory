@@ -2,6 +2,8 @@
 
 import { useRef, useState, type ReactNode } from 'react';
 import { Button } from './ui/button';
+import Link from 'next/link';
+import { useAccount } from '@/features/account/runtime';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +20,13 @@ export function AccountAccess({
 }) {
   const [open, setOpen] = useState(false);
   const opener = useRef<HTMLButtonElement>(null);
+  const account = useAccount();
+  if (account.enabled)
+    return (
+      <Button variant={variant} asChild>
+        <Link href={account.userId ? '/profile' : '/sign-in'}>{children}</Link>
+      </Button>
+    );
   return (
     <>
       <Button ref={opener} variant={variant} onClick={() => setOpen(true)}>

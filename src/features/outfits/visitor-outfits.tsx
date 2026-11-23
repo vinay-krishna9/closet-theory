@@ -9,6 +9,7 @@ import { Icon } from '@/components/ui/icon';
 import { Spinner } from '@/components/ui/spinner';
 import { EmptyState } from '@/components/ui/empty-state';
 import { AccountAccess } from '@/components/account-access';
+import { useAccount } from '@/features/account/runtime';
 import {
   PictorialOptions,
   anyChoice,
@@ -37,6 +38,7 @@ const outcomeAnnouncements = {
 };
 
 export function VisitorOutfits() {
+  const account = useAccount();
   const { items, persistence } = useVisitorWardrobe();
   const [filters, setFilters] = useState<OutfitFilters>(anyFilters);
   const [expanded, setExpanded] = useState(false);
@@ -259,8 +261,9 @@ export function VisitorOutfits() {
               : 'An account will let you sync your wardrobe, save outfit preferences and track wears.'}
           </p>
           <p>
-            Account access is coming soon. Your selected clothes stay in this
-            browser.
+            {account.enabled
+              ? 'Sign-in is available. Wardrobe sync and more account outfits are coming next. Your selected clothes stay in this browser.'
+              : 'Account access is coming soon. Your selected clothes stay in this browser.'}
           </p>
         </div>
         <AccountAccess variant="outline">About account access</AccountAccess>

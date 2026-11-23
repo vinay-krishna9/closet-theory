@@ -21,10 +21,11 @@ export default defineConfig({
     { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: 'npm run start -- --port 4174',
+    command:
+      'node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 4174',
     url: baseURL,
     reuseExistingServer: false,
     timeout: 60000,
-    env: { NEXT_TELEMETRY_DISABLED: '1' },
+    env: { NEXT_TELEMETRY_DISABLED: '1', APP_AUTH_MODE: 'visitor' },
   },
 });

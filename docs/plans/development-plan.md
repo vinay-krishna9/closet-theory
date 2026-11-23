@@ -1,16 +1,16 @@
 # Personal Stylist — MVP Development Plan
 
-Status: delivery plan with recorded sequencing and design updates through 13 November 2026. Per-feature approval and verification still apply; see [documentation index](../README.md) for current implementation status.
+Status: delivery plan with recorded sequencing updates through 18 November 2026. Per-feature approval and verification still apply; see [documentation index](../README.md) for current implementation status.
 
 Save at `docs/plans/development-plan.md`. Read alongside [MVP requirements](../product/MVP.md), [user flows](../product/user-flows.md), [architecture](../technical/architecture.md), root [design.md](../../design.md) and root [AGENTS.md](../../AGENTS.md). This plan organizes delivery; it does not authorize implementation, service creation, spending, commits, pushes or deployment. Each feature follows the agreed brief-plan → approval → implement → verify workflow.
 
 ## 1. Delivery approach
 
-Deliver small working journeys, not separate frontend and backend batches. Approved sequencing update, 10 November 2026: build the foundation and visitor experience before SPIKE-02. Validate Clerk/Supabase isolation before account or private-photo features. Keep tests and accessibility in each milestone rather than deferring them to final polish.
+Deliver small working journeys, not separate frontend and backend batches. The 10 November 2026 sequence put the visitor experience before SPIKE-02. On 18 November, after real two-account row-isolation checks passed in the harness, the user approved proceeding to real account implementation. Carry remaining security checks into the actual account/photo features instead of building another isolated screen. #4 stays open as the verification tracker and a release gate. Keep tests and accessibility in each milestone rather than deferring them to final polish. The [real account journey plan](ACCOUNT-journey-plan.md) awaits coding approval.
 
 Proposed board: **Backlog → Ready → In progress → Review → Done**. Keep one main implementation issue in progress at a time. Put blocked work back in Backlog with a `blocked` label and an explicit dependency. Review means checks and acceptance criteria are available for inspection; Done requires their completion. Deployment remains separately authorized.
 
-The [MVP project board](https://github.com/users/vinay-krishna9/projects/1) contains [21 issues](https://github.com/vinay-krishna9/closet-theory/issues), numbered #1–#21 in the task order below. IDs such as PLAN-01 remain stable planning references. The current saved board uses Todo → In Progress → Done; the five-column workflow above is a proposal, not an existing configuration.
+The [MVP project board](https://github.com/users/vinay-krishna9/projects/1) was originally seeded with issues #1–#21 in the task order below. The [repository backlog](https://github.com/vinay-krishna9/closet-theory/issues) also contains later follow-ups, including OUTFITS-02 (#31) for account suggestions. IDs such as PLAN-01 remain stable planning references. The last recorded board uses Todo → In Progress → Done; the five-column workflow above is a proposal, not an existing configuration. The 18 November task updates change issue bodies/dependencies; they do not claim a project-board status change.
 
 ## 2. Milestone sequence
 
@@ -19,7 +19,7 @@ The [MVP project board](https://github.com/users/vinay-krishna9/projects/1) cont
 | M0 — Decisions and feasibility | Risks have evidence and requirements agree | None |
 | M1 — Foundation | Accessible app shell and repeatable checks | PLAN-01 and applicable PLAN-02 decisions; SPIKE-02 does not block |
 | M2 — Visitor wardrobe and suggestions | A visitor selects owned basics and gets outfits | M1 |
-| M3 — Accounts and private wardrobe | Selections carry into a private synced account | M2; SPIKE-02 owner-isolation verification |
+| M3 — Accounts and private wardrobe | Selections carry into a private synced account | M2; verified SPIKE-02 row-isolation baseline; real account authorization checks before completion |
 | M4 — Personal photo flow | A user uploads, reviews and saves one garment | M3; image feasibility |
 | M5 — Preferences and wear tracking | Feedback, wear logging, Undo and statistics work | M3; recommendation engine |
 | M6 — Release candidate | Complete public journey verified and documented | M4, M5 |
@@ -54,11 +54,12 @@ M4 and M5 are not independently launched MVPs. The public MVP scope includes bot
 
 ### SPIKE-02 — Validate Clerk and private Supabase access
 
-- Scheduled after the M2 visitor journey (OUTFITS-01, #10), before ACCOUNT-01 (#11). Its M0 classification describes feasibility work, not a prerequisite for M1/M2. No live authentication or private data is required for visitor pages.
+- The isolated setup followed OUTFITS-01 (#10), and two-account row isolation is verified locally. Approved 18 November sequencing: proceed to ACCOUNT-01 (#11), completing expired/altered-token and real account authorization checks there. PHOTO-02 (#15) owns real private-media/cache checks. #4 stays open until linked feature evidence completes its matrix; its full closure no longer blocks starting those implementations.
 - Prepare an approved sandbox setup plan; use only isolated test accounts/assets. No service provisioning without explicit authorization.
+- The [SPIKE-02 execution record](https://github.com/vinay-krishna9/closet-theory/blob/spike/4-clerk-supabase-access/docs/plans/SPIKE-02-plan.md) documents the approved development setup, implemented harness, two-user row authorization results and remaining media/token checks. Completed local checkpoints have not yet been pushed or merged into main.
 - Prove verified Clerk identity can access only its own Postgres rows and private media through the proposed server boundary.
 - Verify anonymous denial, user A versus user B, expired session and private-image cache behavior.
-- **Acceptance:** automated or reproducible checks demonstrate owner isolation. Record actual setup and access requirements, without secrets. This is the gate for personal-data features.
+- **Acceptance:** automated or reproducible checks demonstrate the complete row/media/session isolation matrix on actual feature paths. Record setup and evidence without secrets. Account and photo features must pass their relevant checks before completion; #20 requires the full #4 gate before release.
 
 ## 4. M1 — Foundation
 
@@ -123,6 +124,10 @@ The later user-approved studio image revision supersedes this task's initial rea
 
 ### ACCOUNT-01 — Auth lifecycle and private data schema
 
+- Verified implementation, 23 November: real Clerk entry/profile routes, verified server adapters and owner-safe schema are configured in the approved development services. Unit/component, visitor and desktop/mobile live account checks passed; see [setup and evidence](../technical/account-development.md). Automatic import and synced clothing remain #12/#13.
+
+- Start the real journey using the [account implementation plan](ACCOUNT-journey-plan.md). #4's row-isolation baseline is established; full #4 closure is not a prerequisite to begin. Real-account anonymous/cross-account/expired/altered-token checks remain mandatory before completing #11.
+
 - Implement Clerk Google/email-password flows, approved verification/recovery behavior and minimal owner-scoped schema through migrations.
 - Add row-level security and owner-safe relationship constraints; keep elevated credentials out of routine requests.
 - **Acceptance:** sign-in/out and session expiry work; authorization tests deny anonymous/cross-account reads and writes. Signing out clears account client data and starts a fresh visitor wardrobe.
@@ -139,7 +144,13 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Preserve item identity and unsaved work; make removal ready for historical references even before wear features are available.
 - **Acceptance:** account wardrobe persists across authenticated devices; errors preserve recoverable work; validation and keyboard focus work; removal excludes affected outfits from future results. No item favorites.
 
-**Milestone gate:** visitor selections carry into a private account exactly once and remain manageable after reload/sign-in.
+### OUTFITS-02 — Account suggestions and paging (#31)
+
+- Generate results from the verified owner's persisted active wardrobe with the shared engine and approved composition UI. Up to six results per page; Show more only when available. Visitors keep their three-result allowance.
+- Bind paging to the owner and wardrobe/filter snapshot; invalidate results after mutation, removal, sign-out and account switch. No working feedback/wear controls until their features ship.
+- **Acceptance:** distinct pages, correct filters/identities, server ownership checks, reload and stale-request recovery verified on desktop/mobile. Depends on #11, #13, #9 and #10.
+
+**Milestone gate:** visitor selections carry into a private account exactly once, remain manageable after reload/sign-in and generate account suggestions. #11, #12, #13 and #31 pass together.
 
 ## 7. M4 — Personal photo flow
 
@@ -150,6 +161,8 @@ The later user-approved studio image revision supersedes this task's initial rea
 - **Acceptance:** tests cover validation, removal failure, poor cutout fallback, timeout, cancel/reselect and stale completion. The mobile keyboard/footer and processing state remain usable.
 
 ### PHOTO-02 — Private persistence, replacement and cleanup
+
+- Complete #4's media verification using these actual feature paths: anonymous/cross-account/expired/altered-token denial, owner-path manipulation, private-image caching, sign-out/account-switch/back-navigation behavior. Depends on #14 and #11 with the verified #4 baseline; do not require #4 to close before implementing the media operations needed to finish it. #20 retains #4 as a release gate.
 
 - Implement server-side validation, authorized upload/read delivery, pending media operations and cleanup retry.
 - Keep previous images until replacement commits. Removing an item deletes private derivatives while history uses existing catalog imagery or a placeholder.
@@ -237,7 +250,7 @@ Actual checks/results and any remaining limitation.
 
 ## 12. Immediate next action
 
-ENGINE-01 is merged, and OUTFITS-01 is implemented locally with its execution record and three-result visitor allowance. Review the visitor journey, then prepare SPIKE-02's isolated identity/data access plan before account/private-data features. Use the existing repository and MVP board. Provisioning and deployment follow their separate approval steps.
+ACCOUNT-01 (#11) is implemented and verified against the approved development services. Next, present the concrete plan for ACCOUNT-02 (#12), retry-safe automatic visitor import; wait for implementation approval. Follow with #13 synced wardrobe and #31 account outfit paging. Keep #4 open for the private-media and release verification matrix through #15/#20. The spike harness remains on its preserved remote branch outside main. New hosted changes and deployment require their applicable authorization.
 
 ## Resolved PLAN-02 decisions
 

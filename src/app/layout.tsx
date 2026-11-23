@@ -2,6 +2,11 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { VisitorWardrobeProvider } from '@/features/wardrobe/visitor-provider';
 import '@/styles/globals.css';
+import { AccountProvider } from '@/features/account/runtime';
+import { authConfigured } from '@/features/account/config';
+import { SessionBoundary } from '@/features/account/session-boundary';
+
+export const dynamic = 'force-dynamic';
 
 const display = localFont({
   src: '../../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2',
@@ -33,7 +38,11 @@ export default function RootLayout({
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        <VisitorWardrobeProvider>{children}</VisitorWardrobeProvider>
+        <AccountProvider enabled={authConfigured()}>
+          <VisitorWardrobeProvider>
+            <SessionBoundary>{children}</SessionBoundary>
+          </VisitorWardrobeProvider>
+        </AccountProvider>
       </body>
     </html>
   );

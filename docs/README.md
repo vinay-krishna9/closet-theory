@@ -13,9 +13,11 @@
 
 ## Current delivery status
 
-BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](records/BUILD-02.md) and [VISITOR-01](records/VISITOR-01.md) own their results and limitations. VISITOR-03 merged through PR #25 after CI passed. VISITOR-02 browser persistence is implemented locally on `visitor/02-local-persistence`; its [execution record](records/VISITOR-02-plan.md) owns the behavior, checks and limitations. ENGINE-01 is implemented locally with its [engine contract and verification](plans/ENGINE-01-plan.md). OUTFITS-01 is implemented locally with [three visitor suggestions, recovery and browser verification](plans/OUTFITS-01-plan.md). Account integration follows later.
+BUILD-01/02 provide the shared foundation and VISITOR-01 adds the real quick-add catalog and editable visitor wardrobe. These changes merged into main through PR #24 on 15 November 2026 after CI passed. [BUILD-02](records/BUILD-02.md) and [VISITOR-01](records/VISITOR-01.md) own their results and limitations. VISITOR-03 merged through PR #25 after CI passed. VISITOR-02 browser persistence is implemented locally on `visitor/02-local-persistence`; its [execution record](records/VISITOR-02-plan.md) owns the behavior, checks and limitations. ENGINE-01 is implemented locally with its [engine contract and verification](plans/ENGINE-01-plan.md). OUTFITS-01 is implemented locally with [three visitor suggestions, recovery and browser verification](plans/OUTFITS-01-plan.md). ACCOUNT-01 adds real Clerk sign-in and private profile persistence; import/synced wardrobe follow separately.
 
 ## Where information belongs
+
+[Account development setup](technical/account-development.md) records the real app's configuration, versioned migration, approved development setup and browser/security verification evidence. Its #11 foundation is verified; wardrobe import/sync and account outfit paging follow separately.
 
 The [VISITOR-01 completion record](records/VISITOR-01.md) owns delivered behavior and checks. [Catalog assets](assets/catalog-assets.md) owns studio provenance, earlier photographic terms and recoloring. Browser persistence and recovery are recorded in [VISITOR-02](records/VISITOR-02-plan.md).
 
@@ -31,6 +33,7 @@ The [VISITOR-03 execution plan and results](records/VISITOR-03-plan.md), tracked
 | [Design system](../design.md)                             | Visual and interaction authority; sections 17–19 contain the approved charcoal, typography and pictorial-selection revisions |
 | [Architecture](technical/architecture.md)                 | Technical boundaries, persistence, authentication and privacy design                                                         |
 | [Development plan](plans/development-plan.md)             | Task sequence, dependencies and acceptance criteria                                                                          |
+| [Real account journey](plans/ACCOUNT-journey-plan.md)     | Approved main-app auth, import, synced wardrobe and account suggestions plan                                                 |
 | [ENGINE-01 execution plan](plans/ENGINE-01-plan.md)       | Issue #9 matching rules, proposed technical defaults, implementation steps and verification                                  |
 | [OUTFITS-01 execution plan](plans/OUTFITS-01-plan.md)     | Issue #10 visitor filters, up to three compositions, account prompt, recovery and browser acceptance steps                   |
 | [BUILD-01 record](records/BUILD-01.md)                    | Foundation implementation, verification and limitations                                                                      |

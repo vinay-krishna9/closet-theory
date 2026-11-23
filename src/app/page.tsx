@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { authConfigured } from '@/features/account/config';
 
 export default function Home() {
   return (
@@ -23,9 +24,11 @@ export default function Home() {
           In development
         </h2>
         <p className="leading-relaxed">
-          Choose owned clothes from the visitor catalog. Outfit suggestions are
-          coming next. Visitor selections are saved in this browser only.
-          Personal photo uploads and accounts are not available yet.
+          Choose owned clothes from the visitor catalog and get up to three
+          outfit suggestions. Visitor selections are saved in this browser only.{' '}
+          {authConfigured()
+            ? 'Account sign-in is available. Synced wardrobes and personal photo uploads are coming next.'
+            : 'Personal photo uploads and accounts are not configured in this environment.'}
         </p>
       </section>
       <div className="mt-8">
@@ -33,6 +36,11 @@ export default function Home() {
           <Link href="/wardrobe">Explore your wardrobe</Link>
         </Button>
       </div>
+      {authConfigured() && (
+        <p className="mt-6">
+          <Link href="/sign-in">Sign in or create an account</Link>
+        </p>
+      )}
     </main>
   );
 }

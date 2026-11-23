@@ -146,7 +146,7 @@ See `README.md` and `package.json` for installation, development, formatting, li
 
 `npm run check` runs formatting, linting, type checking and component tests. Run `npm run build` before `npm run test:e2e`, which starts its own production server at fixed loopback port 4174. Stop any listener on that port first; do not enable server reuse to hide conflicts. Checks exclude the separate prototype under `spikes/`.
 
-The foundation needs no service credentials and connects to no database. Use only isolated data when service adapters are introduced; never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
+Visitor-only use and CI need no service credentials. Account development uses the existing Clerk development instance and isolated Supabase test project described in `docs/technical/account-development.md`; keep actual credentials in ignored `.env.local` and never target production in tests. Keep documented commands and CI current, and record actual verification results before declaring completion.
 
 ## Definition of done
 
@@ -157,6 +157,14 @@ A feature is complete when:
 - Affected UI has been reviewed on mobile and desktop, with accessibility checks appropriate to the change.
 - Relevant setup, behavior and architecture documentation is updated within the approved scope.
 - The final report briefly states what changed, what was tested and any remaining limitations. If checks or review were blocked, say so and do not present the feature as fully verified.
+
+### Implementation handoff
+
+After every implementation, including fixes and partial deliveries:
+
+- List manual browser checks the user can perform, with the URL or route, steps and expected visible results. Include mobile and keyboard checks where relevant, and distinguish these from automated checks actually run. For changes without browser behavior, state that browser checks are not applicable.
+- List pending approvals and user setup actions separately, naming the target environment, proposed action and reason. Explicitly say when none are needed. Separate checks available now from those that require pending setup or approval.
+- State any blocked or unverified completion criteria; do not present partial or unverified work as complete.
 
 Keep this file concise and accurate as the repository evolves. Update concrete paths and commands after setup; request a decision before changing approved workflow or product rules.
 
