@@ -1,9 +1,11 @@
 import { access } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { clerkSetup } from '@clerk/testing/playwright';
+import { expect } from '@playwright/test';
 import {
   clerkApi,
   cleanupFixtures,
+  directClient,
   journalPath,
   loadConfiguration,
   saveJournal,
@@ -41,6 +43,9 @@ export default async function setup() {
       const email = `account01-${letter.toLowerCase()}-${journal.runId}+clerk_test@example.com`;
       const user = await clerkApi('users', 'POST', {
         email_address: [email],
+        ...(letter === 'B'
+          ? { email_address_identification_status: ['reserved'] }
+          : {}),
         skip_password_requirement: true,
         private_metadata: { account_test_run: journal.runId },
       });
@@ -51,6 +56,62 @@ export default async function setup() {
         label: `ACCOUNT-01 ${letter}`,
       });
       await saveJournal(journal);
+      if (letter === 'B') {
+        try {
+          const unverifiedSession = await clerkApi('sessions', 'POST', {
+            user_id: user.id,
+          });
+          const unverified = await clerkApi(
+            `sessions/${unverifiedSession.id}/tokens`,
+            'POST',
+          );
+          const claims = JSON.parse(
+            Buffer.from(unverified.jwt.split('.')[1], 'base64url').toString(),
+          );
+          expect(claims.email_verified).toBe(false);
+          // No browser cookies can mask this signed, unverified identity.
+          for (const method of ['GET', 'PATCH']) {
+            const response = await fetch(
+              'http://localhost:4175/api/account/profile',
+              {
+                method,
+                headers: {
+                  Authorization: `Bearer ${unverified.jwt}`,
+                  'Content-Type': 'application/json',
+                },
+                ...(method === 'PATCH'
+                  ? { body: JSON.stringify({ timezone: 'UTC' }) }
+                  : {}),
+                signal: AbortSignal.timeout(10000),
+              },
+            );
+            // Clerk can classify a reserved, pending-verification session as
+            // unauthenticated before the app's verified-identity check runs.
+            expect([401, 403]).toContain(response.status);
+          }
+          const db = directClient(unverified.jwt);
+          const read = await db
+            .from('account_profiles')
+            .select('owner_id')
+            .retry(false);
+          expect(read.data).toEqual([]);
+          journal.dataStarted = true;
+          await saveJournal(journal);
+          const write = await db
+            .from('account_profiles')
+            .insert({ timezone: 'UTC' })
+            .retry(false);
+          expect(write.error?.code).toBe('42501');
+        } finally {
+          await clerkApi(
+            `email_addresses/${user.primary_email_address_id}`,
+            'PATCH',
+            {
+              verified: true,
+            },
+          );
+        }
+      }
       const session = await clerkApi('sessions', 'POST', { user_id: user.id });
       const token = await clerkApi(`sessions/${session.id}/tokens`, 'POST');
       const payload = JSON.parse(
@@ -61,10 +122,8 @@ export default async function setup() {
     }
     journal.dataStarted = true;
     await saveJournal(journal);
-  } catch {
+  } catch (error) {
     await cleanupFixtures();
-    throw new Error(
-      'Account fixture setup failed; cleanup attempted. Verify approved service configuration.',
-    );
+    throw error;
   }
 }

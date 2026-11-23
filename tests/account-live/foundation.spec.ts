@@ -40,8 +40,22 @@ test('real profile, owner-safe relationships and independently expired tokens', 
       const timezone = page.getByLabel('Your timezone');
       await expect(timezone).toBeEnabled();
       await timezone.fill(index === 0 ? 'Europe/Berlin' : 'UTC');
-      await page.getByRole('button', { name: 'Save timezone' }).click();
+      await timezone.press('Tab');
+      await expect(
+        page.getByRole('button', { name: 'Save timezone' }),
+      ).toBeFocused();
+      await page.keyboard.press('Enter');
       await expect(page.getByRole('status')).toHaveText('Timezone saved.');
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      if (index === 0)
+        await page.screenshot({
+          path: testInfo.outputPath('fixture-profile.png'),
+          fullPage: true,
+        });
       const token = await page.evaluate(async () =>
         (
           window as unknown as {
@@ -135,54 +149,6 @@ test('real profile, owner-safe relationships and independently expired tokens', 
       );
       expect(forged.status()).toBe(400);
     }
-    const secondUser = await clerkApi(`users/${users[1].id}`);
-    const emailId = secondUser.primary_email_address_id;
-    try {
-      await clerkApi(`email_addresses/${emailId}`, 'PATCH', {
-        verified: false,
-      });
-      const sessionId = JSON.parse(
-        Buffer.from(tokens[1].split('.')[1], 'base64url').toString(),
-      ).sid;
-      const unverified = await clerkApi(`sessions/${sessionId}/tokens`, 'POST');
-      const payload = JSON.parse(
-        Buffer.from(unverified.jwt.split('.')[1], 'base64url').toString(),
-      );
-      expect(payload.email_verified).toBe(false);
-      const isolated = await playwright.request.newContext();
-      try {
-        expect(
-          (
-            await isolated.get(`${baseURL}/api/account/profile`, {
-              headers: { Authorization: `Bearer ${unverified.jwt}` },
-            })
-          ).status(),
-        ).toBe(403);
-        const read = await directClient(unverified.jwt)
-          .from('account_profiles')
-          .select('owner_id')
-          .retry(false);
-        expect(read.data).toEqual([]);
-        const write = await directClient(unverified.jwt)
-          .from('wardrobe_items')
-          .insert({
-            id: randomUUID(),
-            owner_id: users[1].id,
-            name: 'ACCOUNT-01 unverified',
-            type_id: 'tshirt',
-            color: 'white',
-            formality: 'Casual',
-            seasons: ['Summer'],
-            pattern: 'Solid',
-          })
-          .retry(false);
-        expect(write.error !== null).toBe(true);
-      } finally {
-        await isolated.dispose();
-      }
-    } finally {
-      await clerkApi(`email_addresses/${emailId}`, 'PATCH', { verified: true });
-    }
     expect(
       (
         await directClient(null)
@@ -194,6 +160,13 @@ test('real profile, owner-safe relationships and independently expired tokens', 
     // Cookie-free requests prevent a valid browser session from masking bad/expired tokens.
     const independent = await playwright.request.newContext();
     try {
+      expect(
+        (
+          await independent.get(`${baseURL}/api/account/profile`, {
+            headers: { Authorization: `Bearer ${tokens[0]}` },
+          })
+        ).status(),
+      ).toBe(200);
       const segments = tokens[0].split('.');
       segments[2] = (segments[2][0] === 'A' ? 'B' : 'A') + segments[2].slice(1);
       const altered = segments.join('.');
@@ -215,9 +188,12 @@ test('real profile, owner-safe relationships and independently expired tokens', 
       const payload = JSON.parse(
         Buffer.from(tokens[0].split('.')[1], 'base64url').toString(),
       );
-      await pages[0].waitForTimeout(
-        Math.max(0, payload.exp * 1000 - Date.now() + 10000),
-      );
+      // PostgREST allows 30 seconds of clock skew for exp; test beyond that
+      // documented window, with margin, rather than treating it as a bypass.
+      while (Date.now() < payload.exp * 1000 + 45000)
+        await pages[0].waitForTimeout(
+          Math.min(10000, payload.exp * 1000 + 45000 - Date.now()),
+        );
       expect(
         (
           await independent.get(`${baseURL}/api/account/profile`, {

@@ -46,10 +46,18 @@ export async function clerkApi(
     ...(body ? { body: JSON.stringify(body) } : {}),
     signal: AbortSignal.timeout(15000),
   });
-  if (!response.ok)
+  if (!response.ok) {
+    const failure = await response.json().catch(() => null);
+    const codes = (failure?.errors ?? [])
+      .map((error: { code?: string }) => error.code)
+      .filter(
+        (code: unknown) => typeof code === 'string' && /^[a-z_]+$/.test(code),
+      )
+      .join(', ');
     throw new Error(
-      `Development fixture operation failed (HTTP ${response.status}).`,
+      `Development fixture operation failed (HTTP ${response.status}${codes ? `: ${codes}` : ''}).`,
     );
+  }
   return response.status === 204 ? null : response.json();
 }
 
