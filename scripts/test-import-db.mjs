@@ -97,9 +97,14 @@ grant usage on schema auth,public to authenticated,anon; grant execute on functi
   for (const file of [
     '202611230001_account_foundation.sql',
     '202611230002_visitor_import.sql',
+    ...(process.argv.includes('--wardrobe')
+      ? ['202611230003_synced_wardrobe.sql']
+      : []),
   ])
     sql(readFileSync(`supabase/migrations/${file}`, 'utf8'));
   sql(readFileSync('tests/integration/visitor-import.sql', 'utf8'));
+  if (process.argv.includes('--wardrobe'))
+    sql(readFileSync('tests/integration/synced-wardrobe.sql', 'utf8'));
   const item = {
     id: 'concurrent-selection',
     typeId: 'sneakers',
@@ -120,6 +125,28 @@ grant usage on schema auth,public to authenticated,anon; grant execute on functi
   sql(
     `do $$ begin if (select count(*) from public.wardrobe_items where owner_id = 'user_concurrent') <> 1 then raise exception 'concurrent imports duplicated clothes'; end if; end $$;`,
   );
+  if (process.argv.includes('--wardrobe')) {
+    const clothing = { ...item, id: randomUUID() };
+    for (const [action, revision, payload] of [
+      ['add', null, clothing],
+      ['update', 1, { ...clothing, name: 'Updated shoes' }],
+      ['remove', 2, { id: clothing.id }],
+    ]) {
+      const operationId = randomUUID();
+      const command = `set role authenticated; select set_config('request.jwt.claims','{"sub":"user_concurrent_crud","email_verified":true}',false); select public.mutate_wardrobe_item('${operationId}','${action}','${JSON.stringify(payload)}',${revision ?? 'null'},false,'UTC');`;
+      await Promise.all([
+        parallelSql(command),
+        parallelSql(command),
+        parallelSql(command),
+      ]);
+    }
+    sql(`do $$ begin if (select count(*) from public.wardrobe_items where owner_id='user_concurrent_crud')<>1
+      or not exists(select 1 from public.wardrobe_items where owner_id='user_concurrent_crud' and revision=3 and removed_at is not null)
+      then raise exception 'concurrent mutations repeated side effects'; end if; end $$;`);
+    console.log(
+      'PostgreSQL wardrobe CRUD, active lists, revisions, receipt rollback, concurrent retries and owner checks passed.',
+    );
+  }
   console.log(
     'PostgreSQL import migration, matching, rollback, replay, concurrency and RLS checks passed.',
   );
