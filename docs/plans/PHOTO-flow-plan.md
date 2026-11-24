@@ -22,3 +22,9 @@ Sources: [ONNX Runtime deployment](https://onnxruntime.ai/docs/tutorials/web/dep
 ## Processor checkpoint — 24 November
 
 Approved dependencies installed; npm reported seven moderate advisories (no forced audit fix). Added pre-decode signature/dimension/animation checks, metadata-free browser re-encoding, and a cancellable dedicated WASM worker. Model checksum and version-matched binary preparation succeeded; tracked upstream notices accompany generated assets. Seven focused real-image-header and processing lifecycle tests passed, including malformed/oversize/pixel limits, timeout and late results. Relevant lint/type checks passed. Actual Next worker bundling, browser inference, editor and persistence verification remain outstanding; physical-phone claims are not established by these checks.
+
+## Review editor checkpoint — 24 November
+
+Added the account photo review editor and cancellable selection state. It retains tags and a last usable sanitized original through failures, ignores out-of-order decode/inference, releases object URLs, supports before/after comparison and explicit original choice, requires Group/Type plus formality/seasons, and offers named-color detection without recoloring the photo. The existing unsaved-close dialog protects drafts. A typed persistence callback must resolve before success/Add another appears. Similarity choices retain item identity for replacement or explicitly add a different garment.
+
+Five additional focused tests passed for stale decode/inference/fallback, invalid replacement, retry/reset/unmount cleanup, transparent-pixel color handling and failed-save draft retention/idempotency. The editor is not exposed in navigation until #15 wires real persistence. Lint/types passed; shared full checks run before the checkpoint. Production browser and real inference/media verification remain outstanding, with new hosted setup still unauthorized.
