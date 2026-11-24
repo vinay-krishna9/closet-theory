@@ -49,7 +49,11 @@ test('signed-out and invalid-token main-app requests reveal no account data', as
   page,
   request,
 }) => {
-  for (const path of ['/api/account/session', '/api/account/profile']) {
+  for (const path of [
+    '/api/account/session',
+    '/api/account/profile',
+    '/api/account/wardrobe',
+  ]) {
     expect((await request.get(path)).status()).toBe(401);
     const altered = await request.get(path, {
       headers: { Authorization: 'Bearer deliberately-altered.fixture.token' },
@@ -63,6 +67,11 @@ test('signed-out and invalid-token main-app requests reveal no account data', as
   });
   expect(transfer.status()).toBe(401);
   expect(transfer.headers()['cache-control']).toContain('no-store');
+  const wardrobe = await request.post('/api/account/wardrobe', {
+    data: { action: 'remove', owner_id: 'user_other' },
+  });
+  expect(wardrobe.status()).toBe(401);
+  expect(wardrobe.headers()['cache-control']).toContain('no-store');
   await expect(
     page.getByRole('link', { name: 'Sign in to your account' }),
   ).toBeVisible();

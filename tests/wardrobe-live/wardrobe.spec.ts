@@ -120,7 +120,7 @@ test('a stale editor requires explicit review and pending responses cannot survi
       await expect.poll(() => requested).toBe(true);
       await page.getByRole('button', { name: 'Sign out', exact: true }).click();
       await expect(
-        page.getByRole('button', { name: 'Sign in', exact: true }).last(),
+        page.getByRole('link', { name: 'Sign in', exact: true }).last(),
       ).toBeVisible();
       release();
       await expect(
@@ -169,7 +169,8 @@ test('catalog CRUD survives reload and a second context, with accessible editor 
   ).toBe(true);
   await page.screenshot({
     path: testInfo.outputPath('fixture-editor.png'),
-    fullPage: true,
+    fullPage: false,
+    animations: 'disabled',
   });
   await dialog
     .getByRole('button', { name: 'Save changes', exact: true })
