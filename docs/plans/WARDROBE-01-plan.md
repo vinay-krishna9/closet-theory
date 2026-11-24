@@ -31,3 +31,23 @@ Nine route/boundary tests, relevant lint/types/formatting, and real local Postgr
 Connected verified accounts to the existing Wardrobe, Quick-add and editor through an owner-keyed, memory-only provider. Loads and writes validate owner identity; account switches abort pending requests and discard private state. Import completion and window focus refresh the saved list. Failed saves preserve drafts and reuse the operation ID; stale revisions require explicit review of the latest version. Visitors retain their existing synchronous behavior and browser storage.
 
 `npm.cmd run check` passed: formatting, lint, route/types and 197 unit/component tests. New interaction tests cover failed loads, response-loss retries, owner switches, retained editor drafts, focus restoration and explicit conflict review. Production browser and hosted database verification remain pending.
+
+## Browser regression correction — 24 November 2026
+
+Production desktop checks caught a layout regression introduced by using a native fieldset as the editor grid. Restored its existing div and used `inert` while a save is pending, preserving the grid, preview loading and keyboard protection. After correction, the production build, all 66 visitor desktop/mobile journeys and all four configured Clerk entry/boundary journeys passed. Reviewed the shared editor screenshots at 1440px and 390px; pinned preview and footer remain usable. The complete check suite passed with 198 unit/component tests, including pending-save cancellation on sign-out. Private account browser states still await the migration and fixture approval below.
+
+## Concrete hosted approval request
+
+Target only the existing isolated test project `aghsipccmufzdtqwzxey` and existing Clerk development instance. Apply `supabase/migrations/202611230003_synced_wardrobe.sql` once, after confirming the preceding two migrations exist. It adds a positive revision defaulting to 1 on existing items, the owner-only `wardrobe_mutations` receipt table, and verified-owner security-invoker list/mutation functions. It deletes no existing garments, changes no Clerk settings, and adds no storage bucket. App removal is a soft removal; future account deletion must delete receipts before clothing/profile rows.
+
+Then run `npm.cmd run test:wardrobe:live`: two temporary tagged Clerk test identities, synthetic catalog rows/profiles/receipts only, desktop/mobile real-service CRUD, second-context reload, lost responses, stale editor review, sign-out with a held response, and direct API/RLS isolation checks. Guarded owner-token cleanup removes only these fixtures, then deletes those temporary identities; an ignored journal survives interrupted runs. Traces/video/automatic screenshots are off; explicit editor screenshots contain sample fixture clothing only. No production or real-user data is used. The suite is prepared and discoverable but has not been run. Existing #12 live-test cleanup now removes optional wardrobe receipts before clothing, allowing both suites to work after this migration.
+
+Commands: `npm.cmd run test:wardrobe:db` runs the disposable local PostgreSQL checks; `npm.cmd run test:wardrobe:live -- --list` discovers hosted journeys without creating fixtures. Actual hosted execution requires the approval above. No remote push/main merge or deployment has been performed for #13.
+
+## Manual browser checks
+
+Available now at `http://localhost:3000`: signed-out `/quick-add` → Customize → choose a color → add → `/wardrobe` → edit/remove; reload preserves visitor selections. On a narrow screen, the preview and footer stay available while details scroll. Tab/Shift+Tab stay in the editor; Escape/Cancel warn about unsaved changes and closing restores focus.
+
+After applying the approved test migration: sign in, open `/wardrobe`, add via `/quick-add`, edit and reload; the same clothing appears in a second authenticated browser context. Search/group filters remain after a save. Remove a garment; it disappears after reload in both contexts. Turn the network offline while saving; the draft stays open, then retry online. Open the same item in two sessions, save in one, then save in the other; review the latest saved version before explicitly replacing it. Sign out and sign in as a different test account; no previous account clothing appears. Repeat the editor checks at phone width and using only the keyboard.
+
+Remaining criteria: hosted migration/application behavior, cross-account signed-token/RLS checks and private-state desktop/mobile visual review are unverified until approved execution. Physical devices, non-Chromium browsers and a full screen-reader audit remain outside the automated evidence.

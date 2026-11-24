@@ -203,7 +203,11 @@ export function ItemEditor({
           </DialogClose>
         </div>
         <form className="item-editor-form" onSubmit={submit} noValidate>
-          <fieldset className="item-editor-layout" disabled={saving}>
+          <div
+            className="item-editor-layout"
+            inert={saving}
+            aria-disabled={saving || undefined}
+          >
             <div className="item-editor-preview">
               <GarmentPhoto
                 key={previewKey}
@@ -526,7 +530,7 @@ export function ItemEditor({
                 )}
               </div>
             </div>
-          </fieldset>
+          </div>
           <div className="editor-footer">
             <DialogClose asChild>
               <Button variant="outline" disabled={saving}>

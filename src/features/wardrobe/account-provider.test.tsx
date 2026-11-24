@@ -184,3 +184,48 @@ it('ignores old-owner responses after account switching, even if transport ignor
     'Account B clothing',
   );
 });
+
+it('aborts an in-flight save on sign-out and never refreshes its old private records', async () => {
+  let finish!: (value: Response) => void;
+  let savingSignal: AbortSignal | undefined;
+  let operationId = '';
+  let reads = 0;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url, init) => {
+      if (init?.method === 'POST') {
+        savingSignal = init.signal;
+        operationId = JSON.parse(init.body).operationId;
+        return new Promise<Response>((resolve) => {
+          finish = resolve;
+        });
+      }
+      reads++;
+      return reply({ ownerId: 'user_a', items: [item] });
+    }),
+  );
+  const { rerender } = render(<Tree />);
+  await waitFor(() =>
+    expect(screen.getByRole('button', { name: 'Save garment' })).toBeEnabled(),
+  );
+  fireEvent.click(screen.getByRole('button', { name: 'Save garment' }));
+  await waitFor(() => expect(savingSignal).toBeDefined());
+  account.userId = null;
+  rerender(<Tree />);
+  expect(savingSignal!.aborted).toBe(true);
+  await act(async () =>
+    finish(
+      reply({
+        ownerId: 'user_a',
+        operationId,
+        itemId: added.id,
+        matched: false,
+      }),
+    ),
+  );
+  expect(screen.getByLabelText('mode')).toHaveTextContent('visitor');
+  expect(screen.getByLabelText('clothes')).not.toHaveTextContent(item.name);
+  expect(screen.getByLabelText('clothes')).not.toHaveTextContent(added.name);
+  expect(reads).toBe(1);
+  expect(localStorage.getItem(visitorStorageKey)).not.toContain(item.name);
+});
