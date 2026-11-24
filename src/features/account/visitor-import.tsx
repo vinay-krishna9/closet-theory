@@ -28,6 +28,7 @@ type State = {
   signIn?: boolean;
   storageProblem?: boolean;
   restart?: boolean;
+  completedOperationId?: string;
 };
 const initial: State = { ownerId: null, phase: 'idle', message: '' };
 const Context = createContext({
@@ -36,6 +37,8 @@ const Context = createContext({
   retry: () => {},
 });
 export const useVisitorImportReady = () => useContext(Context).prepared;
+export const useImportRevision = () =>
+  useContext(Context).state.completedOperationId ?? null;
 const errors: Record<string, string> = {
   import_setup_required:
     'Your account is ready, but clothing transfer is not available yet. Your selections remain in this browser.',
@@ -167,6 +170,7 @@ export function VisitorImportProvider({ children }: { children: ReactNode }) {
         };
         setState({
           ownerId,
+          completedOperationId: result.operationId,
           phase: acknowledged.changed ? 'error' : 'done',
           message:
             `${result.imported + result.matched} visitor ${result.imported + result.matched === 1 ? 'selection is' : 'selections are'} saved to your account. ${result.matched} already ${result.matched === 1 ? 'matched an existing garment' : 'matched existing garments'}.` +

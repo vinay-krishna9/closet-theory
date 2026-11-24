@@ -25,3 +25,9 @@ Meaningful unit/component assertions, real isolated PostgreSQL migration/transac
 ## Server checkpoint — 24 November 2026
 
 Nine route/boundary tests, relevant lint/types/formatting, and real local PostgreSQL checks passed. The local checks apply all three migrations and exercise active-only lists, exact/broader matches, explicit separate garments, stable replay, changed-payload and stale-revision rejection, soft removal, receipt-failure rollback, owner/anonymous/unverified denial and simultaneous add/update/remove retries. The temporary database is removed afterward. This is synthetic local-claim evidence, not hosted verification. The new #13 migration remains unapplied to Supabase.
+
+## UI checkpoint — 24 November 2026
+
+Connected verified accounts to the existing Wardrobe, Quick-add and editor through an owner-keyed, memory-only provider. Loads and writes validate owner identity; account switches abort pending requests and discard private state. Import completion and window focus refresh the saved list. Failed saves preserve drafts and reuse the operation ID; stale revisions require explicit review of the latest version. Visitors retain their existing synchronous behavior and browser storage.
+
+`npm.cmd run check` passed: formatting, lint, route/types and 197 unit/component tests. New interaction tests cover failed loads, response-loss retries, owner switches, retained editor drafts, focus restoration and explicit conflict review. Production browser and hosted database verification remain pending.

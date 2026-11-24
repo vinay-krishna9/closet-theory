@@ -22,7 +22,7 @@ export type Garment = {
   neckline?: Neckline;
   sleeves?: Sleeves;
 };
-export type WardrobeItem = Garment & { id: string };
+export type WardrobeItem = Garment & { id: string; revision?: number };
 export function defaultGarment(typeId: TypeId): Garment {
   const type = getType(typeId);
   return {
@@ -125,8 +125,8 @@ export function similarItems(
 }
 export type WardrobeAction =
   | { type: 'add'; item: WardrobeItem; intentionalDuplicate?: boolean }
-  | { type: 'update'; id: string; garment: Garment }
-  | { type: 'remove'; id: string };
+  | { type: 'update'; id: string; garment: Garment; expectedRevision?: number }
+  | { type: 'remove'; id: string; expectedRevision?: number };
 export function wardrobeReducer(
   items: readonly WardrobeItem[],
   action: WardrobeAction,
