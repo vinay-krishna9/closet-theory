@@ -162,10 +162,10 @@ function ProfileForm() {
         {message}
       </p>
       <p>
-        Viewing and editing your synced wardrobe is coming next. Personal
-        photos, preferences, wear statistics and account deletion are not
-        enabled yet.
+        Your catalog wardrobe syncs with your account. Personal photos,
+        preferences, wear statistics and account deletion are not enabled yet.
       </p>
+      <Link href="/wardrobe">Open your saved wardrobe</Link>
       <Link href="/sign-in">Sign-in and password recovery</Link>
     </main>
   );

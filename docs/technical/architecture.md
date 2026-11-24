@@ -94,6 +94,8 @@ Current VISITOR-01 implementation: static typed catalog data in `src/features/on
 
 ## 5. Proposed logical data model
 
+WARDROBE-01 (#13) implements account catalog CRUD through `/api/account/wardrobe` and a keyed, memory-only account provider. Verified server identity and owner RLS protect list/mutation RPCs. A revision rejects stale edits; owner-scoped operation receipts make identical retries stable. Import completion and window focus revalidate active clothing; owner switches abort requests and discard private state. Removal retains the item ID with `removed_at`. No account garment/token is written to visitor storage. The third migration is locally tested and was manually applied by the user to the test project, with manual CRUD/sync confirmation and eight passing hosted desktop/mobile recovery and API/RLS isolation journeys; see [implementation and verification](../plans/WARDROBE-01-plan.md). Future account deletion must remove `wardrobe_mutations` before item/profile rows.
+
 This is a logical model, not migration-ready SQL. Exact column types, indexes and constraints are finalized in the approved database setup plan.
 
 | Table | Purpose and important fields |

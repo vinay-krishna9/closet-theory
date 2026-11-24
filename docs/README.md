@@ -56,3 +56,5 @@ The 15 November 2026 cleanup removes the completed VISITOR-01 plan from the acti
 Background-removal prototype links and feasibility limitations are recorded in the [development plan](plans/development-plan.md) and root README; that prototype is separate from the app. Live auth, storage and private-data features remain subject to their respective feasibility and approval gates.
 
 [ACCOUNT-02 automatic import](plans/ACCOUNT-02-plan.md) records the approved #12 plan, implementation checkpoints, applied development migration, six passing hosted journeys and manual browser checks.
+
+[WARDROBE-01 synced wardrobe](plans/WARDROBE-01-plan.md) records the approved #13 plan/checkpoints, passing local checks, user-applied test migration, manual CRUD/sync confirmation and eight passing hosted desktop/mobile journeys with fixture cleanup.

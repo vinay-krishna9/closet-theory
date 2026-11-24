@@ -15,12 +15,13 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { colors, getType, groups } from '@/features/onboarding/catalog';
-import { useVisitorWardrobe } from './visitor-provider';
+import { useWardrobe } from './account-provider';
 import { type WardrobeItem } from './model';
 import {
-  VisitorRestoring,
-  VisitorStorageNotice,
-} from './visitor-storage-notice';
+  WardrobeLoading,
+  WardrobeDataNotice,
+  WardrobeUnavailable,
+} from './data-notice';
 import { ItemEditor } from './item-editor';
 import { GarmentPhoto } from './garment-photo';
 
@@ -34,7 +35,14 @@ export function Wardrobe() {
     filters,
     setFilters,
     persistence,
-  } = useVisitorWardrobe();
+    mode,
+    loaded,
+    loadError,
+    pending,
+  } = useWardrobe();
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState('');
+  const [removalChanged, setRemovalChanged] = useState(false);
   const [editor, setEditor] = useState<{
     item: WardrobeItem;
     opener: HTMLElement;
@@ -59,7 +67,9 @@ export function Wardrobe() {
       </Link>
     </Button>
   );
-  if (persistence === 'loading') return <VisitorRestoring />;
+  if (persistence === 'loading') return <WardrobeLoading />;
+  if (mode === 'account' && !loaded && loadError)
+    return <WardrobeUnavailable />;
   return (
     <main
       id="main-content"
@@ -77,10 +87,10 @@ export function Wardrobe() {
         {add}
       </div>
       <p className="wardrobe-inline-note">
-        Visitor wardrobe · {items.length}{' '}
-        {items.length === 1 ? 'piece' : 'pieces'}.
+        {mode === 'account' ? 'Synced wardrobe' : 'Visitor wardrobe'} ·{' '}
+        {items.length} {items.length === 1 ? 'piece' : 'pieces'}.
       </p>
-      <VisitorStorageNotice />
+      <WardrobeDataNotice />
       {items.length > 0 && (
         <div className="wardrobe-tools">
           <div className="group-filters" aria-label="Filter clothing group">
@@ -172,6 +182,7 @@ export function Wardrobe() {
                 <div className="garment-actions">
                   <Button
                     variant="outline"
+                    disabled={pending}
                     onClick={(event) =>
                       setEditor({ item, opener: event.currentTarget })
                     }
@@ -180,8 +191,11 @@ export function Wardrobe() {
                   </Button>
                   <Button
                     variant="ghost"
+                    disabled={pending}
                     onClick={(event) => {
                       removalOpener.current = event.currentTarget;
+                      setRemoveError('');
+                      setRemovalChanged(false);
                       setRemoval({ item, opener: event.currentTarget });
                     }}
                   >
@@ -201,6 +215,7 @@ export function Wardrobe() {
         <ItemEditor
           initial={editor.item}
           itemId={editor.item.id}
+          itemRevision={editor.item.revision}
           opener={editor.opener}
           onClose={() => setEditor(null)}
         />
@@ -208,7 +223,7 @@ export function Wardrobe() {
       <Dialog
         open={!!removal}
         onOpenChange={(open) => {
-          if (!open) setRemoval(null);
+          if (!open && !removing) setRemoval(null);
         }}
       >
         <DialogContent
@@ -228,26 +243,76 @@ export function Wardrobe() {
             <h2>Remove this clothing?</h2>
           </DialogTitle>
           <DialogDescription>
-            {removal?.item.name} will leave your visitor wardrobe. The shared
-            catalog photo remains available.
+            {removal?.item.name} will leave your{' '}
+            {mode === 'account' ? 'active account' : 'visitor'} wardrobe.{' '}
+            {mode === 'account'
+              ? 'Its identity is retained for history; it will not appear in future suggestions.'
+              : 'The shared catalog photo remains available.'}
           </DialogDescription>
+          {removeError && (
+            <p role="alert" className="wardrobe-error">
+              {removeError}
+            </p>
+          )}
+          {removalChanged && (
+            <p>
+              Latest saved clothing:{' '}
+              {items.find((item) => item.id === removal?.item.id)?.name ??
+                'No longer active'}
+              . Review it before confirming removal.
+            </p>
+          )}
           <div className="similarity-actions">
             <Button
               id="keep-clothing"
               variant="outline"
+              disabled={removing}
               onClick={() => setRemoval(null)}
             >
               Keep clothing
             </Button>
             <Button
+              disabled={removing}
+              aria-busy={removing}
               onClick={() => {
                 if (!removal) return;
-                dispatch({ type: 'remove', id: removal.item.id });
-                announce(`${removal.item.name} removed.`);
-                setRemoval(null);
+                const selected = removalChanged
+                  ? items.find((item) => item.id === removal.item.id)
+                  : removal.item;
+                const action = {
+                  type: 'remove' as const,
+                  id: removal.item.id,
+                  expectedRevision: selected?.revision,
+                };
+                if (mode === 'visitor') {
+                  dispatch(action);
+                  announce(`${removal.item.name} removed.`);
+                  setRemoval(null);
+                  return;
+                }
+                setRemoving(true);
+                setRemoveError('');
+                void Promise.resolve(dispatch(action))
+                  .then(() => {
+                    announce(`${removal.item.name} removed.`);
+                    setRemoval(null);
+                  })
+                  .catch((error) => {
+                    setRemoveError(
+                      error instanceof Error
+                        ? error.message
+                        : 'Could not confirm removal. Retry safely.',
+                    );
+                    setRemovalChanged(error?.code === 'wardrobe_changed');
+                  })
+                  .finally(() => setRemoving(false));
               }}
             >
-              Remove clothing
+              {removing
+                ? 'Removing…'
+                : removalChanged
+                  ? 'Remove latest version'
+                  : 'Remove clothing'}
             </Button>
           </div>
         </DialogContent>

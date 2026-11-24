@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ArrowLeft, Check, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -15,11 +15,12 @@ import {
   similarItems,
   type Garment,
 } from '@/features/wardrobe/model';
-import { useVisitorWardrobe } from '@/features/wardrobe/visitor-provider';
+import { useWardrobe } from '@/features/wardrobe/account-provider';
 import {
-  VisitorRestoring,
-  VisitorStorageNotice,
-} from '@/features/wardrobe/visitor-storage-notice';
+  WardrobeLoading,
+  WardrobeDataNotice,
+  WardrobeUnavailable,
+} from '@/features/wardrobe/data-notice';
 import { ItemEditor } from '@/features/wardrobe/item-editor';
 import { GarmentPhoto } from '@/features/wardrobe/garment-photo';
 
@@ -30,19 +31,49 @@ function CatalogCard({
   type: CatalogType;
   onCustomize: (garment: Garment, opener: HTMLElement) => void;
 }) {
-  const { items, dispatch, announce } = useVisitorWardrobe();
+  const { items, dispatch, announce, mode, pending } = useWardrobe();
   const [ready, setReady] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const addId = useRef<string | null>(null);
+  const submitting = useRef(false);
   const garment = defaultGarment(type.id);
   const color = garment.color;
   const selected = items.some((item) => sameConfiguration(item, garment));
   function add(event: React.MouseEvent<HTMLButtonElement>) {
-    if (!ready) return;
+    if (!ready || submitting.current) return;
     if (similarItems(items, garment).length) {
       onCustomize(garment, event.currentTarget);
       return;
     }
-    dispatch({ type: 'add', item: { ...garment, id: crypto.randomUUID() } });
-    announce(`${garment.name} added.`);
+    addId.current ??= crypto.randomUUID();
+    const action = {
+      type: 'add' as const,
+      item: { ...garment, id: addId.current },
+    };
+    if (mode === 'visitor') {
+      dispatch(action);
+      announce(`${garment.name} added.`);
+      return;
+    }
+    submitting.current = true;
+    setSaveError('');
+    const opener = event.currentTarget;
+    void Promise.resolve(dispatch(action))
+      .then(() => {
+        addId.current = null;
+        announce(`${garment.name} saved.`);
+      })
+      .catch((error) => {
+        setSaveError(
+          error instanceof Error
+            ? error.message
+            : 'Could not save. Retry safely.',
+        );
+        if (error?.code === 'wardrobe_similarity') onCustomize(garment, opener);
+      })
+      .finally(() => {
+        submitting.current = false;
+      });
   }
   return (
     <article className="garment-card" aria-label={`${type.name} catalog item`}>
@@ -64,7 +95,11 @@ function CatalogCard({
             </Link>
           </Button>
         ) : (
-          <Button onClick={add} disabled={!ready}>
+          <Button
+            onClick={add}
+            disabled={!ready || pending}
+            aria-busy={pending}
+          >
             <Icon icon={Plus} />I own this
           </Button>
         )}
@@ -75,6 +110,11 @@ function CatalogCard({
           {selected ? 'Add another / customize' : 'Customize'}
         </Button>
       </div>
+      {saveError && (
+        <p role="alert" className="wardrobe-error">
+          {saveError}
+        </p>
+      )}
     </article>
   );
 }
@@ -84,7 +124,7 @@ export function QuickAdd({
 }: {
   initialGroup?: string;
 }) {
-  const { items, notice, persistence } = useVisitorWardrobe();
+  const { items, notice, persistence, mode, loaded, loadError } = useWardrobe();
   const [group, setGroup] = useState(initialGroup);
   const [search, setSearch] = useState('');
   const [editor, setEditor] = useState<{
@@ -98,7 +138,9 @@ export function QuickAdd({
         .toLowerCase()
         .includes(search.trim().toLowerCase()),
   );
-  if (persistence === 'loading') return <VisitorRestoring />;
+  if (persistence === 'loading') return <WardrobeLoading />;
+  if (mode === 'account' && !loaded && loadError)
+    return <WardrobeUnavailable />;
   return (
     <main
       id="main-content"
@@ -126,7 +168,7 @@ export function QuickAdd({
         AI-generated garment samples show your selected color. Other garment
         details remain representative.
       </p>
-      <VisitorStorageNotice />
+      <WardrobeDataNotice />
       <div className="wardrobe-tools">
         <div className="group-filters" aria-label="Filter clothing group">
           {['All clothing', ...groups].map((value) => (

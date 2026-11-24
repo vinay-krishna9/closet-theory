@@ -38,22 +38,27 @@ import {
   type Garment,
   type WardrobeItem,
 } from './model';
-import { useVisitorWardrobe } from './visitor-provider';
+import { useWardrobe } from './account-provider';
 import { GarmentPhoto, type PhotoStatus } from './garment-photo';
 import { CatalogPicture } from '@/features/onboarding/catalog-picture';
 
 export function ItemEditor({
   initial,
   itemId,
+  itemRevision,
   opener,
   onClose,
 }: {
   initial: Garment;
   itemId?: string;
+  itemRevision?: number;
   opener: HTMLElement | null;
   onClose: () => void;
 }) {
-  const { items, dispatch, announce } = useVisitorWardrobe();
+  const { items, dispatch, announce, mode, pending, loadError, retrySaving } =
+    useWardrobe();
+  const [saving, setSaving] = useState(false);
+  const [reviewTarget, setReviewTarget] = useState<string | null>(null);
   const [draft, setDraft] = useState<Garment>(initial);
   const [errors, setErrors] = useState<string[]>([]);
   const [preview, setPreview] = useState<{ key: string; status: PhotoStatus }>({
@@ -74,6 +79,7 @@ export function ItemEditor({
   const previewReady = previewStatus === 'ready';
   const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
   function patch(patch: Partial<Omit<Garment, 'typeId'>>) {
+    if (submitted.current) return;
     if (patch.color !== undefined && patch.color !== draft.color)
       setPreview({ key: '', status: 'loading' });
     setDraft((current) => ({ ...current, ...patch }));
@@ -81,20 +87,58 @@ export function ItemEditor({
     setConflicts(null);
     setConfirmSeparate(false);
   }
-  function commit(targetId?: string, separate = false) {
+  function commit(targetId?: string, separate = false, revision?: number) {
     if (submitted.current || !previewReady) return;
     submitted.current = true;
-    if (targetId) dispatch({ type: 'update', id: targetId, garment: draft });
-    else {
-      operationId.current ??= crypto.randomUUID();
-      dispatch({
-        type: 'add',
-        item: { ...draft, id: operationId.current },
-        intentionalDuplicate: separate,
-      });
+    operationId.current ??= crypto.randomUUID();
+    const action = targetId
+      ? {
+          type: 'update' as const,
+          id: targetId,
+          garment: draft,
+          expectedRevision:
+            revision ??
+            (targetId === itemId
+              ? itemRevision
+              : conflicts?.find((item) => item.id === targetId)?.revision),
+        }
+      : {
+          type: 'add' as const,
+          item: { ...draft, id: operationId.current },
+          intentionalDuplicate: separate,
+        };
+    if (mode === 'visitor') {
+      dispatch(action);
+      announce(`${draft.name.trim()} ${targetId ? 'updated' : 'added'}.`);
+      onClose();
+      return;
     }
-    announce(`${draft.name.trim()} ${targetId ? 'updated' : 'added'}.`);
-    onClose();
+    setSaving(true);
+    setErrors([]);
+    setReviewTarget(null);
+    void Promise.resolve(dispatch(action))
+      .then(() => {
+        announce(`${draft.name.trim()} saved.`);
+        onClose();
+      })
+      .catch((error) => {
+        setErrors([
+          error instanceof Error
+            ? error.message
+            : 'Could not save. Your draft is retained.',
+        ]);
+        if (
+          ['wardrobe_changed', 'wardrobe_payload_conflict'].includes(
+            error?.code,
+          )
+        )
+          setReviewTarget(targetId ?? operationId.current);
+        requestAnimationFrame(() => errorSummary.current?.focus());
+      })
+      .finally(() => {
+        submitted.current = false;
+        setSaving(false);
+      });
   }
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -127,9 +171,9 @@ export function ItemEditor({
     <Editor
       open
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open && !saving) onClose();
       }}
-      dirty={dirty}
+      dirty={dirty && !saving}
     >
       <DialogContent
         presentation="editor"
@@ -148,13 +192,22 @@ export function ItemEditor({
             </h2>
           </DialogTitle>
           <DialogClose asChild>
-            <Button size="icon" variant="ghost" aria-label="Close item editor">
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label="Close item editor"
+              disabled={saving}
+            >
               <Icon icon={X} />
             </Button>
           </DialogClose>
         </div>
         <form className="item-editor-form" onSubmit={submit} noValidate>
-          <div className="item-editor-layout">
+          <div
+            className="item-editor-layout"
+            inert={saving}
+            aria-disabled={saving || undefined}
+          >
             <div className="item-editor-preview">
               <GarmentPhoto
                 key={previewKey}
@@ -251,7 +304,52 @@ export function ItemEditor({
                     </ul>
                   </div>
                 )}
+                {reviewTarget &&
+                  items.find((item) => item.id === reviewTarget) && (
+                    <section
+                      className="similarity-panel"
+                      aria-label="Latest saved clothing"
+                    >
+                      <h3>Review the latest saved version</h3>
+                      {items
+                        .filter((item) => item.id === reviewTarget)
+                        .map((item) => (
+                          <div key={item.id}>
+                            <p>
+                              {item.name} · {colors[item.color].name} ·{' '}
+                              {item.formality} · {item.seasons.join(', ')} ·{' '}
+                              {item.pattern}
+                              {item.neckline ? ` · ${item.neckline}` : ''}
+                              {item.sleeves ? ` · ${item.sleeves}` : ''}
+                            </p>
+                            <p>
+                              Saving your draft will replace these details. Your
+                              draft is still shown in the form.
+                            </p>
+                            <Button
+                              variant="outline"
+                              onClick={() =>
+                                commit(item.id, false, item.revision)
+                              }
+                            >
+                              Save my draft over this version
+                            </Button>
+                          </div>
+                        ))}
+                    </section>
+                  )}
 
+                {mode === 'account' && loadError && (
+                  <section
+                    className="wardrobe-error"
+                    aria-label="Reload account clothing"
+                  >
+                    <p>{loadError}</p>
+                    <Button variant="outline" onClick={retrySaving}>
+                      Reload saved wardrobe
+                    </Button>
+                  </section>
+                )}
                 <PictorialOptions
                   legend="Group"
                   value={type.group}
@@ -435,17 +533,25 @@ export function ItemEditor({
           </div>
           <div className="editor-footer">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" disabled={saving}>
+                Cancel
+              </Button>
             </DialogClose>
             <Button
               type="submit"
               className="item-editor-submit"
-              disabled={!previewReady || !!conflicts}
-              aria-busy={previewStatus === 'loading'}
+              disabled={
+                !previewReady ||
+                !!conflicts ||
+                saving ||
+                pending ||
+                !!reviewTarget
+              }
+              aria-busy={previewStatus === 'loading' || saving}
               aria-label={itemId ? 'Save changes' : 'Add to wardrobe'}
             >
               <span className="item-editor-loading" aria-hidden="true">
-                {previewStatus === 'loading' && <Spinner />}
+                {(previewStatus === 'loading' || saving) && <Spinner />}
               </span>
               <span className="item-editor-action-label">
                 {itemId ? 'Save changes' : 'Add to wardrobe'}

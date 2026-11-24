@@ -48,15 +48,19 @@ export function WorkspaceGate({ children }: { children: ReactNode }) {
         <p role="status">Loading your account…</p>
       </main>
     );
-  if (!account.userId || !account.verified || pathname === '/profile')
+  if (
+    !account.userId ||
+    !account.verified ||
+    ['/profile', '/wardrobe', '/quick-add'].includes(pathname)
+  )
     return <>{children}</>;
   return (
     <main id="main-content" className="account-page" tabIndex={-1}>
       <h1>Your account is ready</h1>
       <p>
         You are signed in. Visitor clothing transfers automatically after
-        verification; its status appears below. Viewing and editing your synced
-        wardrobe is the next step.
+        verification; its status appears below. Your saved wardrobe is
+        available; account outfit suggestions are the next step.
       </p>
       <VisitorImportNotice />
       <VisitorImportRecovery />
