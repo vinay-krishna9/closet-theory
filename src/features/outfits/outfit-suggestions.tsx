@@ -98,6 +98,11 @@ export function OutfitSuggestions() {
       <p className="app-intro">
         Outfits from your own clothes, with a little less guesswork.
       </p>
+      {isAccount && (
+        <p className="wardrobe-help">
+          Up to 10 of your best outfit matches. Six shown first.
+        </p>
+      )}
       <form
         className="outfit-filters"
         onSubmit={(event) => {

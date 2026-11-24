@@ -49,8 +49,8 @@ function database(
   const create = vi.fn(() => ({ rpc }) as unknown as SupabaseClient);
   return { rpc, create };
 }
-it.each([1, 6, 8])(
-  'returns up to six of %i matches, with distinct deterministic next pages',
+it.each([1, 6, 8, 10, 14])(
+  'returns the best ten of %i matches in distinct deterministic pages',
   async (count) => {
     const items = clothes(count),
       db = database(items);
@@ -90,12 +90,12 @@ it.each([1, 6, 8])(
           db.create,
         )
       ).json();
-      expect(second.candidates).toEqual(expected.candidates.slice(6));
+      expect(second.candidates).toEqual(expected.candidates.slice(6, 10));
       expect(second.moreAvailable).toBe(false);
       expect(
         new Set([...first.candidates, ...second.candidates].map((x) => x.id))
           .size,
-      ).toBe(count);
+      ).toBe(Math.min(count, 10));
       expect(
         await (
           await accountOutfitsOperation(
@@ -200,6 +200,7 @@ it.each([
   { offset: -6 },
   { offset: 1 },
   { offset: 240 },
+  { offset: 12, snapshot: 'a'.repeat(64) },
   { offset: 6 },
   { snapshot: 'forged' },
   { filters: { season: 'Tomorrow', formality: 'Any' } },

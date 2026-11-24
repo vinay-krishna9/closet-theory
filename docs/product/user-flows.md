@@ -71,7 +71,7 @@ Outfits → season/formality filters → Suggest outfits → up to six eligible 
 - Feedback is optional. Activating a reaction selects it and clears the opposite; activating the selected reaction clears to neutral.
 - Order eligible favorites first, neutral next; disliked hidden unless Show disliked is on, then last. Maintain stable score ordering within groups.
 - On feedback failure, reconcile any optimistic state and offer recovery; do not falsely show a saved preference.
-- Show more appends additional distinct compatible results without losing existing feedback or focus.
+- Show more appends up to four additional distinct compatible results, stopping at the best 10 options total, without losing existing feedback or focus.
 - No numerical ranking scores. Explanations describe the actual matching rules.
 
 ## 7. Log wear and inspect statistics

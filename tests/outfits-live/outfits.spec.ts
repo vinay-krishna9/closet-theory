@@ -90,7 +90,7 @@ test('fewer, exactly six and more than six use persisted clothes, distinct pages
 }, testInfo) => {
   await signIn(page);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const count of [1, 6, 8]) {
+  for (const count of [1, 6, 8, 10, 14]) {
     await clearRows();
     await seed(0, count);
     await page.goto('/outfits');
@@ -107,7 +107,7 @@ test('fewer, exactly six and more than six use persisted clothes, distinct pages
       const more = page.getByRole('button', { name: 'Show more', exact: true });
       await more.focus();
       await page.keyboard.press('Enter');
-      await expect(cards).toHaveCount(8);
+      await expect(cards).toHaveCount(Math.min(count, 10));
       await expect(cards.nth(6).getByRole('heading')).toBeFocused();
       await expect(more).toHaveCount(0);
       expect(
@@ -116,7 +116,7 @@ test('fewer, exactly six and more than six use persisted clothes, distinct pages
             elements.map((x) => x.getAttribute('data-outfit-id')),
           ),
         ).size,
-      ).toBe(8);
+      ).toBe(Math.min(count, 10));
       await cards.first().scrollIntoViewIfNeeded();
       expect(
         await page.evaluate(

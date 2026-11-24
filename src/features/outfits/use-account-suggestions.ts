@@ -9,6 +9,7 @@ import {
 import { getType } from '@/features/onboarding/catalog';
 import type { WardrobeItem } from '@/features/wardrobe/model';
 import type { AccountOutfitResult } from './account-operation';
+import { accountOutfitLimit } from './account-policy';
 
 type State = {
   key: string;
@@ -41,6 +42,8 @@ function checkedResult(
     value.candidates.length > 6 ||
     typeof value.moreAvailable !== 'boolean' ||
     value.nextOffset !== offset + value.candidates.length ||
+    value.nextOffset > accountOutfitLimit ||
+    (value.moreAvailable && value.nextOffset >= accountOutfitLimit) ||
     (value.moreAvailable && value.candidates.length !== 6) ||
     !value.diagnostics ||
     !Array.isArray(value.diagnostics.missingGroups) ||

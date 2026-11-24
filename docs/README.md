@@ -59,4 +59,4 @@ Background-removal prototype links and feasibility limitations are recorded in t
 
 [WARDROBE-01 synced wardrobe](plans/WARDROBE-01-plan.md) records the approved #13 plan/checkpoints, passing local checks, user-applied test migration, manual CRUD/sync confirmation and eight passing hosted desktop/mobile journeys with fixture cleanup.
 
-[OUTFITS-02 account suggestions](plans/OUTFITS-02-plan.md) records approved #31 implementation, owner/snapshot-bound six-result paging, eight passing hosted journeys, local/visitor verification and manual browser checks. No new migration or dependency is required.
+[OUTFITS-02 account suggestions](plans/OUTFITS-02-plan.md) records approved #31 implementation, owner/snapshot-bound paging capped at the best 10, eight passing hosted journeys, local/visitor verification and manual browser checks. No new migration or dependency is required.

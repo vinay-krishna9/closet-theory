@@ -380,7 +380,7 @@ Drawer/full-screen header → image upload/processing preview → item name → 
 
 ### Outfit suggestions
 
-Page title → season and formality controls (Casual, Smart-casual, Formal, with Any) → Suggest outfits → up to three visitor compositions and an account prompt for further matches. Account holders receive up to six compositions with Show more for additional distinct matches. Complete outfits require top, bottom and shoes; jacket is optional. No extra occasion step. Explain missing groups with a quick-add/upload link; offer filter relaxation explicitly when no compatible result exists. Show the actual number of compatible matches within the user's allowance and preserve active filters. Visitors get suggestions but no saved feedback or wear logging. Account holders get optional Heart/CircleSlash feedback and I wore this. Reasons reflect actual rules; scores stay internal.
+Page title → season and formality controls (Casual, Smart-casual, Formal, with Any) → Suggest outfits → up to three visitor compositions and an account prompt for further matches. Account holders receive the best 10 ranked options at most: up to six compositions initially and Show more for up to four additional distinct matches. Complete outfits require top, bottom and shoes; jacket is optional. No extra occasion step. Explain missing groups with a quick-add/upload link; offer filter relaxation explicitly when no compatible result exists. Show the actual number of compatible matches within the user's allowance and preserve active filters. Visitors get suggestions but no saved feedback or wear logging. Account holders get optional Heart/CircleSlash feedback and I wore this. Reasons reflect actual rules; scores stay internal.
 
 ### Statistics
 
@@ -631,4 +631,4 @@ Show at most three compatible outfits for the visitor's current wardrobe and fil
 
 When account access is live, use “Create an account or sign in to see more outfit suggestions” with Create account and Sign in actions. Until then, use “More outfits with an account” with a visible “Account access is coming soon” explanation and an account-details action opening the shared availability notice. Keep visitor selections available when that notice closes. For three or fewer compatible matches, describe general account benefits without promising additional outfits from that wardrobe.
 
-Visitor filters remain usable, with Any options and deterministic repeated requests. Account users retain six-result pages and Show more. This section supersedes earlier six-result visitor wording. It adds no favorite, dislike, wear or Statistics actions for visitors.
+Visitor filters remain usable, with Any options and deterministic repeated requests. Account users receive the best 10 ranked options at most: six initially, then up to four through Show more. This section supersedes earlier six-result visitor wording. It adds no favorite, dislike, wear or Statistics actions for visitors.

@@ -4,7 +4,7 @@ A personal stylist app for outfits from clothes you already own. BUILD-01/02 sup
 
 ## Local setup
 
-OUTFITS-02 (#31) connects `/outfits` to the verified account's saved wardrobe: up to six initial suggestions and Show more for distinct remaining results. Visitors keep three. No new migration or dependency is needed beyond the applied account/wardrobe setup. See [implementation evidence and manual checks](docs/plans/OUTFITS-02-plan.md).
+OUTFITS-02 (#31) connects `/outfits` to the verified account's saved wardrobe: the best 10 outfit options at most, with six initially and Show more for up to four additional results. Visitors keep three. No new migration or dependency is needed beyond the applied account/wardrobe setup. See [implementation evidence and manual checks](docs/plans/OUTFITS-02-plan.md).
 
 WARDROBE-01 (#13) connects the existing catalog, wardrobe and editor to owner-scoped account persistence. The user applied its development migration manually and confirmed CRUD/reload and second-context sync. All eight approved hosted desktop/mobile wardrobe journeys passed and fixtures were cleaned up; see the [implementation, setup and manual checks](docs/plans/WARDROBE-01-plan.md). Account outfit paging is implemented by OUTFITS-02 (#31).
 
@@ -63,7 +63,7 @@ npm.cmd test -- src/lib/outfits src/features/wardrobe/outfit-items.test.ts --rep
 
 The [ENGINE-01 execution record](docs/plans/ENGINE-01-plan.md) documents its API, generation limits, measured examples and repeatable testing steps. The visitor Outfits screen uses this engine through a production-bundled browser worker.
 
-The [OUTFITS-01 execution plan](docs/plans/OUTFITS-01-plan.md) records the visitor allowance of up to three outfits. [OUTFITS-02](docs/plans/OUTFITS-02-plan.md) adds verified account generation from saved active clothes, six-result pages and Show more. The shared route includes matching reasons, item details, optional seasonal jackets, photo retry and generation recovery. Configured visitors get actual signup/sign-in links; visitor-only deployments retain the availability notice. Feedback and wear tracking remain future features.
+The [OUTFITS-01 execution plan](docs/plans/OUTFITS-01-plan.md) records the visitor allowance of up to three outfits. [OUTFITS-02](docs/plans/OUTFITS-02-plan.md) adds verified account generation from saved active clothes, six initial results and Show more for up to four additional results, capped at the best 10. The shared route includes matching reasons, item details, optional seasonal jackets, photo retry and generation recovery. Configured visitors get actual signup/sign-in links; visitor-only deployments retain the availability notice. Feedback and wear tracking remain future features.
 
 ## Repository map
 

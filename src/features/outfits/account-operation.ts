@@ -7,7 +7,7 @@ import { toOutfitItems } from '@/features/wardrobe/outfit-items';
 import type { AccountItem } from '@/features/wardrobe/account-contract';
 import { seasons, formalities } from '@/features/onboarding/catalog';
 import { generateOutfits, getOutfitPage } from '@/lib/outfits/engine';
-import { engineDefaults } from '@/lib/outfits/rules';
+import { accountOutfitLimit } from './account-policy';
 import type { OutfitFilters, OutfitResult } from '@/lib/outfits/types';
 
 export type AccountOutfitResult = Extract<OutfitResult, { ok: true }> & {
@@ -56,7 +56,7 @@ export async function accountOutfitsOperation(
       !Number.isSafeInteger(body.offset) ||
       body.offset < 0 ||
       body.offset % 6 !== 0 ||
-      body.offset >= engineDefaults.maxCandidates ||
+      body.offset >= accountOutfitLimit ||
       (body.offset === 0
         ? body.snapshot !== null
         : typeof body.snapshot !== 'string' ||
@@ -85,7 +85,12 @@ export async function accountOutfitsOperation(
     const { items } = (await wardrobe.json()) as { items: AccountItem[] };
     const current = createHash('sha256')
       .update(
-        JSON.stringify(['account-outfits-v1', identity.userId, items, filters]),
+        JSON.stringify([
+          'account-outfits-v2-best-10',
+          identity.userId,
+          items,
+          filters,
+        ]),
       )
       .digest('hex');
     if (snapshot !== null && snapshot !== current)
@@ -101,7 +106,10 @@ export async function accountOutfitsOperation(
     });
     if (!result.ok)
       return privateReply(502, { code: 'invalid_wardrobe_response' });
-    const page = getOutfitPage(result.candidates, offset);
+    const page = getOutfitPage(
+      result.candidates.slice(0, accountOutfitLimit),
+      offset,
+    );
     if (offset > 0 && !page.candidates.length)
       return privateReply(400, { code: 'invalid_suggestions' });
     return privateReply(200, {
