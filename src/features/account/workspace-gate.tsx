@@ -51,7 +51,7 @@ export function WorkspaceGate({ children }: { children: ReactNode }) {
   if (
     !account.userId ||
     !account.verified ||
-    ['/profile', '/wardrobe', '/quick-add'].includes(pathname)
+    ['/profile', '/wardrobe', '/quick-add', '/outfits'].includes(pathname)
   )
     return <>{children}</>;
   return (

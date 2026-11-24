@@ -38,7 +38,7 @@ export function OutfitCard({
         ))}
       </div>
       <div className="outfit-card-copy">
-        <h2 id={heading}>
+        <h2 id={heading} tabIndex={-1}>
           {top.name} + {bottom.name}
         </h2>
         <div className="outfit-reasons">

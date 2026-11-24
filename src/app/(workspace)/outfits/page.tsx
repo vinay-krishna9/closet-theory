@@ -1,5 +1,5 @@
-import { VisitorOutfits } from '@/features/outfits/visitor-outfits';
+import { OutfitSuggestions } from '@/features/outfits/outfit-suggestions';
 
 export default function OutfitsPage() {
-  return <VisitorOutfits />;
+  return <OutfitSuggestions />;
 }
