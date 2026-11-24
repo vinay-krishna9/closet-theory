@@ -7,6 +7,7 @@ test-results/
 package-lock.json
 next-env.d.ts
 spikes/
+public/processing/
 # Existing product specifications are not reformatted as part of scaffold work.
 design.md
 docs/product/MVP.md

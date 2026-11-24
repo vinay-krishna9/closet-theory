@@ -13,5 +13,6 @@ export default defineConfig([
     'test-results/**',
     'next-env.d.ts',
     'spikes/**',
+    'public/processing/**',
   ]),
 ]);

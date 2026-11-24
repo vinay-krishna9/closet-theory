@@ -8,8 +8,9 @@
   },
   "scripts": {
     "catalog:prepare": "node --experimental-strip-types scripts/prepare-catalog.mjs",
-    "dev": "next dev --hostname localhost",
-    "build": "next build",
+    "photos:prepare": "node scripts/prepare-photo-assets.mjs",
+    "dev": "npm run photos:prepare && next dev --hostname localhost",
+    "build": "npm run photos:prepare && next build",
     "start": "next start --hostname localhost",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
@@ -38,9 +39,11 @@
     "clsx": "2.1.1",
     "lucide-react": "1.72.0",
     "next": "16.4.6",
+    "onnxruntime-web": "1.31.1",
     "radix-ui": "1.8.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "sharp": "0.35.5",
     "tailwind-merge": "3.7.0"
   },
   "devDependencies": {
