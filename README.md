@@ -4,6 +4,8 @@ A personal stylist app for outfits from clothes you already own. BUILD-01/02 sup
 
 ## Local setup
 
+WARDROBE-01 (#13) now connects the existing catalog, wardrobe and editor to owner-scoped account persistence on its feature branch. Its new development migration and temporary live fixtures still require separate approval; see the [implementation, setup and manual checks](docs/plans/WARDROBE-01-plan.md). Until applied, account wardrobe loading shows an honest setup error. Account outfit paging follows in #31.
+
 Use **Node 22.18.0 or newer within Node 22.x**, and **npm 10+**. CI uses Node 22.18.0. From the repository root:
 
 ```powershell
@@ -107,6 +109,8 @@ Git checks text files out with LF line endings through `.gitattributes`, matchin
 ## Product references and prototype
 
 Import-specific checks: `npm.cmd run test:import:db` uses an existing local `postgres:17-alpine` Docker image for isolated transaction/RLS checks. `npm.cmd run test:import:live` requires the separately authorized account-import migration and temporary fixture scope; see the [ACCOUNT-02 setup and results](docs/plans/ACCOUNT-02-plan.md). It is not part of credential-free CI.
+
+Synced-wardrobe checks: `npm.cmd run test:wardrobe:db` applies all three migrations to a disposable local database and checks CRUD, revisions, stable retries, rollback and owner isolation. `npm.cmd run test:wardrobe:live -- --list` discovers the desktop/mobile hosted journeys without running fixtures. Actual execution needs the separate [WARDROBE-01 approval scope](docs/plans/WARDROBE-01-plan.md).
 
 Use the [documentation index](docs/README.md) for document ownership, current delivery status and verification records.
 

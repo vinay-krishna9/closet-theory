@@ -143,6 +143,7 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Add/list/filter/edit/remove account catalog-based items; use one editor form across side drawer/full-screen presentations.
 - Preserve item identity and unsaved work; make removal ready for historical references even before wear features are available.
 - **Acceptance:** account wardrobe persists across authenticated devices; errors preserve recoverable work; validation and keyboard focus work; removal excludes affected outfits from future results. No item favorites.
+- **Implementation, 24 November:** owner APIs, versioned/retry-safe mutations and the existing catalog/wardrobe/editor integration are implemented locally on `feat/13-synced-wardrobe`. Local PostgreSQL checks, 198 unit/component tests, production build, 66 visitor and four account-entry journeys passed. New hosted migration and eight prepared account wardrobe journeys await separate approval; [scope and manual checks](WARDROBE-01-plan.md). Keep #13 open until hosted criteria pass.
 
 ### OUTFITS-02 — Account suggestions and paging (#31)
 

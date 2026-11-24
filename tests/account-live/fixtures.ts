@@ -115,6 +115,7 @@ export async function cleanupFixtures() {
       if (payload.email_verified !== true)
         throw new Error('Verification claim required for fixture cleanup.');
       for (const table of [
+        'wardrobe_mutations',
         'visitor_import_items',
         'visitor_imports',
         'wardrobe_items',

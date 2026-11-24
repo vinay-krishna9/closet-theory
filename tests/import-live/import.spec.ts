@@ -18,15 +18,22 @@ async function clearRows() {
   for (const user of users) {
     const db = directClient(await tokenFor(user.id));
     for (const table of [
+      'wardrobe_mutations',
       'visitor_import_items',
       'visitor_imports',
       'wardrobe_items',
       'account_profiles',
-    ])
+    ]) {
+      const { error } = await db
+        .from(table)
+        .delete()
+        .eq('owner_id', user.id)
+        .retry(false);
       expect(
-        (await db.from(table).delete().eq('owner_id', user.id).retry(false))
-          .error === null,
+        error === null ||
+          (table === 'wardrobe_mutations' && error.code === 'PGRST205'),
       ).toBe(true);
+    }
   }
 }
 async function signIn(page: Page, email: string) {
