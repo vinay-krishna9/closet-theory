@@ -43,7 +43,7 @@ Prefer at most one patterned garment; multiple patterned garments are allowed bu
 
 ## Visitor outfit allowance — approved 17 November 2026
 
-The user selected up to three visitor outfits, superseding the earlier six-result visitor flow. Apply this allowance to the current wardrobe and season/formality request. Visitors can edit clothes and change filters, while repeated identical requests remain deterministic. Further results for that request require an account. Account users retain six-result pages and Show more when further matches exist.
+The user selected up to three visitor outfits, superseding the earlier six-result visitor flow. Apply this allowance to the current wardrobe and season/formality request. Visitors can edit clothes and change filters, while repeated identical requests remain deterministic. Further results for that request require an account. On 24 November 2026, the user capped signed-in suggestions at the best 10 ranked options: six initially, with Show more for up to four additional matches. This supersedes unrestricted account paging; matching, ranking and visitor limits are preserved.
 
 Show fewer results when fewer compatible outfits exist. Offer a more-outfits account prompt only when additional compatible candidates are known. With working account flows, use copy such as “Create an account or sign in to see more outfit suggestions.” Explain that selected clothes carry over. During OUTFITS-01, account access is still upcoming, so the prompt must disclose that availability and open the shared account notice while preserving the visitor wardrobe. General account-benefit copy can remain when the current wardrobe has three or fewer matches.
 

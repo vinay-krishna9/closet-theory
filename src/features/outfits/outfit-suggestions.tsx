@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ChevronDown, SlidersHorizontal } from 'lucide-react';
 import type { OutfitFilters } from '@/lib/outfits/types';
 import { Button } from '@/components/ui/button';
@@ -16,13 +16,19 @@ import {
   seasonChoices,
   formalityChoices,
 } from '@/components/ui/pictorial-options';
-import { useVisitorWardrobe } from '@/features/wardrobe/visitor-provider';
+import { useWardrobe } from '@/features/wardrobe/account-provider';
+import {
+  WardrobeDataNotice,
+  WardrobeLoading,
+  WardrobeUnavailable,
+} from '@/features/wardrobe/data-notice';
 import {
   VisitorRestoring,
   VisitorStorageNotice,
 } from '@/features/wardrobe/visitor-storage-notice';
 import { OutfitCard } from './outfit-card';
 import { useSuggestions } from './use-suggestions';
+import { useAccountSuggestions } from './use-account-suggestions';
 
 const anyFilters: OutfitFilters = { season: 'Any', formality: 'Any' };
 const outcomeAnnouncements = {
@@ -37,17 +43,49 @@ const outcomeAnnouncements = {
   'search-limited': 'This search reached its limit. Try more specific filters.',
 };
 
-export function VisitorOutfits() {
+export function OutfitSuggestions() {
   const account = useAccount();
-  const { items, persistence } = useVisitorWardrobe();
+  const { items, persistence, mode, loaded, loadError } = useWardrobe();
+  const isAccount = mode === 'account';
   const [filters, setFilters] = useState<OutfitFilters>(anyFilters);
   const [expanded, setExpanded] = useState(false);
   const panel = useId();
   const filtersButton = useRef<HTMLButtonElement>(null);
-  const { suggest, status, result } = useSuggestions(items, filters);
-  if (persistence === 'loading') return <VisitorRestoring />;
+  const appendedStart = useRef<number | null>(null);
+  const visitor = useSuggestions(items, filters);
+  const saved = useAccountSuggestions(
+    items,
+    filters,
+    isAccount ? account.userId : null,
+    !loaded || !!loadError,
+  );
+  const { suggest, status, result } = isAccount ? saved : visitor;
+  useEffect(() => {
+    if (!saved.result) {
+      appendedStart.current = null;
+      return;
+    }
+    if (
+      saved.status === 'success' &&
+      appendedStart.current !== null &&
+      saved.result.candidates.length > appendedStart.current
+    ) {
+      document
+        .querySelectorAll<HTMLElement>('.outfit-card h2')
+        [appendedStart.current]?.focus();
+      appendedStart.current = null;
+    }
+  }, [saved.result, saved.status]);
+  if (persistence === 'loading')
+    return isAccount ? <WardrobeLoading /> : <VisitorRestoring />;
+  if (isAccount && !loaded && loadError) return <WardrobeUnavailable />;
   const successful = result?.ok ? result : null;
-  const byId = new Map(items.map((item) => [item.id, item]));
+  const byId = new Map(
+    (isAccount && saved.result ? saved.result.items : items).map((item) => [
+      item.id,
+      item,
+    ]),
+  );
   function tryAny() {
     filtersButton.current?.focus();
     setFilters(anyFilters);
@@ -60,6 +98,11 @@ export function VisitorOutfits() {
       <p className="app-intro">
         Outfits from your own clothes, with a little less guesswork.
       </p>
+      {isAccount && (
+        <p className="wardrobe-help">
+          Up to 10 of your best outfit matches. Six shown first.
+        </p>
+      )}
       <form
         className="outfit-filters"
         onSubmit={(event) => {
@@ -115,7 +158,9 @@ export function VisitorOutfits() {
           type="submit"
           className="outfit-submit"
           aria-label="Suggest outfits"
-          disabled={!items.length || status === 'pending'}
+          disabled={
+            !items.length || status === 'pending' || (isAccount && !!loadError)
+          }
           aria-busy={status === 'pending'}
         >
           <span className="outfit-submit-spinner" aria-hidden="true">
@@ -159,14 +204,15 @@ export function VisitorOutfits() {
           </p>
         </EmptyState>
       )}
-      {status === 'error' && (
+      {status === 'error' && !successful && (
         <EmptyState
           title="Suggestions could not be generated."
           action={<Button onClick={() => suggest()}>Retry suggestions</Button>}
         >
           <p>
-            Your clothes and filters are still here. Try generating suggestions
-            again.
+            {isAccount
+              ? saved.error
+              : 'Your clothes and filters are still here. Try generating suggestions again.'}
           </p>
         </EmptyState>
       )}
@@ -246,29 +292,69 @@ export function VisitorOutfits() {
               />
             ))}
           </div>
+          {isAccount && saved.error && (
+            <p role="alert" className="wardrobe-error">
+              {saved.error}
+            </p>
+          )}
+          {isAccount && successful.moreAvailable && (
+            <div className="similarity-actions">
+              <Button
+                onClick={() => {
+                  appendedStart.current = successful.candidates.length;
+                  saved.showMore();
+                }}
+                disabled={status === 'pending'}
+                aria-busy={status === 'pending'}
+              >
+                {saved.retryMore && status === 'error'
+                  ? 'Retry more outfits'
+                  : 'Show more'}
+              </Button>
+            </div>
+          )}
         </>
       )}
-      <section className="outfit-account" aria-label="Account benefits">
-        <div>
-          <h2>
-            {successful?.moreAvailable
-              ? 'More outfits with an account'
-              : 'Keep your wardrobe with you'}
-          </h2>
-          <p>
-            {successful?.moreAvailable
-              ? 'An account will unlock more outfit suggestions from these clothes.'
-              : 'An account will let you sync your wardrobe, save outfit preferences and track wears.'}
-          </p>
-          <p>
-            {account.enabled
-              ? 'Sign-in is available. Wardrobe sync and more account outfits are coming next. Your selected clothes stay in this browser.'
-              : 'Account access is coming soon. Your selected clothes stay in this browser.'}
-          </p>
-        </div>
-        <AccountAccess variant="outline">About account access</AccountAccess>
-      </section>
-      <VisitorStorageNotice />
+      {!isAccount && (
+        <section className="outfit-account" aria-label="Account benefits">
+          <div>
+            <h2>
+              {successful?.moreAvailable
+                ? 'More outfits with an account'
+                : 'Keep your wardrobe with you'}
+            </h2>
+            <p>
+              {successful?.moreAvailable
+                ? account.enabled
+                  ? 'Create an account or sign in to see more outfit suggestions.'
+                  : 'An account will unlock more outfit suggestions from these clothes.'
+                : account.enabled
+                  ? 'Create an account or sign in to sync your wardrobe across browsers.'
+                  : 'An account will let you sync your wardrobe, save outfit preferences and track wears.'}
+            </p>
+            <p>
+              {account.enabled
+                ? 'Your selections transfer after verified sign-in. Outfit preferences and wear tracking are coming later.'
+                : 'Account access is coming soon. Your selected clothes stay in this browser.'}
+            </p>
+          </div>
+          {account.enabled ? (
+            <div className="similarity-actions">
+              <Button variant="outline" asChild>
+                <Link href="/sign-up">Create account</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/sign-in">Sign in</Link>
+              </Button>
+            </div>
+          ) : (
+            <AccountAccess variant="outline">
+              About account access
+            </AccountAccess>
+          )}
+        </section>
+      )}
+      {isAccount ? <WardrobeDataNotice /> : <VisitorStorageNotice />}
     </main>
   );
 }

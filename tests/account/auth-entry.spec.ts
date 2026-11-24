@@ -72,6 +72,22 @@ test('signed-out and invalid-token main-app requests reveal no account data', as
   });
   expect(wardrobe.status()).toBe(401);
   expect(wardrobe.headers()['cache-control']).toContain('no-store');
+  for (const headers of [
+    {},
+    { Authorization: 'Bearer deliberately-altered.fixture.token' },
+  ] as Record<string, string>[]) {
+    const outfits = await request.post('/api/account/outfits', {
+      headers,
+      data: {
+        expectedOwner: 'user_other',
+        offset: 0,
+        snapshot: null,
+        filters: { season: 'Any', formality: 'Any' },
+      },
+    });
+    expect([401, 403]).toContain(outfits.status());
+    expect(outfits.headers()['cache-control']).toContain('no-store');
+  }
   await expect(
     page.getByRole('link', { name: 'Sign in to your account' }),
   ).toBeVisible();

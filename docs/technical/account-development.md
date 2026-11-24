@@ -12,6 +12,8 @@ Use `APP_AUTH_MODE=visitor` for credential-free visitor checks. With missing cre
 
 ## Approved development configuration
 
+Current account journey: #11 authentication/profile, #12 import and #13 saved wardrobe are merged. #31 adds verified saved-wardrobe suggestions and six-result paging on its issue branch, with no new migration or keys. Its eight approved hosted browser journeys passed and fixtures were cleaned up; [setup, evidence and manual checks](../plans/OUTFITS-02-plan.md) supersede historical placeholder-route wording below.
+
 On 23 November 2026 the user explicitly approved the named test-project migration, Clerk development claim and temporary fixtures, then reported applying both dashboard changes and passing the manual checks. These settings apply only to the named development services; production and deployment remain outside this authorization.
 
 1. In the selected Clerk development instance, add this **session token claim**, merging it with the existing claims and preserving the native Supabase integration's role:

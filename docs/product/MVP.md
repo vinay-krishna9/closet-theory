@@ -52,7 +52,7 @@ Quick-add items have editable category/type, color, formality and season default
 
 - A complete outfit has one top, one bottom and shoes; a jacket is optional.
 - Filters: season and casual/smart-casual/formal, each with Any available.
-- Visitors see up to three compatible suggestions for the current wardrobe and filters. When additional matches exist, offer account access for more suggestions. Account users see up to six initially and Show more only when additional matches exist. Show the actual number available within each allowance.
+- Visitors see up to three compatible suggestions for the current wardrobe and filters. When additional matches exist, offer account access for more suggestions. Account users receive at most the best 10 ranked options: up to six initially and Show more for up to four further matches. Show the actual number available within each allowance.
 - Compose garment images on one restrained neutral/tinted canvas per outfit and provide a short reason based on actual matching rules.
 - Matching is deterministic: compatibility, freshness and personal preference are independently testable. Internal ranking scores are not displayed.
 - Eligible favorites appear first, neutral suggestions next. Disliked outfits are hidden by default; Show disliked reveals them last. Availability and active filters still apply to favorites.
