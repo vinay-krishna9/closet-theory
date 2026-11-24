@@ -4,7 +4,7 @@ A personal stylist app for outfits from clothes you already own. BUILD-01/02 sup
 
 ## Local setup
 
-WARDROBE-01 (#13) now connects the existing catalog, wardrobe and editor to owner-scoped account persistence on its feature branch. Its new development migration and temporary live fixtures still require separate approval; see the [implementation, setup and manual checks](docs/plans/WARDROBE-01-plan.md). Until applied, account wardrobe loading shows an honest setup error. Account outfit paging follows in #31.
+WARDROBE-01 (#13) connects the existing catalog, wardrobe and editor to owner-scoped account persistence on its feature branch. The user applied its development migration manually and confirmed loading, add/edit/remove and reload persistence. Remaining hosted checks and temporary automated fixtures are pending; see the [implementation, setup and manual checks](docs/plans/WARDROBE-01-plan.md). Account outfit paging follows in #31.
 
 Use **Node 22.18.0 or newer within Node 22.x**, and **npm 10+**. CI uses Node 22.18.0. From the repository root:
 

@@ -57,4 +57,4 @@ Background-removal prototype links and feasibility limitations are recorded in t
 
 [ACCOUNT-02 automatic import](plans/ACCOUNT-02-plan.md) records the approved #12 plan, implementation checkpoints, applied development migration, six passing hosted journeys and manual browser checks.
 
-[WARDROBE-01 synced wardrobe](plans/WARDROBE-01-plan.md) records the approved #13 plan, local implementation/checkpoints, passing local checks, exact pending hosted migration/fixture scope and manual browser checks. Hosted completion remains pending.
+[WARDROBE-01 synced wardrobe](plans/WARDROBE-01-plan.md) records the approved #13 plan, local implementation/checkpoints, passing local checks, user-applied test migration and manual CRUD confirmation. Remaining hosted checks and automated fixture scope are documented; full hosted completion remains pending.
