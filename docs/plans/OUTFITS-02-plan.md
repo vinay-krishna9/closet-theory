@@ -21,3 +21,22 @@ Fourteen focused tests passed for one/exactly-six/more-than-six results, engine 
 The shared `OutfitSuggestions` view now selects visitor worker generation or authenticated account generation. Accounts load six results, append the next distinct page, preserve results on a failed page and move focus to the first appended heading. Invalidated snapshots clear the results and ask for regeneration. Abort/version guards discard late responses; filters, owner changes and wardrobe changes clear completed results without reviving an older snapshot. Visitor limits/cards are preserved; configured visitor prompts now offer actual signup/sign-in and describe future preference/wear controls honestly.
 
 `npm.cmd run check` passed formatting, lint, type checking and all 218 unit/component tests. Six new interaction assertions cover duplicate submits, page retry, owner/filter/wardrobe invalidation, explicit Any recovery, unmount cancellation and appended-result focus. Production build and hosted/visitor browser verification follow before final completion.
+
+## Verification and handoff — 24 November
+
+Production build passed. All 66 desktop/mobile visitor journeys and all eight approved real-service account outfit journeys passed. The latter cover fewer/exactly/more than six, distinct pages and stable reload, failed-page preservation, removal snapshot invalidation, filtered empty states and Try Any, foreign-owner snapshots and supplied IDs, real server membership/RLS isolation, and pending responses across filter change/sign-out/different-account sign-in. The existing guarded fixture teardown removed synthetic rows and dedicated Clerk development identities; the ignored fixture journal is absent. No migration was executed and no real-user records or photos were used.
+
+Reviewed desktop/mobile results screenshots from sample fixture garments. Cards, reasons, details, focus after appended results, reduced-motion use and page overflow were checked. The configured account-entry suite additionally checks anonymous/altered-token outfit POST denial. Final formatting, lint, types and all 218 unit/component tests passed. No account feedback or wear controls are introduced. Physical-device/browser-engine coverage and a full screen-reader audit remain unverified; the broader #4/#15/#20 release gates remain open.
+
+### Manual browser checks
+
+Use `http://localhost:3000/outfits` with the existing configured development server (restart `npm.cmd run dev` after switching branches if it serves stale code).
+
+1. Sign in with a verified account that has a top, bottoms and shoes. Choose Suggest outfits; receive up to six compatible results from saved clothing. Fewer matches stay honestly fewer. Reload and suggest again; the same wardrobe/filters produce the same ordering.
+2. For a wardrobe with more than six compatible combinations, choose Show more. It appends distinct results, moves focus to the first new outfit and disappears when the retained set is exhausted. A bounded-search notice appears when the engine could not exhaust the complete combination space.
+3. Open Filters, choose a season/formality and suggest. Previous results disappear when filters change. If a required group is filtered out, Try Any filters restores the broad search.
+4. Edit/remove clothing in Wardrobe and return to Outfits; generate again and confirm current details/availability. Change clothing in a second session before Show more; stale paging clears results and asks for regeneration.
+5. Block `/api/account/outfits` in browser network tools or go offline during Show more. Existing cards stay visible; Retry more outfits resumes without duplicates. Sign out/switch accounts during a pending request; no old private results appear.
+6. At phone width, verify readable cards, no page overflow and reachable actions above bottom navigation. Use Tab/Enter for filters, generation, Show more and garment details; appended result focus should be visible. Signed-out visitors still see at most three outfits and working signup/sign-in prompts when configured.
+
+No extra user setup or approval is needed to try this implementation in the already configured test project. Changes are locally committed on the issue branch; no #31 push, main merge, issue closure or production deployment is authorized by implementation approval alone.

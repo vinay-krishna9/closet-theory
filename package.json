@@ -26,7 +26,8 @@
     "test:import:db": "node scripts/test-import-db.mjs",
     "test:import:live": "playwright test --config playwright.import-live.config.ts",
     "test:wardrobe:db": "node scripts/test-import-db.mjs --wardrobe",
-    "test:wardrobe:live": "playwright test --config playwright.wardrobe-live.config.ts"
+    "test:wardrobe:live": "playwright test --config playwright.wardrobe-live.config.ts",
+    "test:outfits:live": "playwright test --config playwright.outfits-live.config.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "7.10.2",

@@ -74,6 +74,14 @@ it.each([1, 6, 8])(
     expect(expected.ok).toBe(true);
     if (!expected.ok) throw new Error('Invalid fixture');
     expect(first.candidates).toEqual(expected.candidates.slice(0, 6));
+    const reordered = await (
+      await accountOutfitsOperation(
+        request({ filters: { formality: 'Any', season: 'Any' } }),
+        identity,
+        db.create,
+      )
+    ).json();
+    expect(reordered.snapshot).toBe(first.snapshot);
     if (count > 6) {
       const second = await (
         await accountOutfitsOperation(

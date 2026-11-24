@@ -150,6 +150,7 @@ The later user-approved studio image revision supersedes this task's initial rea
 - Generate results from the verified owner's persisted active wardrobe with the shared engine and approved composition UI. Up to six results per page; Show more only when available. Visitors keep their three-result allowance.
 - Bind paging to the owner and wardrobe/filter snapshot; invalidate results after mutation, removal, sign-out and account switch. No working feedback/wear controls until their features ship.
 - **Acceptance:** distinct pages, correct filters/identities, server ownership checks, reload and stale-request recovery verified on desktop/mobile. Depends on #11, #13, #9 and #10.
+- **Verified locally, 24 November:** approved implementation on `feat/31-account-outfits`; no migration/dependency changes. Formatting/lint/types, 218 unit/component tests, production build, 66 visitor and eight hosted account outfit journeys passed. Owner-bound pages, retry/removal invalidation, filters, foreign snapshots and pending-response account switches are checked; fixture cleanup completed and desktop/mobile screenshots reviewed. See [actual evidence and manual checks](OUTFITS-02-plan.md). Remote delivery awaits authorization.
 
 **Milestone gate:** visitor selections carry into a private account exactly once, remain manageable after reload/sign-in and generate account suggestions. #11, #12, #13 and #31 pass together.
 

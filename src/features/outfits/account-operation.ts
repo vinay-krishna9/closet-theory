@@ -65,7 +65,11 @@ export async function accountOutfitsOperation(
       throw new Error('Invalid request');
     if (body.expectedOwner !== identity.userId)
       return privateReply(409, { code: 'account_changed' });
-    ({ filters, snapshot, offset } = body);
+    filters = {
+      season: body.filters.season,
+      formality: body.filters.formality,
+    };
+    ({ snapshot, offset } = body);
   } catch {
     return privateReply(400, { code: 'invalid_suggestions' });
   }
